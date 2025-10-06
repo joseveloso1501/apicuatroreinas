@@ -1,6 +1,20 @@
-FROM python:3.12-slim
+# Imagen base
+FROM python:3.11-slim
+
+# Variables de entorno
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Crear carpeta y copiar archivos
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+COPY . /app
+
+# Instalar dependencias
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Exponer el puerto 8000
+EXPOSE 8000
+
+# Comando por defecto
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

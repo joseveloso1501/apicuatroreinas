@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: ecommerce
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    container_name: django_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DB_NAME=ecommerce
+      - DB_USER=admin
+      - DB_PASSWORD=admin123
+      - DB_HOST=db
+      - DB_PORT=5432
+
+  frontend:
+    build: ./frontend
+    container_name: react_frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
