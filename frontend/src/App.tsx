@@ -24,7 +24,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-yellow-100 p-8">
       <h1 className="text-4xl font-bold text-yellow-900 mb-6 text-center">
-        🐝 E-commerce Apícola
+        🐝 ApiStore
       </h1>
 
       {cargando ? (
