@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body { @apply bg-yellow-50 text-gray-900; }
+.brand { font-weight: 700; color: #2A2A1A; }
+.btn-primary { @apply bg-amber text-white px-4 py-2 rounded-full hover:opacity-90; }
