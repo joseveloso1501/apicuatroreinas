@@ -38,13 +38,11 @@ services:
   frontend:
     build: 
       context: ./frontend
-      args:
-        - VITE_API_URL=http://backend:8000
     volumes:
       - ./frontend:/app
       - /app/node_modules
     ports:
-      - "5173:80"
+      - "5173:5173"
     environment:
       - VITE_API_URL=http://backend:8000
     depends_on:
