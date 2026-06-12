@@ -4,8 +4,9 @@ import ImageCarousel from '../components/ImageCarousel'
 
 export default function Home(){
   return (
-    <section className="bg-yellow-50">
-      <div className="py-12">
+    <section className="bg-yellow-50 relative">
+      <ImageCarousel />
+      <div className="absolute inset-0 flex items-center justify-center">
         <div className="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center text-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold text-darkbee">Productos de la colmena, directo a tu casa</h1>
@@ -17,7 +18,6 @@ export default function Home(){
           </div>
         </div>
       </div>
-      <ImageCarousel />
     </section>
   )
 }

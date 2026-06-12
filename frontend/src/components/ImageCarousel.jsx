@@ -19,7 +19,7 @@ export default function ImageCarousel() {
   }, [])
 
   return (
-    <div className="hero-slide">
+    <div className="hero-slide" >
       {/* Imágenes con transición de difuminado */}
       {images.map((image, index) => (
         <img
