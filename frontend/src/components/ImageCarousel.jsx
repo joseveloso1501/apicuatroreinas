@@ -19,14 +19,14 @@ export default function ImageCarousel() {
   }, [])
 
   return (
-    <div className="relative w-full h-96 overflow-hidden rounded-xl shadow-lg">
+    <div className="hero-slide">
       {/* Imágenes con transición de difuminado */}
       {images.map((image, index) => (
         <img
           key={index}
           src={image}
           alt={`Carousel slide ${index + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+          className={`transition-opacity duration-1000 ease-in-out ${
             index === currentImage ? 'opacity-100' : 'opacity-0'
           }`}
         />
