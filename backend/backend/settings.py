@@ -74,5 +74,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Configuración de MEDIA (imágenes)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Configuración de CORS
 CORS_ALLOW_ALL_ORIGINS = True  # solo para desarrollo
+CORS_ALLOW_CREDENTIALS = True
+
+# Permitir CORS en media files
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
