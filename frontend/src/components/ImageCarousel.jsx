@@ -6,8 +6,11 @@ export default function ImageCarousel() {
   // Imágenes provisorias
   const images = [
     '/src/assets/carousel/flores-abejas.jpg',
+    '/src/assets/productosGemini/miel_gemini.png',
     '/src/assets/carousel/comportamientos_De_las_Abejas_1ok.jpg',
-    '/src/assets/carousel/quillay2.jpg',
+    '/src/assets/productosGemini/panales_miel_gemini.png',
+    '/src/assets/productosGemini/quillay3.jpg',
+    '/src/assets/productosGemini/propoleo_gemini.png',
   ]
 
   // Cambiar imagen cada 5 segundos
