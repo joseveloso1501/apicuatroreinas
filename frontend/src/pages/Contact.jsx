@@ -21,9 +21,9 @@ export default function Contact() {
           {/* Columna izquierda: Tarjeta de Instagram y Call to Action */}
           <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
             <div className="w-full text-center lg:text-left px-2">
-              <span className="inline-block px-3 py-1 bg-amber/10 text-amber-600 rounded-full text-xs font-semibold mb-2">
-                Nuestra Comunidad 🌸
-              </span>
+              <span className="inline-block px-3 py-1 bg-amber text-white rounded-full text-xs font-semibold mb-2 uppercase tracking-widest select-none shadow-sm">
+            Nuestra comunidad
+          </span>
               <p className="text-sm text-gray-600">
                 ¡Síguenos en Instagram para enterarte de nuestras cosechas de miel en tiempo real y aprender sobre el cuidado de las abejas!
               </p>
