@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useCart } from '../context/CartContext'
 
 // const SAMPLE = [
 //   { id:1, nombre:'Miel Multifloral 500g', descripcion:'Miel artesanal de', precio:2500 },
@@ -12,6 +13,7 @@ import axios from 'axios'
 export default function Products(){
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
+  const { addToCart } = useCart()
 
   useEffect(()=>{
     // Detectar la URL del backend dinámicamente o usar variable de entorno
@@ -73,7 +75,12 @@ export default function Products(){
                   <strong className="text-amber-600">
                     ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
                   </strong>
-                  <button className="px-3 py-1 rounded-full bg-honey">Agregar al carrito</button>
+                  <button 
+                    onClick={() => addToCart(p)}
+                    className="px-3 py-1.5 rounded-full bg-honey hover:bg-amber hover:text-white transition-all duration-200 hover:scale-105 active:scale-95 text-xs font-bold text-darkbee cursor-pointer shadow-xs"
+                  >
+                    Agregar al carrito
+                  </button>
                 </div>
               </article>
             ))}

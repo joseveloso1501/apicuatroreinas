@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
+import { useCart } from '../context/CartContext'
+import CartDrawer from './CartDrawer'
 
 export default function Header(){
   const [open, setOpen] = useState(false)
+  const { cartCount, setIsCartOpen } = useCart()
 
   // Clases dinámicas para los enlaces de escritorio
   const navLinkClass = ({ isActive }) => 
@@ -68,6 +71,22 @@ export default function Header(){
               </>
             )}
           </NavLink>
+
+          {/* Botón Carrito de Compras (Escritorio) */}
+          <button 
+            onClick={() => setIsCartOpen(true)} 
+            className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 cursor-pointer"
+            aria-label="Abrir carrito"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-amber text-white text-[9px] font-extrabold w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white animate-pulse">
+                {cartCount}
+              </span>
+            )}
+          </button>
           
           <Link 
             to="/productos" 
@@ -77,8 +96,25 @@ export default function Header(){
           </Link>
         </nav>
 
-        {/* Botón menú Móvil */}
-        <div className="md:hidden">
+        {/* Controles para Móvil */}
+        <div className="flex items-center gap-3 md:hidden">
+          {/* Botón Carrito (Móvil) */}
+          <button 
+            onClick={() => setIsCartOpen(true)} 
+            className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 cursor-pointer"
+            aria-label="Abrir carrito"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-amber text-white text-[9px] font-extrabold w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+                {cartCount}
+              </span>
+            )}
+          </button>
+
+          {/* Botón Menú Hambuguesa */}
           <button 
             onClick={()=>setOpen(!open)} 
             className="p-2 rounded-md bg-yellow-100/50 hover:bg-yellow-100 text-darkbee active:scale-95 transition-all"
@@ -100,6 +136,9 @@ export default function Header(){
           </div>
         </div>
       )}
+
+      {/* Cajón lateral del Carrito */}
+      <CartDrawer />
     </header>
   )
 }
