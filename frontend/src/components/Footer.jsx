@@ -7,7 +7,8 @@ export default function Footer(){
       <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
           <h3 className="font-bold">Apícola Cuatro Reinas</h3>
-          <p className="text-sm">Productos de la colmena, directos a tu casa.</p>
+          <p className="text-sm">Colmenares artesanales de calidad superior.</p>
+          <p className="text-sm">Los Ángeles, Chile.</p>
         </div>
         <div>
           <h4 className="font-semibold">Enlaces</h4>

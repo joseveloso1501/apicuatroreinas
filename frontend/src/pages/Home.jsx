@@ -10,10 +10,10 @@ export default function Home(){
         <div className="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center text-center">
           <div>
             <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight select-none">
-              Productos de la colmena,<br className="hidden md:inline"/> directo a tu casa
+              Productos de nuestra colmena,<br className="hidden md:inline"/> directamente a tu hogar
             </h1>
             <p className="mt-4 text-base md:text-xl text-yellow-50/90 max-w-2xl mx-auto select-none">
-              Miel, cera, propóleo y más. Aprende sobre la producción y apoya a las colmenas locales. 🐝🍯
+              Miel, propóleo y más. Descubre lo que las abejas pueden hacer para ti con las flores de nuestra tierra. 🐝🍯
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link 
@@ -23,10 +23,10 @@ export default function Home(){
                 Ver productos
               </Link>
               <Link 
-                to="/sobre" 
-                className="w-full sm:w-auto px-8 py-3.5 border-2 border-white text-white text-lg font-bold rounded-full hover:bg-white hover:text-amber-600 hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-xl flex items-center justify-center backdrop-blur-xs cursor-pointer"
+                to="/contacto" 
+                className="w-full sm:w-auto px-8 py-3.5 border-2 border-white text-white text-lg font-bold rounded-full hover:bg-yellow-50/50 hover:text-amber hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-xl flex items-center justify-center backdrop-blur-xs cursor-pointer"
               >
-                Aprender
+                Contacto
               </Link>
             </div>
           </div>
