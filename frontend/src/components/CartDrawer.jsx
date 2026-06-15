@@ -49,12 +49,13 @@ export default function CartDrawer() {
             <div className="h-full flex flex-col items-center justify-center text-center space-y-3">
               <span className="text-4xl select-none">🍯</span>
               <p className="text-gray-500 font-medium text-sm">Tu carrito está vacío</p>
-              <button 
+              <Link 
+                to="/productos"
                 onClick={() => setIsCartOpen(false)}
                 className="text-xs font-bold text-amber hover:underline hover:text-amber-600 cursor-pointer"
               >
                 Explorar productos
-              </button>
+              </Link>
             </div>
           ) : (
             cart.map((item) => (
