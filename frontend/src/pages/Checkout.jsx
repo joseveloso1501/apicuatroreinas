@@ -11,7 +11,7 @@ export default function Checkout() {
   const [telefono, setTelefono] = useState('')
   const [direccion, setDireccion] = useState('')
   const [ciudad, setCiudad] = useState('')
-  const [metodoPago, setMetodoPago] = useState('webpay') // webpay, mercadopago, stripe
+  const [metodoPago, setMetodoPago] = useState('webpay') // webpay, mercadopago
   
   // Estado de éxito
   const [isSuccess, setIsSuccess] = useState(false)
@@ -79,9 +79,8 @@ export default function Checkout() {
                   <h4 className="font-bold text-gray-400 uppercase tracking-wider text-xs mb-2">Información del Pago</h4>
                   <p className="font-semibold text-gray-800">Pasarela Utilizada:</p>
                   <p className="text-gray-600 capitalize font-medium text-amber-600">
-                    {orderSummary.metodoPago === 'webpay' && '💳 Webpay Plus (Transbank)'}
-                    {orderSummary.metodoPago === 'mercadopago' && '💙 Mercado Pago'}
-                    {orderSummary.metodoPago === 'stripe' && '💜 Stripe Global'}
+                    {orderSummary.metodoPago === 'webpay' && 'Webpay Plus (Transbank)'}
+                    {orderSummary.metodoPago === 'mercadopago' && 'Mercado Pago'}
                   </p>
                   <p className="font-semibold text-gray-800 mt-3">Estado de la transacción:</p>
                   <p className="text-green-600 font-bold flex items-center gap-1.5">
@@ -117,13 +116,13 @@ export default function Checkout() {
               {/* Explicación Técnica para Integración a Futuro */}
               <div className="bg-amber-50/50 border border-amber-200/50 rounded-xl p-5 space-y-3">
                 <h4 className="text-xs font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1.5 select-none">
-                  🛠️ Nota Técnica: Integración de Pagos Real
+                  🛠️ Nota
                 </h4>
                 <p className="text-xs text-amber-800 leading-relaxed">
-                  Para habilitar una pasarela de pago real en el futuro, el botón "Pagar" enviará el carro de compras al backend (Django). El servidor registrará la orden como <em>pendiente</em> y llamará a la API de la pasarela seleccionada para generar un <strong>Token de Pago</strong> temporal. El backend devolverá una URL y el frontend redirigirá al cliente a la pantalla oficial del banco (ej. Transbank Webpay).
+                  Se integrará una pasarela de pago real a futuro.
                 </p>
                 <p className="text-xs text-amber-700 leading-relaxed">
-                  Al finalizar la transacción, el banco redirigirá al usuario a una URL de retorno en el backend. Este validará el estado final del pago (ej. confirmación del cargo). Si es exitosa, se emitirá el recibo, se registrará el pago en la base de datos y se notificará al frontend mediante una redirección exitosa.
+                  Esta fue una simulación.
                 </p>
               </div>
 
@@ -299,24 +298,6 @@ export default function Checkout() {
                       </span>
                       <div className="mt-3 text-[10px] font-bold text-sky-600 bg-sky-50 py-0.5 px-2 rounded-md w-max">
                         MercadoLibre
-                      </div>
-                    </div>
-
-                    {/* Stripe */}
-                    <div 
-                      onClick={() => setMetodoPago('stripe')}
-                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${
-                        metodoPago === 'stripe' 
-                          ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm' 
-                          : 'border-gray-200 hover:border-gray-300 bg-white'
-                      }`}
-                    >
-                      <div className="font-bold text-sm text-gray-900 mb-1">Stripe</div>
-                      <span className="text-[10px] text-gray-500 leading-normal">
-                        Pasarela internacional y divisas.
-                      </span>
-                      <div className="mt-3 text-[10px] font-bold text-purple-600 bg-purple-50 py-0.5 px-2 rounded-md w-max">
-                        Global
                       </div>
                     </div>
                   </div>
