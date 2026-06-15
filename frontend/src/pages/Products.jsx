@@ -70,7 +70,9 @@ export default function Products(){
                 <h3 className="font-semibold text-lg text-darkbee">{p.nombre}</h3>
                 <p className="text-sm text-gray-600 flex-1">{p.descripcion}</p>
                 <div className="mt-3 flex items-center justify-between">
-                  <strong className="text-amber-600">${p.precio.toLocaleString()}</strong>
+                  <strong className="text-amber-600">
+                    ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
+                  </strong>
                   <button className="px-3 py-1 rounded-full bg-honey">Agregar al carrito</button>
                 </div>
               </article>
