@@ -41,36 +41,91 @@ export default function Header(){
               </>
             )}
           </NavLink>
-          <NavLink to="/productos" className={navLinkClass}>
-            {({ isActive }) => (
-              <>
-                <span>Productos</span>
-                <span className={`absolute bottom-0 left-0 h-[2px] bg-amber transition-all duration-300 ${
-                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                }`} />
-              </>
-            )}
-          </NavLink>
+          <div className="relative group">
+            <NavLink to="/productos" className={navLinkClass}>
+              {({ isActive }) => (
+                <>
+                  <span className="flex items-center gap-1">
+                    Productos
+                    {/* Flecha de menú desplegable */}
+                    <svg className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </span>
+                  <span className={`absolute bottom-0 left-0 h-[2px] bg-amber transition-all duration-300 ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`} />
+                </>
+              )}
+            </NavLink>
+            
+            {/* Menú Desplegable de Escritorio */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100">
+              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+                🍯  Alimentos
+              </Link>
+              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+                💊  Medicinas
+              </Link>
+              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+                🕯️  Subproductos
+              </Link>
+              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+                👑  Material biológico
+              </Link>
+            </div>
+          </div>
           <NavLink to="/sobre" className={navLinkClass}>
             {({ isActive }) => (
               <>
-                <span>Sobre la apicultura</span>
+                <span>Nosotros</span>
                 <span className={`absolute bottom-0 left-0 h-[2px] bg-amber transition-all duration-300 ${
                   isActive ? 'w-full' : 'w-0 group-hover:w-full'
                 }`} />
               </>
             )}
           </NavLink>
-          <NavLink to="/contacto" className={navLinkClass}>
-            {({ isActive }) => (
-              <>
-                <span>Contacto</span>
-                <span className={`absolute bottom-0 left-0 h-[2px] bg-amber transition-all duration-300 ${
-                  isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                }`} />
-              </>
-            )}
-          </NavLink>
+          <div className="relative group">
+            <NavLink to="/contacto" className={navLinkClass}>
+              {({ isActive }) => (
+                <>
+                  <span className="flex items-center gap-1">
+                    Contacto
+                    {/* Flecha de menú desplegable */}
+                    <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </span>
+                  <span className={`absolute bottom-0 left-0 h-[2px] bg-amber transition-all duration-300 ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`} />
+                </>
+              )}
+            </NavLink>
+            
+            {/* Menú Desplegable Contacto */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100">
+              <Link to="/contacto" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+                📬 Contáctanos aquí
+              </Link>
+              <a 
+                href="https://wa.me/56956110251" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors"
+              >
+                💬 Whatsapp
+              </a>
+              <a 
+                href="https://www.instagram.com/api4reinas/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors"
+              >
+                📸 Instagram
+              </a>
+            </div>
+          </div>
 
           {/* Botón Carrito de Compras (Escritorio) */}
           <button 
@@ -131,8 +186,47 @@ export default function Header(){
           <div className="px-4 py-3 flex flex-col gap-2">
             <NavLink to="/" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Inicio</NavLink>
             <NavLink to="/productos" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Productos</NavLink>
+            {/* Sub-items del menú en Móvil */}
+            <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
+              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                🍯 Alimentos
+              </Link>
+              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                💊 Medicinas
+              </Link>
+              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                🕯️ Subproductos
+              </Link>
+              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                👑 Material biológico
+              </Link>
+            </div>
             <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Sobre la apicultura</NavLink>
             <NavLink to="/contacto" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
+            {/* Sub-items del menú Contacto en Móvil */}
+            <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
+              <Link to="/contacto" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                📬 Contáctanos aquí
+              </Link>
+              <a 
+                href="https://wa.me/56956110251" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                onClick={()=>setOpen(false)} 
+                className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
+              >
+                💬 Whatsapp
+              </a>
+              <a 
+                href="https://www.instagram.com/api4reinas/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                onClick={()=>setOpen(false)} 
+                className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
+              >
+                📸 Instagram
+              </a>
+            </div>
           </div>
         </div>
       )}
