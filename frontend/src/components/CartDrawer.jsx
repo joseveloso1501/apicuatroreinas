@@ -125,7 +125,7 @@ export default function CartDrawer() {
             </div>
             
             <p className="text-[11px] text-gray-400 leading-normal text-center">
-              Despacho e impuestos calculados al confirmar los datos de envío en el Checkout.
+              Costo de envío calculado al confirmar su dirección en el Checkout. Envío gratis sobre $30.000.
             </p>
 
             <div className="space-y-2">

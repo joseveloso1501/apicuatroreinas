@@ -62,7 +62,7 @@ export default function FloatingChat() {
             <div>
               <h4 className="font-bold text-sm tracking-tight">Apícola Cuatro Reinas</h4>
               <span className="text-[10px] text-emerald-100 flex items-center gap-1">
-                Normalmente responde al instante
+                Normalmente responde en 1 min
               </span>
             </div>
           </div>
