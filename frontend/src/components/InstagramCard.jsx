@@ -2,6 +2,13 @@ import React, { useState } from 'react'
 
 import imgLogo from '../assets/productosGemini/miel1.jpeg'
 
+import imgAbejas from '../assets/carousel/flores-abejas.jpg'
+import imgMiel from '../assets/productosGemini/miel_gemini.png'
+import imgColmena from '../assets/carousel/comportamientos_De_las_Abejas_1ok.jpg'
+import imgPanal from '../assets/productosGemini/panales_miel_gemini.png'
+import imgQuillay from '../assets/carousel/quillay2.jpg'
+import imgPropoleo from '../assets/productosGemini/propoleo_gemini.png'
+
 export default function InstagramCard() {
   const [isFollowing, setIsFollowing] = useState(false)
   const [followersCount, setFollowersCount] = useState(150)
@@ -17,6 +24,51 @@ export default function InstagramCard() {
   }
 
   const profileUrl = 'https://www.instagram.com/api4reinas/'
+
+  const posts = [
+    {
+      id: 1,
+      image: imgAbejas,
+      likes: '148',
+      comments: '14',
+      alt: 'Abeja polinizando una flor'
+    },
+    {
+      id: 2,
+      image: imgMiel,
+      likes: '203',
+      comments: '19',
+      alt: 'Frasco de miel pura de la colmena'
+    },
+    {
+      id: 3,
+      image: imgColmena,
+      likes: '98',
+      comments: '5',
+      alt: 'Panal con abejas reinas y obreras'
+    },
+    {
+      id: 4,
+      image: imgPanal,
+      likes: '310',
+      comments: '28',
+      alt: 'Cosecha de panales de miel fresca'
+    },
+    {
+      id: 5,
+      image: imgQuillay,
+      likes: '120',
+      comments: '8',
+      alt: 'Flores de Quillay con abejas'
+    },
+    {
+      id: 6,
+      image: imgPropoleo,
+      likes: '85',
+      comments: '4',
+      alt: 'Extracto de propóleo natural en gotas'
+    }
+  ]
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300">
@@ -119,12 +171,42 @@ export default function InstagramCard() {
       </div>
 
       {/* Grilla de publicaciones */}
-      <iframe 
+      {/* <iframe 
         src="//lightwidget.com/widgets/d412730f425759beba1f98301ead8508.html" 
         allowtransparency="true" 
         class="lightwidget-widget"
         className="w-full border-0 overflow-hidden rounded-md aspect-[3/2]"
-      />
+      /> */}
+      {/* Grilla de publicaciones */}
+      <div className="grid grid-cols-3 gap-1.5">
+        {posts.map(post => (
+          <a
+            key={post.id}
+            href={profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block aspect-square overflow-hidden bg-gray-50 relative group rounded-md shadow-sm"
+          >
+            {/* Imagen del Post */}
+            <img 
+              src={post.image} 
+              alt={post.alt} 
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+              loading="lazy"
+            />
+            
+            {/* Overlay interactivo en Hover */}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 text-white font-semibold text-xs">
+              <span className="flex items-center gap-1 select-none">
+                ❤️ <span className="text-white">{post.likes}</span>
+              </span>
+              <span className="flex items-center gap-1 select-none">
+                💬 <span className="text-white">{post.comments}</span>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
 
 
       {/* Botón final para ir al perfil */}
