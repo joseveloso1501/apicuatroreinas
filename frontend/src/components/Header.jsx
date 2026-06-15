@@ -201,7 +201,7 @@ export default function Header(){
                 👑 Material biológico
               </Link>
             </div>
-            <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Sobre la apicultura</NavLink>
+            <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Nosotros</NavLink>
             <NavLink to="/contacto" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
             {/* Sub-items del menú Contacto en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">

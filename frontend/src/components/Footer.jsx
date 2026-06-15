@@ -15,7 +15,7 @@ export default function Footer(){
           <ul className="mt-2 text-sm">
             <li><Link to="/" className="hover:underline">Inicio</Link></li>
             <li><Link to="/productos" className="hover:underline">Productos</Link></li>
-            <li><Link to="/sobre" className="hover:underline">Sobre</Link></li>
+            <li><Link to="/sobre" className="hover:underline">Nosotros</Link></li>
           </ul>
         </div>
         <div>
