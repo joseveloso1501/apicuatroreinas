@@ -56,9 +56,9 @@ export default function About() {
   return (
     <section className="bg-white">
       
-      {/* Cabecera Principal con Paralaje */}
+      {/* Cabecera Principal con Paralaje (Optimizada para móviles) */}
       <div 
-        className="relative bg-fixed bg-cover bg-center py-24 md:py-32 text-center"
+        className="relative bg-scroll md:bg-fixed bg-cover bg-center py-24 md:py-32 text-center"
         style={{ backgroundImage: `url(${imgCajones})` }}
       >
         {/* Capa de oscurecimiento para legibilidad del texto */}
@@ -67,7 +67,7 @@ export default function About() {
         {/* Contenido */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 space-y-4">
           <span className="inline-block px-4 py-1.5 bg-amber text-white rounded-full text-xs font-extrabold uppercase tracking-widest select-none shadow-sm">
-            Nuestra Historia 🐝
+            Nuestra Historia
           </span>
           <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-tight select-none drop-shadow-md">
             Apícola Cuatro Reinas
@@ -89,7 +89,7 @@ export default function About() {
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes Somos</h3>
               <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-                En <strong>Apícola Cuatro Reinas</strong> somos un apiario emergente que nace con un profundo entusiasmo y un compromiso inquebrantable desde el momento cero. Nos mueven los detalles, el respeto absoluto por la naturaleza y la convicción de que las cosas se pueden hacer de una manera diferente. Combinamos la sabiduría de la apicultura tradicional con el respaldo de la ciencia y la tecnología para ofrecer lo mejor de la colmena al mundo.
+                En <strong>Apícola Cuatro Reinas</strong> somos un apiario emergente que nace con un profundo entusiasmo y un compromiso desde el momento cero. Nos mueve el respeto por la naturaleza, la preocupación por los detalles y la convicción de que las cosas se pueden hacer de una manera diferente. Combinamos la sabiduría de la apicultura tradicional con el respaldo de la ciencia y la tecnología para ofrecer lo mejor de la colmena al mundo.
               </p>
             </div>
 
@@ -128,7 +128,7 @@ export default function About() {
                   <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra Visión</h4>
                 </div>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Miramos al futuro con un objetivo claro: la protección de las abejas es nuestra prioridad absoluta. Buscamos ser un pilar en el mantenimiento del equilibrio ecosistémico y el cuidado del medio ambiente. No nos quedamos solo en la observación; aspiramos a ser agentes de cambio mediante el desarrollo de tecnologías innovadoras que potencien el bienestar, la salud y la preservación de las abejas ante los desafíos climáticos actuales.
+                  Miramos al futuro con un objetivo claro: la protección de las abejas. Buscamos ser un aporte al mantenimiento del equilibrio ecosistémico y el cuidado del medio ambiente. No nos quedamos solo en la observación, aspiramos a ser agentes de cambio mediante el desarrollo de tecnologías innovadoras que potencien el bienestar, la salud y la preservación de las abejas.
                 </p>
               </div>
             </div>
@@ -141,7 +141,7 @@ export default function About() {
           <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
             <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-md space-y-4">
               <h4 className="font-extrabold text-gray-900 text-base border-b border-gray-100 pb-3 flex items-center gap-2 select-none">
-                <span>🌸</span> El Valor de la Apicultura
+                El Valor de la Apicultura
               </h4>
               <p className="text-xs text-gray-600 leading-relaxed">
                 La apicultura es la ciencia y el arte de mantener colmenas de abejas con fines ecológicos y productivos. Los apicultores cuidan a las abejas, les proporcionan colmenas seguras y manejan su alimentación y salud, logrando obtener productos como miel, cera, propóleos, jalea real y polen.
@@ -150,9 +150,14 @@ export default function About() {
                 Además, la apicultura es clave para la polinización de plantas y cultivos, lo que ayuda a la producción de alimentos y mantiene el equilibrio de los ecosistemas.
               </p>
               <div className="border-t border-gray-50 pt-4 text-center">
-                <span className="text-[10px] text-amber-500 font-bold uppercase tracking-wider block">
-                  🐝 Apoya lo local, cuida la colmena.
-                </span>
+                <a 
+                  href="https://www.youtube.com/watch?v=9ipH_22W9uc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-amber-600 hover:text-amber-700 font-extrabold uppercase tracking-wider inline-flex items-center gap-1 hover:underline transition-colors"
+                >
+                  🎥 Conoce más aquí
+                </a>
               </div>
             </div>
           </div>
@@ -160,9 +165,9 @@ export default function About() {
         </div>
       </div>
 
-      {/* Sección Pilares con Paralaje */}
+      {/* Sección Pilares con Paralaje (Optimizada para móviles) */}
       <div 
-        className="relative bg-fixed bg-cover bg-center py-20 md:py-24 text-white overflow-hidden"
+        className="relative bg-scroll md:bg-fixed bg-cover bg-center py-20 md:py-24 text-white overflow-hidden"
         style={{ backgroundImage: `url(${imgPilares})` }}
       >
         {/* Capa de oscurecimiento */}
@@ -177,7 +182,7 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Pilar 1 */}
             <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out transform ${
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 md:bg-white/10 md:backdrop-blur-md hover:bg-stone-900/95 md:hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out transform ${
                 pilaresVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 -translate-x-16'
@@ -196,7 +201,7 @@ export default function About() {
 
             {/* Pilar 2 */}
             <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 md:bg-white/10 md:backdrop-blur-md hover:bg-stone-900/95 md:hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${
                 pilaresVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 -translate-x-16'
@@ -215,7 +220,7 @@ export default function About() {
 
             {/* Pilar 3 */}
             <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-white/10 backdrop-blur-md hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 md:bg-white/10 md:backdrop-blur-md hover:bg-stone-900/95 md:hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${
                 pilaresVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 -translate-x-16'
