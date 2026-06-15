@@ -14,12 +14,12 @@ export default function Products(){
   const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
-    // Detectar la URL del backend dinámicamente
-    // Si estamos en localhost:5173 (dev), conectar a localhost:8000
-    // Si estamos en otra URL, usar esa misma URL con puerto 8000
+    // Detectar la URL del backend dinámicamente o usar variable de entorno
     const protocol = window.location.protocol; // http: o https:
     const hostname = window.location.hostname; // localhost, 127.0.0.1, IP, etc.
-    const baseURL = `${protocol}//${hostname}:8000`;
+    
+    // Si existe VITE_API_URL en el entorno de Vite se prioriza (útil para túneles)
+    const baseURL = import.meta.env.VITE_API_URL || `${protocol}//${hostname}:8000`;
     
     console.log("Conectando a API en:", baseURL);
 

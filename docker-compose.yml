@@ -43,8 +43,11 @@ services:
       - /app/node_modules
     ports:
       - "5173:5173"
-    environment:
-      - VITE_API_URL=http://backend:8000
+    
+    # environment:
+    #   - VITE_API_URL=http://backend:8000
+    # Se remueve VITE_API_URL para permitir que Vite lea el archivo frontend/.env
+    
     depends_on:
       - backend
 
