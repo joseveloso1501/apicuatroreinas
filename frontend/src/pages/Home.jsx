@@ -6,14 +6,28 @@ export default function Home(){
   return (
     <section className="bg-yellow-50 relative">
       <ImageCarousel />
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
         <div className="max-w-6xl mx-auto px-4 flex flex-col items-center justify-center text-center">
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white">Productos de la colmena, directo a tu casa</h1>
-            <p className="mt-4 text-white">Miel, cera, propóleo y más. Aprende sobre la producción y apoya a las colmenas locales.</p>
-            <div className="mt-6 flex gap-4 justify-center">
-              <Link to="/productos" className="btn-primary">Ver productos</Link>
-              <Link to="/sobre" className="px-4 py-2 rounded-full border border-white text-white hover:bg-white hover:text-amber-400">Aprender</Link>
+            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight select-none">
+              Productos de la colmena,<br className="hidden md:inline"/> directo a tu casa
+            </h1>
+            <p className="mt-4 text-base md:text-xl text-yellow-50/90 max-w-2xl mx-auto select-none">
+              Miel, cera, propóleo y más. Aprende sobre la producción y apoya a las colmenas locales. 🐝🍯
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link 
+                to="/productos" 
+                className="w-full sm:w-auto px-8 py-3.5 bg-amber text-white text-lg font-bold rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg hover:shadow-xl hover:bg-amber-600 flex items-center justify-center cursor-pointer"
+              >
+                Ver productos
+              </Link>
+              <Link 
+                to="/sobre" 
+                className="w-full sm:w-auto px-8 py-3.5 border-2 border-white text-white text-lg font-bold rounded-full hover:bg-white hover:text-amber-600 hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-xl flex items-center justify-center backdrop-blur-xs cursor-pointer"
+              >
+                Aprender
+              </Link>
             </div>
           </div>
         </div>

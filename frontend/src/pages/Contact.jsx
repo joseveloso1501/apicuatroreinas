@@ -17,8 +17,24 @@ export default function Contact() {
     <section className="py-16 bg-gradient-to-b from-yellow-50/50 to-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Columna Izquierda: Formulario e Información de Contacto */}
+
+          {/* Columna izquierda: Tarjeta de Instagram y Call to Action */}
+          <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
+            <div className="w-full text-center lg:text-left px-2">
+              <span className="inline-block px-3 py-1 bg-amber/10 text-amber-600 rounded-full text-xs font-semibold mb-2">
+                Nuestra Comunidad 🌸
+              </span>
+              <p className="text-sm text-gray-600">
+                ¡Síguenos en Instagram para enterarte de nuestras cosechas de miel en tiempo real y aprender sobre el cuidado de las abejas!
+              </p>
+            </div>
+            
+            <div className="w-full">
+              <InstagramCard />
+            </div>
+          </div>
+
+          {/* Columna derecha: Formulario e Información de Contacto */}
           <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-2xl border border-gray-100 shadow-sm space-y-8">
             <div>
               <h2 className="text-3xl font-extrabold text-darkbee tracking-tight mb-2">Contacto</h2>
@@ -154,22 +170,6 @@ export default function Contact() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Columna Derecha: Tarjeta de Instagram y Call to Action */}
-          <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-            <div className="w-full text-center lg:text-left px-2">
-              <span className="inline-block px-3 py-1 bg-amber/10 text-amber-600 rounded-full text-xs font-semibold mb-2">
-                Nuestra Comunidad 🌸
-              </span>
-              <p className="text-sm text-gray-600">
-                ¡Síguenos en Instagram para enterarte de nuestras cosechas de miel en tiempo real y aprender sobre el cuidado de las abejas!
-              </p>
-            </div>
-            
-            <div className="w-full">
-              <InstagramCard />
             </div>
           </div>
 

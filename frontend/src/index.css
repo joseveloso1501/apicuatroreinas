@@ -7,9 +7,9 @@ body { @apply bg-yellow-50 text-gray-900; }
 .btn-primary { @apply bg-amber text-white px-4 py-2 rounded-full hover:opacity-90; }
 
 .hero-slide {
-  @apply relative w-full h-[1000px] overflow-hidden;
+  @apply relative w-full h-[65vh] min-h-[450px] md:h-[75vh] md:min-h-[550px] overflow-hidden;
 }
 
 .hero-slide img {
-  @apply absolute inset-0 w-full h-full object-contain;
+  @apply absolute inset-0 w-full h-full object-cover;
 }

@@ -138,7 +138,7 @@ export default function InstagramCard() {
 
       {/* Biografía */}
       <div className="text-sm text-gray-700 space-y-1 mb-5">
-        <h4 className="font-bold text-gray-950">Api Cuatro Reinas Store</h4>
+        <h4 className="font-bold text-gray-950">Apícola Cuatro Reinas</h4>
         <p>Productos de la colmena directos a tu casa 🍯🐝</p>
         <p>Miel 100% pura y orgánica de Quillay y multifloral 🌸, miel en panal, propóleo natural y más 🍯✨</p>
         <a 
