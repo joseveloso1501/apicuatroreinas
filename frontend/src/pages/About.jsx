@@ -1,6 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import imgCajones from '../assets/productosGemini/cajones_gemini.png'
 import imgPilares from '../assets/productosGemini/IMG_1153.JPG'
+import imgPanales from '../assets/productosGemini/panales_miel_gemini.png'
+import imgMiel from '../assets/productosGemini/miel_gemini.png'
+import imgCaballetes from '../assets/productosGemini/caballetes_gemini.png'
+import imgPropoleo from '../assets/productosGemini/propoleo_gemini.png'
+
+const INSTAGRAM_POSTS = [
+  { id: 1, image: imgPanales, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 124, comments: 12 },
+  { id: 2, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },
+  { id: 3, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨', likes: 156, comments: 18 },
+  { id: 4, image: imgCaballetes, caption: 'Preparando la colmena para la temporada de invierno ❄️🐝', likes: 85, comments: 5 },
+  { id: 5, image: imgPropoleo, caption: 'Propóleo natural: el mejor escudo protector de la colmena 🛡️', likes: 112, comments: 9 },
+]
 
 export default function About() {
   const [isVisible, setIsVisible] = useState(false)
@@ -78,11 +90,64 @@ export default function About() {
         </div>
       </div>
 
+      {/* Galería de Instagram (Ancho Completo) */}
+      <div className="max-w-6xl mx-auto px-6 pt-16">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+            <h3 className="text-xl font-bold text-gray-900">Galería de Imágenes</h3>
+            <a 
+              href="https://www.instagram.com/api4reinas/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-xs font-extrabold text-amber hover:text-amber-600 flex items-center gap-1 hover:underline"
+            >
+              @api4reinas 📸
+            </a>
+          </div>
+          <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
+            {INSTAGRAM_POSTS.map(post => (
+              <a 
+                key={post.id}
+                href="https://www.instagram.com/api4reinas/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="w-64 h-80 flex-shrink-0 relative group rounded-2xl overflow-hidden shadow-sm border border-gray-100/50 bg-gray-50 snap-start block"
+              >
+                {/* Imagen de fondo */}
+                <img 
+                  src={post.image} 
+                  alt="Post de Instagram" 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                />
+                {/* Capa de oscurecimiento gradual de fondo */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                
+                {/* Contenido flotante */}
+                <div className="absolute inset-x-0 bottom-0 p-4 z-20 flex flex-col justify-end">
+                  <p className="text-[10px] text-white/90 line-clamp-2 leading-relaxed mb-2 font-medium">
+                    {post.caption}
+                  </p>
+                  <div className="flex items-center justify-between text-white/80 text-[10px] font-bold">
+                    <span className="flex items-center gap-1">❤️ {post.likes}</span>
+                    <span className="flex items-center gap-1">💬 {post.comments}</span>
+                  </div>
+                </div>
+
+                {/* Icono de Instagram en Hover */}
+                <div className="absolute inset-0 bg-black/45 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+                  <span className="text-white text-3xl font-extrabold drop-shadow">📸</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Grid de Contenido Principal */}
-      <div className="max-w-6xl mx-auto px-4 py-16">
+      <div className="max-w-6xl mx-auto px-4 pb-16 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
-          {/* Columna Izquierda: Quiénes Somos, Misión, Visión, Pilares */}
+          {/* Columna Izquierda: Quiénes Somos, Misión, Visión */}
           <div className="lg:col-span-8 space-y-12">
             
             {/* Introducción */}
@@ -181,8 +246,8 @@ export default function About() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Pilar 1 */}
-            <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 md:bg-white/10 md:backdrop-blur-md hover:bg-stone-900/95 md:hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out transform ${
+            <div  
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out transform ${
                 pilaresVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 -translate-x-16'
@@ -201,7 +266,7 @@ export default function About() {
 
             {/* Pilar 2 */}
             <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 md:bg-white/10 md:backdrop-blur-md hover:bg-stone-900/95 md:hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${
                 pilaresVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 -translate-x-16'
@@ -220,7 +285,7 @@ export default function About() {
 
             {/* Pilar 3 */}
             <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 md:bg-white/10 md:backdrop-blur-md hover:bg-stone-900/95 md:hover:bg-white/15 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${
                 pilaresVisible 
                   ? 'opacity-100 translate-x-0' 
                   : 'opacity-0 -translate-x-16'
