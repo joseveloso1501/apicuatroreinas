@@ -2,17 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useCart } from '../context/CartContext'
 
-// const SAMPLE = [
-//   { id:1, nombre:'Miel Multifloral 500g', descripcion:'Miel artesanal de', precio:2500 },
-//   { id:2, nombre:'Miel Multifloral 1000g', descripcion:'Extracto natural', precio:6500 },
-//   { id:3, nombre:'Cera Pura 250g', descripcion:'Cera para cosmética y velas', precio:4500 },
-//   { id:4, nombre:'Polen 200g', descripcion:'Polen recolectado en trampas', precio:7200 },
-//   { id:5, nombre:'Jabón de miel', descripcion:'Jabón artesano con miel', precio:9900 },
-// ]
-
 export default function Products(){
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedImage, setSelectedImage] = useState(null)
   const { addToCart } = useCart()
 
   useEffect(()=>{
@@ -77,15 +70,23 @@ export default function Products(){
             {productos.map(p => (
               <article key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
                 <div 
-                  className="h-40 bg-yellow-100 rounded-md flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative"
+                  className="group h-40 bg-yellow-100 rounded-md flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
                   style={p.imagen ? {
                     backgroundImage: `url('${p.imagen}')`
                   } : {}}
                 >
-                  {!p.imagen && <span>Sin imagen</span>}
-                  {/* <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1 truncate">
-                    {p.imagen ? p.imagen.split('/').pop() : "Sin imagen"}
-                  </div> */}
+                  {!p.imagen ? (
+                    <span>Sin imagen</span>
+                  ) : (
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <button
+                        onClick={() => setSelectedImage(p.imagen)}
+                        className="px-4 py-2 bg-amber hover:bg-amber-600 text-white font-bold rounded-full text-xs transition-all transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                      >
+                        Ver producto
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <h3 className="font-semibold text-lg text-darkbee">{p.nombre}</h3>
                 <p className="text-sm text-gray-600 flex-1">{p.descripcion}</p>
@@ -94,10 +95,15 @@ export default function Products(){
                     ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
                   </strong>
                   <button 
-                    onClick={() => addToCart(p)}
-                    className="px-3 py-1.5 rounded-full bg-honey hover:bg-amber hover:text-white transition-all duration-200 hover:scale-105 active:scale-95 text-xs font-bold text-darkbee cursor-pointer shadow-xs"
+                    onClick={() => p.stock > 0 && addToCart(p)}
+                    disabled={p.stock <= 0}
+                    className={`px-3 py-1.5 rounded-full transition-all duration-200 text-xs font-bold shadow-xs ${
+                      p.stock <= 0 
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                        : 'bg-honey hover:bg-amber hover:text-white hover:scale-105 active:scale-95 text-darkbee cursor-pointer'
+                    }`}
                   >
-                    Agregar al carrito
+                    {p.stock <= 0 ? 'Agotado' : 'Agregar al carrito'}
                   </button>
                 </div>
               </article>
@@ -105,6 +111,34 @@ export default function Products(){
           </div>
         )}
       </div>
+
+      {/* Lightbox / Vista Expandida de la Imagen */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+          onClick={() => setSelectedImage(null)}
+        >
+          {/* Botón de cierre */}
+          <button 
+            className="absolute top-6 right-6 text-white text-3xl font-extrabold cursor-pointer hover:text-amber transition-colors select-none"
+            onClick={() => setSelectedImage(null)}
+          >
+            ✕
+          </button>
+          
+          {/* Contenedor flotante de la imagen */}
+          <div 
+            className="relative max-w-4xl max-h-[85vh] overflow-hidden rounded-2xl bg-white p-2 shadow-2xl flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={selectedImage} 
+              alt="Vista del producto" 
+              className="max-w-full max-h-[80vh] object-contain rounded-xl"
+            />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
