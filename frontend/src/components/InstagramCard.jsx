@@ -30,13 +30,13 @@ export default function InstagramCard() {
       .then(response => {
         // Obtenemos la imagen de perfil de Instagram cargada en el backend llamada imagenPerfilInstagramCard.jpeg
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
-        
+
         // Si hay datos en la galería, usamos la URL real del backend de la primera imagen
-if (data.length > 0 && data[0].imagen) {
-  setLogoUrl(data[0].imagen); // Esto tendrá la URL completa (ej. http://localhost:8000/media/galeria/imagenPerfilInstagramCard.jpeg)
+        if (data.length > 0 && data[0].imagen) {
+          setLogoUrl(data[0].imagen); // Esto tendrá la URL completa (ej. http://localhost:8000/media/galeria/imagenPerfilInstagramCard.jpeg)
           console.log("Imagen de perfil de Instagram:", response.data[0].imagen);
         }
-      }) 
+      })
       .catch(error => {
         console.error("Error al obtener imagen de perfil de Instagram:", error);
       });
@@ -82,8 +82,8 @@ if (data.length > 0 && data[0].imagen) {
 
             onClick={handleFollowToggle}
             className={`w-full py-1.5 px-4 rounded-lg font-semibold text-xs transition-all duration-200 active:scale-95 ${isFollowing
-                ? 'bg-gray-100 text-gray-800 border border-gray-200 hover:bg-gray-200'
-                : 'bg-amber text-white hover:bg-amber-600 shadow-sm'
+              ? 'bg-gray-100 text-gray-800 border border-gray-200 hover:bg-gray-200'
+              : 'bg-amber text-white hover:bg-amber-600 shadow-sm'
               }`}
           >
             {isFollowing ? 'Siguiendo' : 'Seguir'}

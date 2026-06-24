@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
-import imgCajones from '../assets/productosGemini/cajones_gemini.png'
-import imgPilares from '../assets/productosGemini/IMG_1153.JPG'
-import imgPanales from '../assets/productosGemini/panales_miel_gemini.png'
-import imgMiel from '../assets/productosGemini/miel_gemini.png'
-import imgCaballetes from '../assets/productosGemini/caballetes_gemini.png'
-import imgPropoleo from '../assets/productosGemini/propoleo_gemini.png'
 
-const INSTAGRAM_POSTS = [
+const baseURL = import.meta.env.VITE_API_URL || '';
+
+const imgCajones = `${baseURL}/media/galeria/cajones_gemini.png`
+const imgPilares = `${baseURL}/media/galeria/IMG_1153.JPG`
+const imgPanales = `${baseURL}/media/galeria/panales_miel_gemini.png`
+const imgMiel = `${baseURL}/media/galeria/miel_gemini.png`
+const imgCaballetes = `${baseURL}/media/galeria/caballetes_gemini.png`
+const imgPropoleo = `${baseURL}/media/galeria/propoleo_gemini.png`
+
+const GALERIA = [
   { id: 1, image: imgPanales, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 124, comments: 12 },
   { id: 2, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },
   { id: 3, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨', likes: 156, comments: 18 },
@@ -67,15 +70,15 @@ export default function About() {
 
   return (
     <section className="bg-white">
-      
+
       {/* Cabecera Principal con Paralaje (Optimizada para móviles) */}
-      <div 
+      <div
         className="relative bg-scroll md:bg-fixed bg-cover bg-center py-24 md:py-32 text-center"
         style={{ backgroundImage: `url(${imgCajones})` }}
       >
         {/* Capa de oscurecimiento para legibilidad del texto */}
         <div className="absolute inset-0 bg-black/55 z-0" />
-        
+
         {/* Contenido */}
         <div className="relative z-10 max-w-4xl mx-auto px-4 space-y-4">
           <span className="inline-block px-4 py-1.5 bg-amber text-white rounded-full text-xs font-extrabold uppercase tracking-widest select-none shadow-sm">
@@ -95,33 +98,34 @@ export default function About() {
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-gray-100 pb-2">
             <h3 className="text-xl font-bold text-gray-900">Galería de Imágenes</h3>
-            <a 
-              href="https://www.instagram.com/api4reinas/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://www.instagram.com/api4reinas/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-xs font-extrabold text-amber hover:text-amber-600 flex items-center gap-1 hover:underline"
             >
               @api4reinas 📸
             </a>
           </div>
           <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
-            {INSTAGRAM_POSTS.map(post => (
-              <a 
+            {GALERIA.map(post => (
+              console.log("Imagen:", post.image),
+              <a
                 key={post.id}
-                href="https://www.instagram.com/api4reinas/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+                href="https://www.instagram.com/api4reinas/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-64 h-80 flex-shrink-0 relative group rounded-2xl overflow-hidden shadow-sm border border-gray-100/50 bg-gray-50 snap-start block"
               >
                 {/* Imagen de fondo */}
-                <img 
-                  src={post.image} 
-                  alt="Post de Instagram" 
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                <img
+                  src={post.image}
+                  alt="Post de Instagram"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Capa de oscurecimiento gradual de fondo */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
-                
+
                 {/* Contenido flotante */}
                 <div className="absolute inset-x-0 bottom-0 p-4 z-20 flex flex-col justify-end">
                   <p className="text-[10px] text-white/90 line-clamp-2 leading-relaxed mb-2 font-medium">
@@ -146,10 +150,10 @@ export default function About() {
       {/* Grid de Contenido Principal */}
       <div className="max-w-6xl mx-auto px-4 pb-16 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
+
           {/* Columna Izquierda: Quiénes Somos, Misión, Visión */}
           <div className="lg:col-span-8 space-y-12">
-            
+
             {/* Introducción */}
             <div className="space-y-4">
               <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes Somos</h3>
@@ -159,17 +163,16 @@ export default function About() {
             </div>
 
             {/* Misión y Visión (Dos Columnas con efecto deslizante) */}
-            <div 
+            <div
               ref={containerRef}
               className="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-hidden py-1"
             >
               {/* Misión */}
-              <div 
-                className={`bg-yellow-50/20 border border-yellow-100 rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out transform ${
-                  isVisible 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-16'
-                }`}
+              <div
+                className={`bg-yellow-50/20 border border-yellow-100 rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out transform ${isVisible
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-16'
+                  }`}
               >
                 <div className="flex items-center gap-2 text-amber-600">
                   <span className="text-xl select-none">🎯</span>
@@ -181,12 +184,11 @@ export default function About() {
               </div>
 
               {/* Visión */}
-              <div 
-                className={`bg-amber/5 border border-amber/10 rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out delay-200 transform ${
-                  isVisible 
-                    ? 'opacity-100 translate-x-0' 
-                    : 'opacity-0 -translate-x-16'
-                }`}
+              <div
+                className={`bg-amber/5 border border-amber/10 rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out delay-200 transform ${isVisible
+                  ? 'opacity-100 translate-x-0'
+                  : 'opacity-0 -translate-x-16'
+                  }`}
               >
                 <div className="flex items-center gap-2 text-amber-600">
                   <span className="text-xl select-none">👁️‍🗨️</span>
@@ -215,7 +217,7 @@ export default function About() {
                 Además, la apicultura es clave para la polinización de plantas y cultivos, lo que ayuda a la producción de alimentos y mantiene el equilibrio de los ecosistemas.
               </p>
               <div className="border-t border-gray-50 pt-4 text-center">
-                <a 
+                <a
                   href="https://www.youtube.com/watch?v=9ipH_22W9uc"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -231,27 +233,26 @@ export default function About() {
       </div>
 
       {/* Sección Pilares con Paralaje (Optimizada para móviles) */}
-      <div 
+      <div
         className="relative bg-scroll md:bg-fixed bg-cover bg-center py-20 md:py-24 text-white overflow-hidden"
         style={{ backgroundImage: `url(${imgPilares})` }}
       >
         {/* Capa de oscurecimiento */}
         <div className="absolute inset-0 bg-black/60 z-0" />
-        
+
         {/* Contenido de Pilares */}
         <div ref={pilaresRef} className="relative z-10 max-w-6xl mx-auto px-4 space-y-10">
           <h3 className="text-3xl font-black text-white border-b border-white/20 pb-4 tracking-tight select-none text-center md:text-left">
             Nuestros Pilares Fundamentales
           </h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Pilar 1 */}
-            <div  
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out transform ${
-                pilaresVisible 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 -translate-x-16'
-              }`}
+            <div
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out transform ${pilaresVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-16'
+                }`}
             >
               <span className="text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner">
                 🌱
@@ -265,12 +266,11 @@ export default function About() {
             </div>
 
             {/* Pilar 2 */}
-            <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${
-                pilaresVisible 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 -translate-x-16'
-              }`}
+            <div
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${pilaresVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-16'
+                }`}
             >
               <span className="text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner">
                 🔬
@@ -284,12 +284,11 @@ export default function About() {
             </div>
 
             {/* Pilar 3 */}
-            <div 
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${
-                pilaresVisible 
-                  ? 'opacity-100 translate-x-0' 
-                  : 'opacity-0 -translate-x-16'
-              }`}
+            <div
+              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${pilaresVisible
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-16'
+                }`}
             >
               <span className="text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner">
                 💖
