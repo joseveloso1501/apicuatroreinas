@@ -24,7 +24,7 @@ export default function InstagramCard() {
   }
 
   useEffect(() => {
-    const baseURL = import.meta.env.VITE_API_URL;
+    const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
     axios.get(`${baseURL}/api/galeria/`)
       .then(response => {

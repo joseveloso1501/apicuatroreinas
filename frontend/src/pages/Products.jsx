@@ -10,8 +10,8 @@ export default function Products(){
 
   useEffect(()=>{
     // Obtiene la URL del backend dinámicamente desde la variable de entorno
-    const baseURL = import.meta.env.VITE_API_URL;
-    
+    const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
     console.log("Conectando a API en:", baseURL);
 
     const startTime = Date.now();
@@ -20,15 +20,15 @@ export default function Products(){
       .get(`${baseURL}/api/productos/`)
       .then(res => {
         console.log("Respuesta API:", res.data);
-        
+
         // Django REST Framework devuelve los datos paginados en 'results'
         let data = Array.isArray(res.data) ? res.data : res.data.results || [];
-        
+
         console.log("=== PRODUCTOS CARGADOS ===");
         data.forEach(p => {
           console.log(`ID: ${p.id}, Nombre: ${p.nombre}, Imagen: ${p.imagen}`);
         });
-        
+
         if (data.length > 0) {
           setProductos(data);
         } else {
@@ -65,7 +65,7 @@ export default function Products(){
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {productos.map(p => (
               <article key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
-                <div 
+                <div
                   className="group h-40 bg-yellow-100 rounded-md flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
                   style={p.imagen ? {
                     backgroundImage: `url('${p.imagen}')`
@@ -90,14 +90,14 @@ export default function Products(){
                   <strong className="text-amber-600">
                     ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
                   </strong>
-                  <button 
+                  <button
                     onClick={() => p.stock > 0 && addToCart(p)}
                     disabled={p.stock <= 0}
                     className={`px-3 py-1.5 rounded-full transition-all duration-200 text-xs font-bold shadow-xs ${
                       p.stock <= 0 
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                         : 'bg-honey hover:bg-amber hover:text-white hover:scale-105 active:scale-95 text-darkbee cursor-pointer'
-                    }`}
+                      }`}
                   >
                     {p.stock <= 0 ? 'Agotado' : 'Agregar al carrito'}
                   </button>
@@ -110,26 +110,26 @@ export default function Products(){
 
       {/* Lightbox / Vista Expandida de la Imagen */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
           onClick={() => setSelectedImage(null)}
         >
           {/* Botón de cierre */}
-          <button 
+          <button
             className="absolute top-6 right-6 text-white text-3xl font-extrabold cursor-pointer hover:text-amber transition-colors select-none"
             onClick={() => setSelectedImage(null)}
           >
             ✕
           </button>
-          
+
           {/* Contenedor flotante de la imagen */}
-          <div 
+          <div
             className="relative max-w-4xl max-h-[85vh] overflow-hidden rounded-2xl bg-white p-2 shadow-2xl flex items-center justify-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <img 
-              src={selectedImage} 
-              alt="Vista del producto" 
+            <img
+              src={selectedImage}
+              alt="Vista del producto"
               className="max-w-full max-h-[80vh] object-contain rounded-xl"
             />
           </div>
