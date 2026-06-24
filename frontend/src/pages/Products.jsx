@@ -9,12 +9,8 @@ export default function Products(){
   const { addToCart } = useCart()
 
   useEffect(()=>{
-    // Detectar la URL del backend dinámicamente o usar variable de entorno
-    const protocol = window.location.protocol; // http: o https:
-    const hostname = window.location.hostname; // localhost, 127.0.0.1, IP, etc.
-    
-    // Si existe VITE_API_URL en el entorno de Vite se prioriza (útil para túneles)
-    const baseURL = import.meta.env.VITE_API_URL || `${protocol}//${hostname}:8000`;
+    // Obtiene la URL del backend dinámicamente desde la variable de entorno
+    const baseURL = import.meta.env.VITE_API_URL;
     
     console.log("Conectando a API en:", baseURL);
 
