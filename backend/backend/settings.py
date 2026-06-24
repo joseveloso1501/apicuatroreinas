@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-import google
+# import google.oauth2
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -86,14 +86,14 @@ CORS_ALLOW_CREDENTIALS = True
 # Permitir CORS en media files
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 
-# Django Storages config
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# # Django Storages config
+# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-GS_BUCKET_NAME = 'el-nombre-de-tu-bucket-gcp'
-GS_PROJECT_ID = 'tu-proyecto-id-gcp'
+# GS_BUCKET_NAME = 'el-nombre-de-tu-bucket-gcp'
+# GS_PROJECT_ID = 'tu-proyecto-id-gcp'
 
-# Opcional: credenciales por archivo JSON en local/producción
-# (En Cloud Run se recomienda usar Service Accounts nativas de GCP sin archivo de claves)
-GS_CREDENTIALS = google.oauth2.service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'ruta-a-tus-credenciales.json')
-)
+# # Opcional: credenciales por archivo JSON en local/producción
+# # (En Cloud Run se recomienda usar Service Accounts nativas de GCP sin archivo de claves)
+# GS_CREDENTIALS = google.oauth2.service_account.Credentials.from_service_account_file(
+#     os.path.join(BASE_DIR, 'ruta-a-tus-credenciales.json')
+# )
