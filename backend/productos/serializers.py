@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Producto, Categoria
+from .models import Producto, Categoria, Galeria
 
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,3 +19,8 @@ class ProductoSerializer(serializers.ModelSerializer):
         model = Producto
         fields = ['id', 'nombre', 'descripcion', 'precio', 'stock', 'imagen', 'categoria', 'categoria_id', 'created_at', 'updated_at']
         read_only_fields = ['id', 'created_at', 'updated_at']
+
+class GaleriaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Galeria
+        fields = '__all__'

@@ -7,6 +7,15 @@ export default defineConfig({
   server: {
     port: 5173,
     host: '0.0.0.0',
-    allowedHosts: ['pyromania-overpay-extended.ngrok-free.dev', 'all']
+    allowedHosts: ['all', 'pyromania-overpay-extended.ngrok-free.dev','https://vacations-sessions-kent-turning.trycloudflare.com'],
+    proxy: {
+      '/api': {
+        // Si se usa Docker Compose para levantar frontend y backend,
+        // apuntar al nombre del servicio: 'http://backend:8000'
+        target: 'http://backend:8000',
+        changeOrigin: true,
+      }
+    }
   }
 })
+

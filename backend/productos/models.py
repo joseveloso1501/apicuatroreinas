@@ -19,3 +19,15 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Galeria(models.Model):
+    # ImageField guardará la ruta en la base de datos, y el archivo real se subirá a media/instagram/
+    imagen = models.ImageField(upload_to='galeria/')
+    caption = models.TextField(blank=True, null=True)
+    likes = models.PositiveIntegerField(default=0)
+    comments = models.PositiveIntegerField(default=0)
+    link = models.URLField(default="https://www.instagram.com/api4reinas/")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Post - {self.caption[:30] if self.caption else self.id}"
