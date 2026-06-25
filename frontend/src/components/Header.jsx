@@ -68,11 +68,14 @@ export default function Header(){
                 💊  Medicinas
               </Link>
               <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+                🛠️ Insumos
+              </Link>
+              {/* <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
                 🕯️  Subproductos
               </Link>
               <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
                 👑  Material biológico
-              </Link>
+              </Link> */}
             </div>
           </div>
           <NavLink to="/sobre" className={navLinkClass}>
@@ -137,7 +140,7 @@ export default function Header(){
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-amber text-white text-[9px] font-extrabold w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white animate-pulse">
+              <span className="absolute -top-1 -right-1 bg-amber text-white text-[12px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center border border-white animate-pulse">
                 {cartCount}
               </span>
             )}
@@ -163,7 +166,7 @@ export default function Header(){
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-amber text-white text-[9px] font-extrabold w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+              <span className="absolute -top-1 -right-1 bg-amber text-white text-[12px] font-extrabold w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
                 {cartCount}
               </span>
             )}
@@ -195,11 +198,14 @@ export default function Header(){
                 💊 Medicinas
               </Link>
               <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                🛠️Insumos
+              </Link>
+              {/* <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 🕯️ Subproductos
               </Link>
               <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 👑 Material biológico
-              </Link>
+              </Link> */}
             </div>
             <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Nosotros</NavLink>
             <NavLink to="/contacto" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
