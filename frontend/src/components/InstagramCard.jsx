@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-//import imgLogo from '../assets/productosGemini/miel1.jpeg'
-
 export default function InstagramCard() {
   //const [isFollowing, setIsFollowing] = useState(false)
   const [isFollowing] = useState(false)
@@ -25,22 +23,21 @@ export default function InstagramCard() {
 
   useEffect(() => {
     const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
+    
+    // Consultamos la lista de la galería en la API
     axios.get(`${baseURL}/api/galeria/`)
       .then(response => {
-        // Obtenemos la imagen de perfil de Instagram cargada en el backend llamada imagenPerfilInstagramCard.jpeg
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
-
-        // Si hay datos en la galería, usamos la URL real del backend de la primera imagen
-        if (data.length > 0 && data[0].imagen) {
-          setLogoUrl(data[0].imagen); // Esto tendrá la URL completa (ej. http://localhost:8000/media/galeria/imagenPerfilInstagramCard.jpeg)
-          console.log("Imagen de perfil de Instagram:", response.data[0].imagen);
+        // Buscamos el elemento que contenga la imagen de perfil por su nombre de archivo
+        const fotoPerfil = data.find(item => item.imagen && item.imagen.includes('imagenPerfilInstagramCard'));
+        if (fotoPerfil) {
+          setLogoUrl(fotoPerfil.imagen); // Guarda la URL completa (ej: http://localhost:8000/media/galeria/imagenPerfil...)
         }
       })
       .catch(error => {
         console.error("Error al obtener imagen de perfil de Instagram:", error);
       });
-  }, []); // El array vacío asegura que se ejecute solo al montar
+  }, []);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300">
@@ -147,8 +144,7 @@ export default function InstagramCard() {
       <iframe
         src="//lightwidget.com/widgets/4d28b0d4574e53e09ae0187176624cab.html"
         allowtransparency="true"
-        class="lightwidget-widget"
-        className="w-full border-0 overflow-hidden rounded-md aspect-[3/3]"
+        className="lightwidget-widget w-full border-0 overflow-hidden rounded-md aspect-[3/3]"
       />
 
       {/* Botón final para ir al perfil */}
