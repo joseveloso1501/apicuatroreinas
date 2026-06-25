@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
 
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export default function ImageCarousel() {
   const [currentImage, setCurrentImage] = useState(0)
 
   // Imágenes provisorias
   const images = [
-    '/src/assets/carousel/flores-abejas.jpg',
-    '/src/assets/productosGemini/miel_gemini.png',
-    '/src/assets/carousel/comportamientos_De_las_Abejas_1ok.jpg',
-    '/src/assets/productosGemini/panales_miel_gemini.png',
-    '/src/assets/productosGemini/quillay3.jpg',
-    '/src/assets/productosGemini/propoleo_gemini.png',
+    `${baseURL}/media/galeria/flores-abejas.jpg`,
+    `${baseURL}/media/galeria/miel_gemini.png`,
+    `${baseURL}/media/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
+    `${baseURL}/media/galeria/panales_miel_gemini.png`,
+    `${baseURL}/media/galeria/quillay3.jpg`,
+    `${baseURL}/media/galeria/propoleo_gemini.png`,
   ]
 
   // Cambiar imagen cada 5 segundos
