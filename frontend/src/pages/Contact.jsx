@@ -6,11 +6,37 @@ export default function Contact() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
-    // Aquí se podría conectar con la API de backend para enviar mensajes
-    setSent(true)
+    setLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/contacto/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        setSent(true)
+        setName('')
+        setEmail('')
+        setMessage('')
+      } else {
+        setError(data.error || 'Ocurrió un error al enviar el mensaje.')
+      }
+    } catch (err) {
+      setError('No se pudo conectar con el servidor. Inténtalo de nuevo más tarde.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -51,9 +77,7 @@ export default function Contact() {
                 <button 
                   onClick={() => {
                     setSent(false)
-                    setName('')
-                    setEmail('')
-                    setMessage('')
+                    setError('')
                   }}
                   className="mt-2 text-xs font-semibold text-green-800 underline hover:text-green-900"
                 >
@@ -62,6 +86,11 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={submit} className="space-y-5">
+                {error && (
+                  <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-sm font-medium">
+                    ⚠️ {error}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
                     <label htmlFor="name" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -71,7 +100,8 @@ export default function Contact() {
                       id="name"
                       type="text"
                       required
-                      className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm" 
+                      disabled={loading}
+                      className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm disabled:opacity-60" 
                       placeholder="Tu nombre completo" 
                       value={name} 
                       onChange={e => setName(e.target.value)} 
@@ -86,7 +116,8 @@ export default function Contact() {
                       id="email"
                       type="email"
                       required
-                      className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm" 
+                      disabled={loading}
+                      className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm disabled:opacity-60" 
                       placeholder="ejemplo@correo.com" 
                       value={email} 
                       onChange={e => setEmail(e.target.value)} 
@@ -101,8 +132,9 @@ export default function Contact() {
                   <textarea 
                     id="message"
                     required
+                    disabled={loading}
                     rows="4"
-                    className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm min-h-[140px] resize-y" 
+                    className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm min-h-[140px] resize-y disabled:opacity-60" 
                     placeholder="Cuéntanos cómo podemos ayudarte..." 
                     value={message} 
                     onChange={e => setMessage(e.target.value)} 
@@ -111,12 +143,15 @@ export default function Contact() {
 
                 <button 
                   type="submit"
-                  className="w-full md:w-auto px-8 py-3 bg-amber text-white font-semibold rounded-full hover:bg-amber-600 active:scale-95 transition-all duration-150 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={loading}
+                  className="w-full md:w-auto px-8 py-3 bg-amber text-white font-semibold rounded-full hover:bg-amber-600 active:scale-95 transition-all duration-150 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <span>Enviar Mensaje</span>
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                  </svg>
+                  <span>{loading ? 'Enviando...' : 'Enviar Mensaje'}</span>
+                  {!loading && (
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                    </svg>
+                  )}
                 </button>
               </form>
             )}
