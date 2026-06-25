@@ -5,14 +5,19 @@ const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 export default function ImageCarousel() {
   const [currentImage, setCurrentImage] = useState(0)
 
-  // Imágenes provisorias
   const images = [
-    `${baseURL}/media/galeria/flores-abejas.jpg`,
-    `${baseURL}/media/galeria/miel_gemini.png`,
+    `${baseURL}/media/galeria/abejaEnCerezo.jpg`,
+    `${baseURL}/media/galeria/envasesMiel.JPG`,
+    `${baseURL}/media/galeria/lavanda.jpg`,
+    `${baseURL}/media/galeria/apiario.jpg`,
+    `${baseURL}/media/galeria/magnolio.HEIC`,
+    `${baseURL}/media/galeria/perritos.jpg`,
     `${baseURL}/media/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
-    `${baseURL}/media/galeria/panales_miel_gemini.png`,
-    `${baseURL}/media/galeria/quillay3.jpg`,
-    `${baseURL}/media/galeria/propoleo_gemini.png`,
+    //`${baseURL}/media/galeria/miel_gemini.png`,
+    //`${baseURL}/media/galeria/panales_miel_gemini.png`,
+    //`${baseURL}/media/galeria/quillay3.jpg`,
+    //`${baseURL}/media/galeria/propoleo_gemini.png`,
+    //`${baseURL}/media/galeria/flores-abejas.jpg`,
   ]
 
   // Cambiar imagen cada 5 segundos

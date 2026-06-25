@@ -2,19 +2,28 @@ import React, { useState, useEffect, useRef } from 'react'
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-const imgCajones = `${baseURL}/media/galeria/cajones_gemini.png`
-const imgPilares = `${baseURL}/media/galeria/IMG_1153.JPG`
-const imgPanales = `${baseURL}/media/galeria/panales_miel_gemini.png`
-const imgMiel = `${baseURL}/media/galeria/miel_gemini.png`
-const imgCaballetes = `${baseURL}/media/galeria/caballetes_gemini.png`
-const imgPropoleo = `${baseURL}/media/galeria/propoleo_gemini.png`
+// const imgCajones = `${baseURL}/media/galeria/cajones_gemini.png`
+// const imgPilares = `${baseURL}/media/galeria/IMG_1153.JPG`
+// const imgPanales = `${baseURL}/media/galeria/panales_miel_gemini.png`
+// const imgMiel = `${baseURL}/media/galeria/miel_gemini.png`
+// const imgCaballetes = `${baseURL}/media/galeria/caballetes_gemini.png`
+// const imgPropoleo = `${baseURL}/media/galeria/propoleo_gemini.png`
+
+const imgCajones = `${baseURL}/media/galeria/apiario.jpg`
+const imgPilares = `${baseURL}/media/galeria/panal.jpg`
+const imgYo = `${baseURL}/media/galeria/yoSostengoMarco.jpg`
+const imgMiel = `${baseURL}/media/galeria/envasesMiel.JPG`
+const mielMano = `${baseURL}/media/galeria/mielMano.jpg`
+const sombrero = `${baseURL}/media/galeria/sombrero.jpg`
+const barbaAbejas = `${baseURL}/media/galeria/barbaAbejas.jpg`
 
 const GALERIA = [
-  { id: 1, image: imgPanales, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 124, comments: 12 },
-  { id: 2, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },
+  { id: 1, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },
+  { id: 2, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 124, comments: 12 },
   { id: 3, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨', likes: 156, comments: 18 },
-  { id: 4, image: imgCaballetes, caption: 'Preparando la colmena para la temporada de invierno ❄️🐝', likes: 85, comments: 5 },
-  { id: 5, image: imgPropoleo, caption: 'Propóleo natural: el mejor escudo protector de la colmena 🛡️', likes: 112, comments: 9 },
+  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨', likes: 156, comments: 18 },
+  { id: 5, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía ', likes: 156, comments: 18 },
+  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝', likes: 156, comments: 18 },
 ]
 
 export default function About() {
