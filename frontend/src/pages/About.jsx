@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-const baseURL = import.meta.env.VITE_API_URL || '';
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const imgCajones = `${baseURL}/media/galeria/cajones_gemini.png`
 const imgPilares = `${baseURL}/media/galeria/IMG_1153.JPG`
