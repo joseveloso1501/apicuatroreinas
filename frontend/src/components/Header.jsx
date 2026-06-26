@@ -63,13 +63,13 @@ export default function Header(){
             
             {/* Menú Desplegable de Escritorio */}
             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100">
-              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/productos?categoria=Alimentos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
                 🍯  Alimentos
               </Link>
-              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/productos?categoria=Medicinas" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
                 💊  Medicinas
               </Link>
-              <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/productos?categoria=Insumos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
                 🛠️ Insumos
               </Link>
               {/* <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
@@ -230,13 +230,13 @@ export default function Header(){
             <NavLink to="/productos" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Productos</NavLink>
             {/* Sub-items del menú en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
-              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Alimentos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 🍯 Alimentos
               </Link>
-              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Medicinas" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 💊 Medicinas
               </Link>
-              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Insumos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 🛠️Insumos
               </Link>
               {/* <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">

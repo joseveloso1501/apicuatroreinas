@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import { useCart } from '../context/CartContext'
+import { useSearchParams } from 'react-router-dom'
 
 export default function Products(){
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
   const { addToCart } = useCart()
+
+  const [searchParams, setSearchParams] = useSearchParams()
+  const categoriaSeleccionada = searchParams.get('categoria') || 'Todos'
+  const [sortOrder, setSortOrder] = useState('destacados')
 
   useEffect(()=>{
     // Obtiene la URL del backend dinámicamente desde la variable de entorno
@@ -45,10 +50,120 @@ export default function Products(){
       });
   },[])
 
+  const handleCategoryChange = (cat) => {
+    if (cat === 'Todos') {
+      searchParams.delete('categoria')
+    } else {
+      searchParams.set('categoria', cat)
+    }
+    setSearchParams(searchParams)
+  }
+
+  const handleSortChange = (e) => {
+    setSortOrder(e.target.value)
+  }
+
+  // Filtrado y ordenamiento en el cliente
+  const filteredAndSortedProductos = useMemo(() => {
+    let list = [...productos]
+
+    // 1. Filtrar por categoría
+    if (categoriaSeleccionada !== 'Todos') {
+      list = list.filter(p => {
+        const catNombre = p.categoria?.nombre || ''
+        return catNombre.toLowerCase() === categoriaSeleccionada.toLowerCase()
+      })
+    }
+
+    // 2. Ordenar por precio
+    if (sortOrder === 'asc') {
+      list.sort((a, b) => Number(a.precio) - Number(b.precio))
+    } else if (sortOrder === 'desc') {
+      list.sort((a, b) => Number(b.precio) - Number(a.precio))
+    }
+
+    return list
+  }, [productos, categoriaSeleccionada, sortOrder])
+
   return (
-    <section className="py-12">
+    <section className="py-12 bg-gradient-to-b from-yellow-50/20 to-white min-h-screen">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl font-bold mb-6">Productos</h2>
+        <h2 className="text-3xl font-extrabold text-darkbee tracking-tight mb-2">Productos</h2>
+        <p className="text-gray-500 text-sm mb-8">Explora los mejores productos de la colmena directos a tu mesa.</p>
+
+        {/* Panel de Filtros Premium */}
+        {!loading && (
+          <div className="bg-white/80 backdrop-blur-md border border-yellow-100 rounded-2xl p-4 shadow-sm mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 transition-all duration-300">
+            {/* Filtro de Categoría (Pills) */}
+            <div className="flex flex-wrap gap-2 items-center">
+              {['Todos', 'Alimentos', 'Medicinas', 'Insumos'].map(cat => {
+                const isSelected = categoriaSeleccionada.toLowerCase() === cat.toLowerCase() || (cat === 'Todos' && categoriaSeleccionada === 'Todos');
+                const icons = {
+                  Todos: '🐝',
+                  Alimentos: '🍯',
+                  Medicinas: '💊',
+                  Insumos: '🛠️'
+                };
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => handleCategoryChange(cat)}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 transform active:scale-95 cursor-pointer shadow-xs border ${
+                      isSelected
+                        ? 'bg-gradient-to-r from-honey to-amber text-darkbee border-transparent shadow-md scale-105'
+                        : 'bg-white hover:bg-yellow-50/40 text-gray-650 hover:text-amber-600 border-gray-100'
+                    }`}
+                  >
+                    <span className="mr-1.5">{icons[cat]}</span>
+                    {cat}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Ordenamiento por Precio */}
+            <div className="flex items-center gap-3">
+              <label htmlFor="sort-order" className="text-[10px] font-extrabold text-gray-450 uppercase tracking-wider select-none">
+                Ordenar por:
+              </label>
+              <div className="relative">
+                <select
+                  id="sort-order"
+                  value={sortOrder}
+                  onChange={handleSortChange}
+                  className="appearance-none bg-white border border-gray-150 rounded-xl pl-4 pr-10 py-2 text-xs font-bold text-gray-700 outline-none focus:border-amber focus:ring-2 focus:ring-amber/20 cursor-pointer shadow-xs transition-all"
+                >
+                  <option value="destacados">Destacados</option>
+                  <option value="asc">Precio: Bajo a Alto</option>
+                  <option value="desc">Precio: Alto a Bajo</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                  <svg className="fill-current h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Resumen del conteo de resultados */}
+        {!loading && (
+          <div className="flex justify-between items-center mb-6 px-1">
+            <p className="text-xs font-bold text-gray-500">
+              Mostrando <span className="text-amber-600 font-extrabold">{filteredAndSortedProductos.length}</span> {filteredAndSortedProductos.length === 1 ? 'producto' : 'productos'}
+            </p>
+            {categoriaSeleccionada !== 'Todos' && (
+              <button
+                onClick={() => handleCategoryChange('Todos')}
+                className="text-xs font-extrabold text-amber hover:text-amber-600 hover:underline flex items-center gap-1 cursor-pointer transition-colors"
+              >
+                Limpiar filtros ✕
+              </button>
+            )}
+          </div>
+        )}
+
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 space-y-4">
             <div className="relative w-16 h-16 flex items-center justify-center">
@@ -61,18 +176,40 @@ export default function Products(){
               Buscando en la colmena...
             </p>
           </div>
+        ) : filteredAndSortedProductos.length === 0 ? (
+          /* Empty State */
+          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-xs flex flex-col items-center justify-center space-y-4">
+            <div className="w-20 h-20 bg-yellow-50/50 rounded-full flex items-center justify-center text-4xl animate-pulse">
+              🔍
+            </div>
+            <div>
+              <h3 className="text-lg font-black text-darkbee">No se encontraron productos</h3>
+              <p className="text-xs text-gray-500 mt-1 max-w-xs mx-auto leading-relaxed">
+                No hay productos cargados en la categoría "{categoriaSeleccionada}" en este momento.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                handleCategoryChange('Todos');
+                setSortOrder('destacados');
+              }}
+              className="px-6 py-2.5 bg-honey hover:bg-amber text-darkbee hover:text-white font-extrabold rounded-full text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+            >
+              Restablecer Filtros
+            </button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {productos.map(p => (
-              <article key={p.id} className="bg-white rounded-2xl shadow p-4 flex flex-col">
+            {filteredAndSortedProductos.map(p => (
+              <article key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
                 <div
-                  className="group h-40 bg-yellow-100 rounded-md flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
+                  className="group h-40 bg-yellow-100/30 rounded-xl flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
                   style={p.imagen ? {
                     backgroundImage: `url('${p.imagen}')`
                   } : {}}
                 >
                   {!p.imagen ? (
-                    <span>Sin imagen</span>
+                    <span className="text-xs font-bold text-gray-450">Sin imagen</span>
                   ) : (
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <button
@@ -84,6 +221,12 @@ export default function Products(){
                     </div>
                   )}
                 </div>
+                {/* Categoría Badge */}
+                {p.categoria?.nombre && (
+                  <span className="self-start px-2 py-0.5 bg-yellow-100/50 text-amber-700 font-extrabold text-[9px] rounded-md uppercase tracking-wider mb-1.5">
+                    {p.categoria.nombre}
+                  </span>
+                )}
                 <h3 className="font-semibold text-lg text-darkbee">{p.nombre}</h3>
                 <p className="text-sm text-gray-600 flex-1">{p.descripcion}</p>
                 <div className="mt-3 flex items-center justify-between">
