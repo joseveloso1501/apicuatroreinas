@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 import CartDrawer from './CartDrawer'
 
 export default function Header(){
   const [open, setOpen] = useState(false)
   const { cartCount, setIsCartOpen } = useCart()
+  const { user } = useAuth()
 
   // Clases dinámicas para los enlaces de escritorio
   const navLinkClass = ({ isActive }) => 
@@ -145,6 +147,26 @@ export default function Header(){
               </span>
             )}
           </button>
+
+          {/* Botón Perfil (Escritorio) */}
+          <Link 
+            to="/profile" 
+            className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 flex items-center gap-1.5 select-none cursor-pointer"
+            aria-label="Ir a perfil"
+          >
+            {user ? (
+              <div className="w-7 h-7 rounded-full bg-honey flex items-center justify-center text-darkbee font-extrabold text-xs shadow-inner">
+                {(user.first_name || 'U').charAt(0).toUpperCase()}
+              </div>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            )}
+            <span className="hidden lg:inline text-xs font-bold text-gray-700">
+              {user ? (user.first_name || 'Mi Perfil') : 'Iniciar Sesión'}
+            </span>
+          </Link>
           
           <Link 
             to="/productos" 
@@ -171,6 +193,23 @@ export default function Header(){
               </span>
             )}
           </button>
+
+          {/* Botón Perfil (Móvil) */}
+          <Link 
+            to="/profile" 
+            className="p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 cursor-pointer"
+            aria-label="Ir a perfil"
+          >
+            {user ? (
+              <div className="w-6 h-6 rounded-full bg-honey flex items-center justify-center text-darkbee font-extrabold text-[10px] shadow-inner">
+                {(user.first_name || 'U').charAt(0).toUpperCase()}
+              </div>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            )}
+          </Link>
 
           {/* Botón Menú Hambuguesa */}
           <button 
@@ -209,6 +248,7 @@ export default function Header(){
             </div>
             <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Nosotros</NavLink>
             <NavLink to="/contacto" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
+            <NavLink to="/profile" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Mi Cuenta</NavLink>
             {/* Sub-items del menú Contacto en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
               <Link to="/contacto" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">

@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import Producto, Categoria, Galeria
 
+from django.contrib.auth.models import User
+from .models import Cupon, PerfilUsuario, Pedido, ItemPedido, CarritoItem
+
 class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categoria
@@ -24,3 +27,90 @@ class GaleriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Galeria
         fields = '__all__'
+
+class CuponSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cupon
+        fields = ['id', 'codigo', 'descuento_porcentaje', 'descuento_valor', 'activo']
+
+class PerfilUsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PerfilUsuario
+        fields = ['rut', 'telefono', 'direccion', 'ciudad']
+
+class UserSerializer(serializers.ModelSerializer):
+    perfil = PerfilUsuarioSerializer(required=False)
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'perfil']
+        read_only_fields = ['id', 'username', 'email']
+
+    def update(self, instance, validated_data):
+        perfil_data = validated_data.pop('perfil', {})
+        
+        # Actualizar campos del User
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.save()
+        
+        # Actualizar campos del Perfil
+        perfil = getattr(instance, 'perfil', None)
+        if not perfil:
+            perfil = PerfilUsuario.objects.create(user=instance)
+        
+        perfil.rut = perfil_data.get('rut', perfil.rut)
+        perfil.telefono = perfil_data.get('telefono', perfil.telefono)
+        perfil.direccion = perfil_data.get('direccion', perfil.direccion)
+        perfil.ciudad = perfil_data.get('ciudad', perfil.ciudad)
+        perfil.save()
+        
+        return instance
+
+class ItemPedidoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemPedido
+        fields = ['id', 'producto', 'nombre_producto', 'precio', 'cantidad']
+
+class PedidoSerializer(serializers.ModelSerializer):
+    items = ItemPedidoSerializer(many=True)
+
+    class Meta:
+        model = Pedido
+        fields = [
+            'id', 'user', 'nombre_completo', 'email', 'telefono', 
+            'direccion', 'ciudad', 'metodo_pago', 'total', 'estado', 
+            'created_at', 'updated_at', 'items'
+        ]
+        read_only_fields = ['id', 'user', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        items_data = validated_data.pop('items')
+        
+        request = self.context.get('request')
+        user = request.user if request and request.user.is_authenticated else None
+        
+        pedido = Pedido.objects.create(user=user, **validated_data)
+        
+        for item_data in items_data:
+            ItemPedido.objects.create(pedido=pedido, **item_data)
+            
+        return pedido
+
+class CarritoItemSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='producto.id')
+    nombre = serializers.CharField(source='producto.nombre', read_only=True)
+    precio = serializers.DecimalField(source='producto.precio', max_digits=10, decimal_places=2, read_only=True)
+    imagen = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CarritoItem
+        fields = ['id', 'nombre', 'precio', 'imagen', 'cantidad']
+
+    def get_imagen(self, obj):
+        if obj.producto.imagen:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.producto.imagen.url)
+            return obj.producto.imagen.url
+        return None
