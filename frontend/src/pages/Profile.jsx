@@ -519,7 +519,7 @@ export default function Profile() {
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
                 }`}
             >
-              <span>👤</span> Mi Perfil
+              <span>👤</span> Mi perfil
             </button>
             <button
               onClick={() => setActiveTab('orders')}
@@ -528,7 +528,7 @@ export default function Profile() {
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
                 }`}
             >
-              <span>📦</span> Mis Pedidos
+              <span>📦</span> Mis pedidos
             </button>
             <button
               onClick={() => setActiveTab('coupons')}
@@ -537,7 +537,7 @@ export default function Profile() {
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
                 }`}
             >
-              <span>🎫</span> Mis Cupones
+              <span>🎫</span> Mis cupones
             </button>
             <button
               onClick={() => setActiveTab('security')}
@@ -568,7 +568,7 @@ export default function Profile() {
             {activeTab === 'profile' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-black text-gray-900">Mis Datos Personales</h3>
+                  <h3 className="text-lg font-black text-gray-900">Mis datos personales</h3>
                   <p className="text-xs text-gray-500">Mantén tu información actualizada para agilizar tus despachos.</p>
                 </div>
 
@@ -824,7 +824,7 @@ export default function Profile() {
             {activeTab === 'coupons' && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-black text-gray-900">Mis Cupones</h3>
+                  <h3 className="text-lg font-black text-gray-900">Mis cupones</h3>
                   <p className="text-xs text-gray-500">Agrega nuevos códigos y visualiza tus cupones de descuento activos.</p>
                 </div>
 
@@ -902,7 +902,7 @@ export default function Profile() {
                 {/* Cambiar Contraseña */}
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-lg font-black text-gray-900">Cambiar Contraseña</h3>
+                    <h3 className="text-lg font-black text-gray-900">Cambiar contraseña</h3>
                     <p className="text-xs text-gray-500">Actualiza tu contraseña para mantener tu cuenta segura.</p>
                   </div>
 
@@ -954,7 +954,7 @@ export default function Profile() {
                 <div className="border-t border-red-100 pt-8 space-y-4">
                   <div className="bg-red-50/50 rounded-2xl border border-red-200 p-5 space-y-3">
                     <h4 className="text-xs font-extrabold text-red-700 uppercase tracking-wider">
-                      ⚠️ Zona de Peligro (Acción Irreversible)
+                      ⚠️ Eliminar cuenta (Acción irreversible)
                     </h4>
                     <p className="text-xs text-red-600 leading-relaxed">
                       Si eliminas tu cuenta, se perderá permanentemente toda tu información de perfil, historial de pedidos y cupones acumulados.
@@ -963,7 +963,7 @@ export default function Profile() {
                       onClick={() => setShowDeleteModal(true)}
                       className="px-5 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs cursor-pointer transition-all active:scale-95"
                     >
-                      Eliminar Cuenta de Forma Permanente
+                      Eliminar cuenta de forma permanente
                     </button>
                   </div>
                 </div>

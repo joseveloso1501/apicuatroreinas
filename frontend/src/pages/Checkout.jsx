@@ -209,7 +209,7 @@ export default function Checkout() {
                 <h4 className="font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
                   🐝 ¡Gracias por tu compra!
                 </h4>
-                <p>Puedes hacer seguimiento de este pedido y revisar su estado en la pestaña <strong>Mis Pedidos</strong> en tu perfil.</p>
+                <p>Puedes hacer seguimiento de este pedido y revisar su estado en la pestaña <strong>Mis pedidos</strong> en tu perfil.</p>
               </div>
 
               {/* Botón de retorno */}
@@ -218,7 +218,7 @@ export default function Checkout() {
                   to="/profile"
                   className="inline-block px-8 py-3 bg-amber hover:bg-amber-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer"
                 >
-                  Ir a mi Perfil
+                  Ir a mi perfil
                 </Link>
               </div>
             </div>
