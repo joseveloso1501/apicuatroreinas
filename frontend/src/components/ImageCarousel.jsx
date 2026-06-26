@@ -11,8 +11,10 @@ export default function ImageCarousel() {
     `${baseURL}/media/galeria/lavanda.jpg`,
     `${baseURL}/media/galeria/apiario.jpg`,
     `${baseURL}/media/galeria/magnolio.HEIC`,
+    `${baseURL}/media/galeria/quillay3.jpg`,
     `${baseURL}/media/galeria/perritos.jpg`,
-    `${baseURL}/media/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
+    `${baseURL}/media/galeria/avellano.jpg`,
+    //`${baseURL}/media/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
     //`${baseURL}/media/galeria/miel_gemini.png`,
     //`${baseURL}/media/galeria/panales_miel_gemini.png`,
     //`${baseURL}/media/galeria/quillay3.jpg`,
@@ -20,11 +22,11 @@ export default function ImageCarousel() {
     //`${baseURL}/media/galeria/flores-abejas.jpg`,
   ]
 
-  // Cambiar imagen cada 5 segundos
+  // Cambiar imagen cada n segundos
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % images.length)
-    }, 5000)
+    }, 3000) //n
     return () => clearInterval(interval)
   }, [])
 
