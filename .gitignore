@@ -105,5 +105,3 @@ coverage.xml
 *.seed.lockfile.lock
 *.seed.lockfile.lockfile
 *.seed.lockfile.lockfile.lock
-ecommerce_dump.sql
-ecommerce_schema.sql
