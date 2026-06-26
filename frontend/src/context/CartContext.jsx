@@ -1,8 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import axios from 'axios'
+import { useAuth } from './AuthContext'
 
 const CartContext = createContext()
 
 export function CartProvider({ children }) {
+  const { token, baseURL } = useAuth() || {}
+
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem('apicola_cart')
@@ -20,31 +24,69 @@ export function CartProvider({ children }) {
     localStorage.setItem('apicola_cart', JSON.stringify(cart))
   }, [cart])
 
+  // Sincronizar al iniciar o cerrar sesión
+  useEffect(() => {
+    const syncCartOnAuthChange = async () => {
+      if (token) {
+        try {
+          // Combinar el carrito local con el del servidor
+          const res = await axios.post(`${baseURL}/api/carrito/merge/`, { items: cart }, {
+            headers: { Authorization: `Token ${token}` }
+          })
+          setCart(res.data)
+        } catch (err) {
+          console.error("Error combinando el carrito con el servidor:", err)
+        }
+      } else {
+        // Al cerrar sesión, vaciar el carrito
+        setCart([])
+      }
+    }
+    
+    syncCartOnAuthChange()
+  }, [token])
+
+  // Guardar en la base de datos (PUT)
+  const saveCartToBackend = async (newCart) => {
+    if (!token) return
+    try {
+      await axios.put(`${baseURL}/api/carrito/`, { items: newCart }, {
+        headers: { Authorization: `Token ${token}` }
+      })
+    } catch (err) {
+      console.error("Error al guardar el carrito en el backend:", err)
+    }
+  }
+
   // Agregar al carrito
   const addToCart = (product) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id)
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id ? { ...item, cantidad: item.cantidad + 1 } : item
-        )
-      }
-      return [...prevCart, { 
+    const existingItem = cart.find((item) => item.id === product.id)
+    let newCart
+    
+    if (existingItem) {
+      newCart = cart.map((item) =>
+        item.id === product.id ? { ...item, cantidad: item.cantidad + 1 } : item
+      )
+    } else {
+      newCart = [...cart, { 
         id: product.id, 
         nombre: product.nombre, 
         precio: Number(product.precio), 
         imagen: product.imagen, 
         cantidad: 1 
       }]
-    })
-    
-    // Auto-abrir el Drawer al agregar un producto (requerimiento aprobado)
+    }
+
+    setCart(newCart)
+    saveCartToBackend(newCart)
     setIsCartOpen(true)
   }
 
   // Quitar del carrito
   const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId))
+    const newCart = cart.filter((item) => item.id !== productId)
+    setCart(newCart)
+    saveCartToBackend(newCart)
   }
 
   // Actualizar cantidad
@@ -53,16 +95,17 @@ export function CartProvider({ children }) {
       removeFromCart(productId)
       return
     }
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId ? { ...item, cantidad: newQuantity } : item
-      )
+    const newCart = cart.map((item) =>
+      item.id === productId ? { ...item, cantidad: newQuantity } : item
     )
+    setCart(newCart)
+    saveCartToBackend(newCart)
   }
 
   // Vaciar carrito
   const clearCart = () => {
     setCart([])
+    saveCartToBackend([])
   }
 
   // Unidades totales en el carrito
