@@ -19,11 +19,11 @@ const barbaAbejas = `${baseURL}/media/galeria/barbaAbejas.jpg`
 
 const GALERIA = [
   { id: 1, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },
-  { id: 2, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 124, comments: 12 },
-  { id: 3, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨', likes: 156, comments: 18 },
-  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨', likes: 156, comments: 18 },
-  { id: 5, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía ', likes: 156, comments: 18 },
-  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝', likes: 156, comments: 18 },
+  { id: 2, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 156, comments: 12 },
+  { id: 3, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨', likes: 124, comments: 8 },
+  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨', likes: 133, comments: 5 },
+  { id: 5, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía 🎩', likes: 210, comments: 14 },
+  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝', likes: 93, comments: 8 },
 ]
 
 export default function About() {
