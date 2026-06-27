@@ -17,6 +17,7 @@ services:
   backend:
     build: ./backend
     container_name: django_backend
+    image: joseveloso/ecommerce_apicultura-backend:v1
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend:/app
@@ -34,6 +35,7 @@ services:
       - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
       - ALLOWED_HOSTS=*
       - CORS_ALLOWED_ORIGINS=http://localhost:5173
+
 
   frontend:
     build: 
