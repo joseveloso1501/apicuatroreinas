@@ -74,9 +74,27 @@ export default function Products(){
         return catNombre.toLowerCase() === categoriaSeleccionada.toLowerCase()
       })
     }
+    // 2. Ordenar por criterio seleccionado
+    if (sortOrder === 'destacados') {
+      list.sort((a, b) => {
+        // Disponibles primero (stock > 0)
+        const aAvailable = a.stock > 0 ? 1 : 0
+        const bAvailable = b.stock > 0 ? 1 : 0
+        if (aAvailable !== bAvailable) {
+          return bAvailable - aAvailable
+        }
 
-    // 2. Ordenar por precio
-    if (sortOrder === 'asc') {
+        // Miel primero
+        const aIsMiel = a.nombre.toLowerCase().includes('miel') ? 1 : 0
+        const bIsMiel = b.nombre.toLowerCase().includes('miel') ? 1 : 0
+        if (aIsMiel !== bIsMiel) {
+          return bIsMiel - aIsMiel
+        }
+
+        // Precio de menor a mayor
+        //return Number(a.precio) - Number(b.precio)
+      })
+    } else if (sortOrder === 'asc') {
       list.sort((a, b) => Number(a.precio) - Number(b.precio))
     } else if (sortOrder === 'desc') {
       list.sort((a, b) => Number(b.precio) - Number(a.precio))
