@@ -244,6 +244,48 @@ class PerfilYAutenticacionTests(APITestCase):
         self.assertEqual(CarritoItem.objects.filter(user=user).count(), 1)
         self.assertEqual(CarritoItem.objects.get(user=user).cantidad, 1)
 
+    def test_eliminacion_pedido_restaura_stock(self):
+        user = User.objects.create_user(username="test_del@test.cl", email="test_del@test.cl", password="password123")
+        PerfilUsuario.objects.create(user=user)
+        
+        res = self.client.post(self.login_url, {"email": "test_del@test.cl", "password": "password123"}, format='json')
+        token = res.data['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        
+        pedido_data = {
+            "nombre_completo": "Test Delete",
+            "email": "test_del@test.cl",
+            "telefono": "123",
+            "direccion": "Test",
+            "ciudad": "Test",
+            "metodo_pago": "webpay",
+            "total": 6500.00,
+            "items": [
+                {
+                    "producto": self.prod.id,
+                    "nombre_producto": self.prod.nombre,
+                    "precio": self.prod.precio,
+                    "cantidad": 3
+                }
+            ]
+        }
+        
+        # Creamos el pedido por API, lo cual baja el stock de 10 a 7
+        res_order = self.client.post(reverse('pedido-list'), pedido_data, format='json')
+        self.assertEqual(res_order.status_code, status.HTTP_201_CREATED)
+        self.prod.refresh_from_db()
+        self.assertEqual(self.prod.stock, 7)
+        
+        # Obtenemos el ID del pedido creado
+        pedido_id = res_order.data['id']
+        
+        # Eliminamos el pedido de la base de datos
+        Pedido.objects.get(id=pedido_id).delete()
+        
+        # Comprobamos que el stock volvió a 10
+        self.prod.refresh_from_db()
+        self.assertEqual(self.prod.stock, 10)
+
 class GaleriaTests(APITestCase):
 
     def test_crear_galeria_sin_link(self):

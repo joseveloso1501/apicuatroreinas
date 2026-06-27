@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 import re
 
 def validate_chilean_rut(value):
@@ -133,5 +135,12 @@ class CarritoItem(models.Model):
 
     def __str__(self):
         return f"{self.cantidad}x {self.producto.nombre} (User: {self.user.username})"
+
+@receiver(pre_delete, sender=Pedido)
+def restaurar_stock_pedido(sender, instance, **kwargs):
+    for item in instance.items.all():
+        if item.producto:
+            item.producto.stock += item.cantidad
+            item.producto.save()
 
 
