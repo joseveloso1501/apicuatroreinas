@@ -129,10 +129,49 @@ class PerfilYAutenticacionTests(APITestCase):
         self.assertEqual(res_order.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Pedido.objects.filter(user=user).count(), 1)
         
+        # Verificar que el stock disminuyó de 10 a 9
+        self.prod.refresh_from_db()
+        self.assertEqual(self.prod.stock, 9)
+        
         # Listar pedidos del perfil
         res_my_orders = self.client.get(reverse('pedido-list'))
         self.assertEqual(len(res_my_orders.data), 1)
         self.assertEqual(res_my_orders.data[0]['total'], '6500.00')
+
+    def test_creacion_pedido_stock_insuficiente(self):
+        user = User.objects.create_user(username="insuficiente@test.cl", email="insuficiente@test.cl", password="password123")
+        PerfilUsuario.objects.create(user=user, telefono="999", direccion="Casa 1", ciudad="Rancagua")
+        
+        res = self.client.post(self.login_url, {"email": "insuficiente@test.cl", "password": "password123"}, format='json')
+        token = res.data['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        
+        # Intentar comprar 11 unidades (el stock es 10)
+        pedido_data = {
+            "nombre_completo": "Pedro Pedido",
+            "email": "insuficiente@test.cl",
+            "telefono": "999",
+            "direccion": "Casa 1",
+            "ciudad": "Rancagua",
+            "metodo_pago": "webpay",
+            "total": 71500.00,
+            "items": [
+                {
+                    "producto": self.prod.id,
+                    "nombre_producto": self.prod.nombre,
+                    "precio": self.prod.precio,
+                    "cantidad": 11
+                }
+            ]
+        }
+        
+        res_order = self.client.post(reverse('pedido-list'), pedido_data, format='json')
+        self.assertEqual(res_order.status_code, status.HTTP_400_BAD_REQUEST)
+        # Asegurar que no se guardó el pedido en la BD
+        self.assertEqual(Pedido.objects.filter(user=user).count(), 0)
+        # Asegurar que el stock se mantiene en 10
+        self.prod.refresh_from_db()
+        self.assertEqual(self.prod.stock, 10)
 
     def test_vinculacion_pedido_invitado_por_email(self):
         # 1. Crear un pedido como invitado (sin autenticar, user=None)

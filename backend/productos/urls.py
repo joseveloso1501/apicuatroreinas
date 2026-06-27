@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     ProductoViewSet, CategoriaViewSet, GaleriaViewSet, ContactoView,
     RegisterView, LoginView, ProfileView, ChangePasswordView, DeleteAccountView,
-    CuponViewSet, PedidoViewSet
+    CuponViewSet, PedidoViewSet, CarritoView, CarritoMergeView
 )
 
 router = DefaultRouter()
@@ -20,6 +20,8 @@ urlpatterns = [
     path('auth/profile/', ProfileView.as_view(), name='auth_profile'),
     path('auth/change-password/', ChangePasswordView.as_view(), name='auth_change_password'),
     path('auth/delete-account/', DeleteAccountView.as_view(), name='auth_delete_account'),
+    path('carrito/', CarritoView.as_view(), name='carrito'),
+    path('carrito/merge/', CarritoMergeView.as_view(), name='carrito_merge'),
 ] + router.urls
 
 

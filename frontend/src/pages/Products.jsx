@@ -7,7 +7,7 @@ export default function Products(){
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
-  const { addToCart } = useCart()
+  const { addToCart, cart } = useCart()
 
   const [searchParams, setSearchParams] = useSearchParams()
   const categoriaSeleccionada = searchParams.get('categoria') || 'Todos'
@@ -200,53 +200,67 @@ export default function Products(){
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredAndSortedProductos.map(p => (
-              <article key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
-                <div
-                  className="group h-40 bg-yellow-100/30 rounded-xl flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
-                  style={p.imagen ? {
-                    backgroundImage: `url('${p.imagen}')`
-                  } : {}}
-                >
-                  {!p.imagen ? (
-                    <span className="text-xs font-bold text-gray-450">Sin imagen</span>
-                  ) : (
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <button
-                        onClick={() => setSelectedImage(p.imagen)}
-                        className="px-4 py-2 bg-amber hover:bg-amber-600 text-white font-bold rounded-full text-xs transition-all transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
-                      >
-                        Ver producto
-                      </button>
+            {filteredAndSortedProductos.map(p => {
+              const cartItem = cart.find(item => item.id === p.id)
+              const availableStock = p.stock - (cartItem ? cartItem.cantidad : 0)
+              
+              return (
+                <article key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
+                  <div
+                    className="group h-40 bg-yellow-100/30 rounded-xl flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
+                    style={p.imagen ? {
+                      backgroundImage: `url('${p.imagen}')`
+                    } : {}}
+                  >
+                    {!p.imagen ? (
+                      <span className="text-xs font-bold text-gray-450">Sin imagen</span>
+                    ) : (
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <button
+                          onClick={() => setSelectedImage(p.imagen)}
+                          className="px-4 py-2 bg-amber hover:bg-amber-600 text-white font-bold rounded-full text-xs transition-all transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                        >
+                          Ver producto
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  {/* Categoría Badge */}
+                  {p.categoria?.nombre && (
+                    <span className="self-start px-2 py-0.5 bg-yellow-100/50 text-amber-700 font-extrabold text-[9px] rounded-md uppercase tracking-wider mb-1.5">
+                      {p.categoria.nombre}
+                    </span>
+                  )}
+                  <h3 className="font-semibold text-lg text-darkbee">{p.nombre}</h3>
+                  <p className="text-sm text-gray-600 flex-1 mb-2">{p.descripcion}</p>
+                  
+                  {/* Alerta de Stock Bajo */}
+                  {availableStock > 0 && availableStock <= 5 && (
+                    <div className="mb-3 text-rose-600 font-extrabold text-[11px] select-none flex items-center gap-1.5 bg-rose-50/50 py-1 px-2.5 rounded-lg w-max border border-rose-100/50">
+                      <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping inline-block"></span>
+                      ¡Últimas {availableStock} unidades disponibles!
                     </div>
                   )}
-                </div>
-                {/* Categoría Badge */}
-                {p.categoria?.nombre && (
-                  <span className="self-start px-2 py-0.5 bg-yellow-100/50 text-amber-700 font-extrabold text-[9px] rounded-md uppercase tracking-wider mb-1.5">
-                    {p.categoria.nombre}
-                  </span>
-                )}
-                <h3 className="font-semibold text-lg text-darkbee">{p.nombre}</h3>
-                <p className="text-sm text-gray-600 flex-1">{p.descripcion}</p>
-                <div className="mt-3 flex items-center justify-between">
-                  <strong className="text-amber-600">
-                    ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
-                  </strong>
-                  <button
-                    onClick={() => p.stock > 0 && addToCart(p)}
-                    disabled={p.stock <= 0}
-                    className={`px-3 py-1.5 rounded-full transition-all duration-200 text-xs font-bold shadow-xs ${
-                      p.stock <= 0 
-                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                        : 'bg-honey hover:bg-amber hover:text-white hover:scale-105 active:scale-95 text-darkbee cursor-pointer'
-                      }`}
-                  >
-                    {p.stock <= 0 ? 'Agotado' : 'Agregar al carrito'}
-                  </button>
-                </div>
-              </article>
-            ))}
+                  
+                  <div className="mt-auto flex items-center justify-between">
+                    <strong className="text-amber-600">
+                      ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
+                    </strong>
+                    <button
+                      onClick={() => availableStock > 0 && addToCart(p)}
+                      disabled={availableStock <= 0}
+                      className={`px-3 py-1.5 rounded-full transition-all duration-200 text-xs font-bold shadow-xs ${
+                        availableStock <= 0 
+                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                          : 'bg-honey hover:bg-amber hover:text-white hover:scale-105 active:scale-95 text-darkbee cursor-pointer'
+                        }`}
+                    >
+                      {availableStock <= 0 ? 'Agotado' : 'Agregar al carrito'}
+                    </button>
+                  </div>
+                </article>
+              )
+            })}
           </div>
         )}
       </div>

@@ -90,11 +90,25 @@ class PedidoSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user if request and request.user.is_authenticated else None
         
-        pedido = Pedido.objects.create(user=user, **validated_data)
+        from django.db import transaction
         
-        for item_data in items_data:
-            ItemPedido.objects.create(pedido=pedido, **item_data)
+        with transaction.atomic():
+            pedido = Pedido.objects.create(user=user, **validated_data)
             
+            for item_data in items_data:
+                producto = item_data.get('producto')
+                cantidad = item_data.get('cantidad', 1)
+                
+                if producto:
+                    if producto.stock < cantidad:
+                        raise serializers.ValidationError(
+                            f"No hay suficiente stock para {producto.nombre}. Disponible: {producto.stock}"
+                        )
+                    producto.stock -= cantidad
+                    producto.save()
+                
+                ItemPedido.objects.create(pedido=pedido, **item_data)
+                
         return pedido
 
 class CarritoItemSerializer(serializers.ModelSerializer):
@@ -102,10 +116,11 @@ class CarritoItemSerializer(serializers.ModelSerializer):
     nombre = serializers.CharField(source='producto.nombre', read_only=True)
     precio = serializers.DecimalField(source='producto.precio', max_digits=10, decimal_places=2, read_only=True)
     imagen = serializers.SerializerMethodField()
+    stock = serializers.IntegerField(source='producto.stock', read_only=True)
 
     class Meta:
         model = CarritoItem
-        fields = ['id', 'nombre', 'precio', 'imagen', 'cantidad']
+        fields = ['id', 'nombre', 'precio', 'imagen', 'cantidad', 'stock']
 
     def get_imagen(self, obj):
         if obj.producto.imagen:

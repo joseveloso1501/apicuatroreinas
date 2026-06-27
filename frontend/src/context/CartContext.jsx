@@ -61,19 +61,29 @@ export function CartProvider({ children }) {
   // Agregar al carrito
   const addToCart = (product) => {
     const existingItem = cart.find((item) => item.id === product.id)
+    const stockLimit = product.stock !== undefined ? product.stock : (existingItem ? existingItem.stock : 0)
     let newCart
     
     if (existingItem) {
+      if (existingItem.cantidad >= stockLimit) {
+        alert(`Lo sentimos, no puedes agregar más unidades de ${product.nombre}. Solo quedan ${stockLimit} unidades en stock.`)
+        return
+      }
       newCart = cart.map((item) =>
         item.id === product.id ? { ...item, cantidad: item.cantidad + 1 } : item
       )
     } else {
+      if (stockLimit < 1) {
+        alert(`Lo sentimos, ${product.nombre} está agotado.`)
+        return
+      }
       newCart = [...cart, { 
         id: product.id, 
         nombre: product.nombre, 
         precio: Number(product.precio), 
         imagen: product.imagen, 
-        cantidad: 1 
+        cantidad: 1,
+        stock: stockLimit
       }]
     }
 
@@ -93,6 +103,11 @@ export function CartProvider({ children }) {
   const updateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) {
       removeFromCart(productId)
+      return
+    }
+    const item = cart.find((item) => item.id === productId)
+    if (item && newQuantity > item.stock) {
+      alert(`Lo sentimos, solo quedan ${item.stock} unidades disponibles de este producto.`)
       return
     }
     const newCart = cart.map((item) =>
