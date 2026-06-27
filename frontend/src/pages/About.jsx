@@ -33,6 +33,8 @@ export default function About() {
   const [pilaresVisible, setPilaresVisible] = useState(false)
   const pilaresRef = useRef(null)
 
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null)
+
   // Observer para Misión y Visión
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -77,6 +79,24 @@ export default function About() {
     return () => observer.disconnect()
   }, [])
 
+  // Keyboard navigation listener for the image lightbox
+  useEffect(() => {
+    if (selectedImageIndex === null) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') {
+        setSelectedImageIndex((prev) => (prev + 1) % GALERIA.length)
+      } else if (e.key === 'ArrowLeft') {
+        setSelectedImageIndex((prev) => (prev - 1 + GALERIA.length) % GALERIA.length)
+      } else if (e.key === 'Escape') {
+        setSelectedImageIndex(null)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedImageIndex])
+
   return (
     <section className="bg-white">
 
@@ -117,19 +137,17 @@ export default function About() {
             </a>
           </div>
           <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
-            {GALERIA.map(post => (
-              console.log("Imagen:", post.image),
-              <a
+            {GALERIA.map((post, index) => (
+              <button
                 key={post.id}
-                href="https://www.instagram.com/api4reinas/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-64 h-80 flex-shrink-0 relative group rounded-2xl overflow-hidden shadow-sm border border-gray-100/50 bg-gray-50 snap-start block"
+                type="button"
+                onClick={() => setSelectedImageIndex(index)}
+                className="w-64 h-80 flex-shrink-0 relative group rounded-2xl overflow-hidden shadow-sm border border-gray-100/50 bg-gray-50 snap-start block cursor-pointer text-left focus:outline-none"
               >
                 {/* Imagen de fondo */}
                 <img
                   src={post.image}
-                  alt="Post de Instagram"
+                  alt={post.caption || "Imagen de la galería"}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 {/* Capa de oscurecimiento gradual de fondo */}
@@ -146,11 +164,11 @@ export default function About() {
                   </div>
                 </div>
 
-                {/* Icono de Instagram en Hover */}
+                {/* Icono de Lupa en Hover */}
                 <div className="absolute inset-0 bg-black/45 z-30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-                  <span className="text-white text-3xl font-extrabold drop-shadow">📸</span>
+                  <span className="text-white text-3xl font-extrabold drop-shadow">🔍</span>
                 </div>
-              </a>
+              </button>
             ))}
           </div>
         </div>
@@ -312,6 +330,66 @@ export default function About() {
           </div>
         </div>
       </div>
+
+      {/* Lightbox / Vista Expandida de la Imagen */}
+      {selectedImageIndex !== null && (
+        <div
+          className="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+          onClick={() => setSelectedImageIndex(null)}
+        >
+          {/* Botón de cierre */}
+          <button
+            className="absolute top-6 right-6 text-white text-3xl font-extrabold cursor-pointer hover:text-amber transition-colors select-none z-50"
+            onClick={() => setSelectedImageIndex(null)}
+          >
+            ✕
+          </button>
+
+          {/* Botón Navegación Izquierda */}
+          <button
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 bg-black/40 hover:bg-amber text-white w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-md select-none border border-white/10"
+            onClick={(e) => {
+              e.stopPropagation()
+              setSelectedImageIndex((prev) => (prev - 1 + GALERIA.length) % GALERIA.length)
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          {/* Botón Navegación Derecha */}
+          <button
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 bg-black/40 hover:bg-amber text-white w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-md select-none border border-white/10"
+            onClick={(e) => {
+              e.stopPropagation()
+              setSelectedImageIndex((prev) => (prev + 1) % GALERIA.length)
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+
+          {/* Contenedor flotante de la imagen */}
+          <div
+            className="relative max-w-4xl max-h-[85vh] overflow-hidden rounded-2xl bg-white p-2 shadow-2xl flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={GALERIA[selectedImageIndex].image}
+              alt="Vista de la galería"
+              className="max-w-full max-h-[75vh] object-contain rounded-xl"
+            />
+            {/* Caption del post de la galería en el modal */}
+            {GALERIA[selectedImageIndex].caption && (
+              <p className="mt-2 text-xs text-gray-700 text-center font-medium max-w-md px-4 line-clamp-2 select-none">
+                {GALERIA[selectedImageIndex].caption}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   )
 }
