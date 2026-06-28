@@ -218,7 +218,13 @@ class CuponViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         perfil, _ = PerfilUsuario.objects.get_or_create(user=request.user)
-        cupones = perfil.cupones.filter(activo=True)
+        # Excluir cupones que el usuario ya usó en compras anteriores
+        used_cupon_ids = Pedido.objects.filter(user=request.user, cupon__isnull=False).values_list('cupon_id', flat=True)
+        if request.user.email:
+            used_by_email = Pedido.objects.filter(email=request.user.email, cupon__isnull=False).values_list('cupon_id', flat=True)
+            used_cupon_ids = list(set(list(used_cupon_ids) + list(used_by_email)))
+        
+        cupones = perfil.cupones.filter(activo=True).exclude(id__in=used_cupon_ids)
         serializer = self.get_serializer(cupones, many=True)
         return Response(serializer.data)
 
@@ -246,14 +252,28 @@ class CuponViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'], permission_classes=[])
     def validar(self, request):
         codigo = request.data.get('codigo', '').strip().upper()
+        email = request.data.get('email', '').strip()
         if not codigo:
             return Response({"error": "Debe ingresar un código."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             cupon = Cupon.objects.get(codigo=codigo, activo=True)
-            return Response(self.get_serializer(cupon).data, status=status.HTTP_200_OK)
         except Cupon.DoesNotExist:
             return Response({"error": "Cupón no válido o expirado."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Control: Un solo uso por usuario
+        if request.user and request.user.is_authenticated:
+            if Pedido.objects.filter(user=request.user, cupon=cupon).exists():
+                return Response({"error": f"Ya has utilizado el cupón '{codigo}' en una compra anterior."}, status=status.HTTP_400_BAD_REQUEST)
+            if request.user.email and Pedido.objects.filter(email=request.user.email, cupon=cupon).exists():
+                return Response({"error": f"Ya has utilizado el cupón '{codigo}' en una compra anterior."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Control: Un solo uso por email (para invitados o usuarios)
+        if email:
+            if Pedido.objects.filter(email=email, cupon=cupon).exists():
+                return Response({"error": f"El cupón '{codigo}' ya ha sido utilizado previamente."}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(self.get_serializer(cupon).data, status=status.HTTP_200_OK)
 
 class PedidoViewSet(viewsets.ModelViewSet):
     queryset = Pedido.objects.all()

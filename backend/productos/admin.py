@@ -16,7 +16,7 @@ class ItemPedidoInline(admin.TabularInline):
     extra = 0
 
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = ['id', 'nombre_completo', 'email', 'total', 'estado', 'created_at']
+    list_display = ['id', 'nombre_completo', 'email', 'total', 'cupon', 'estado', 'created_at']
     list_filter = ['estado', 'created_at']
     search_fields = ['nombre_completo', 'email', 'direccion']
     inlines = [ItemPedidoInline]

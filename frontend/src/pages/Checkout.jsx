@@ -60,7 +60,8 @@ export default function Checkout() {
     if (!code) return
 
     try {
-      const res = await axios.post(`${baseURL}/api/cupones/validar/`, { codigo: code })
+      const config = token ? { headers: { Authorization: `Token ${token}` } } : {}
+      const res = await axios.post(`${baseURL}/api/cupones/validar/`, { codigo: code, email: email }, config)
       setAppliedCoupon(res.data)
       setCouponSuccess(`Cupón "${code}" aplicado con éxito.`)
       setManualCouponCode('')
@@ -98,6 +99,7 @@ export default function Checkout() {
       ciudad: ciudad,
       metodo_pago: metodoPago,
       total: granTotal,
+      cupon_codigo: appliedCoupon ? appliedCoupon.codigo : null,
       items: cart.map(item => ({
         producto: item.id,
         nombre_producto: item.nombre,

@@ -101,6 +101,7 @@ class Pedido(models.Model):
         ('cancelado', 'Cancelado'),
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pedidos', null=True, blank=True)
+    cupon = models.ForeignKey(Cupon, on_delete=models.SET_NULL, null=True, blank=True, related_name='pedidos')
     nombre_completo = models.CharField(max_length=255)
     email = models.EmailField()
     telefono = models.CharField(max_length=20)

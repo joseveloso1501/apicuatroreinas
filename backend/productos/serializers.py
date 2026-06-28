@@ -74,26 +74,58 @@ class ItemPedidoSerializer(serializers.ModelSerializer):
 
 class PedidoSerializer(serializers.ModelSerializer):
     items = ItemPedidoSerializer(many=True)
+    cupon_codigo = serializers.CharField(write_only=True, required=False, allow_null=True, allow_blank=True)
+    cupon_detalle = CuponSerializer(source='cupon', read_only=True)
 
     class Meta:
         model = Pedido
         fields = [
             'id', 'user', 'nombre_completo', 'email', 'telefono', 
             'direccion', 'ciudad', 'metodo_pago', 'total', 'estado', 
-            'created_at', 'updated_at', 'items'
+            'created_at', 'updated_at', 'items', 'cupon_codigo', 'cupon_detalle'
         ]
         read_only_fields = ['id', 'user', 'created_at', 'updated_at']
 
     def create(self, validated_data):
+        cupon_codigo = validated_data.pop('cupon_codigo', None)
         items_data = validated_data.pop('items')
         
         request = self.context.get('request')
         user = request.user if request and request.user.is_authenticated else None
+        email = validated_data.get('email')
+        
+        cupon = None
+        if cupon_codigo:
+            cupon_codigo = cupon_codigo.strip().upper()
+            if cupon_codigo:
+                try:
+                    cupon = Cupon.objects.get(codigo=cupon_codigo, activo=True)
+                except Cupon.DoesNotExist:
+                    raise serializers.ValidationError(
+                        {"error": f"El cupón '{cupon_codigo}' no existe o no está activo."}
+                    )
+                
+                # Control: Un solo uso por usuario
+                if user:
+                    if Pedido.objects.filter(user=user, cupon=cupon).exists():
+                        raise serializers.ValidationError(
+                            {"error": f"Ya has utilizado el cupón '{cupon_codigo}' en una compra anterior."}
+                        )
+                    if user.email and Pedido.objects.filter(email=user.email, cupon=cupon).exists():
+                        raise serializers.ValidationError(
+                            {"error": f"Ya has utilizado el cupón '{cupon_codigo}' en una compra anterior."}
+                        )
+                
+                # Control: Un solo uso por email (para invitados o usuarios)
+                if email and Pedido.objects.filter(email=email, cupon=cupon).exists():
+                    raise serializers.ValidationError(
+                        {"error": f"El cupón '{cupon_codigo}' ya ha sido utilizado previamente."}
+                    )
         
         from django.db import transaction
         
         with transaction.atomic():
-            pedido = Pedido.objects.create(user=user, **validated_data)
+            pedido = Pedido.objects.create(user=user, cupon=cupon, **validated_data)
             
             for item_data in items_data:
                 producto = item_data.get('producto')

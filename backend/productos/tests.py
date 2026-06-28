@@ -300,3 +300,109 @@ class GaleriaTests(APITestCase):
         self.assertEqual(galeria.caption, "Test Caption sin link")
 
 
+class CuponRestriccionTests(APITestCase):
+
+    def setUp(self):
+        # Crear cupones
+        self.cupon = Cupon.objects.create(codigo="DESCUENTO50", descuento_porcentaje=50)
+        self.cat = Categoria.objects.create(nombre="Mieles")
+        self.prod = Producto.objects.create(
+            nombre="Miel de Ulmo",
+            descripcion="Miel premium 500g",
+            precio=6000.00,
+            stock=10,
+            categoria=self.cat
+        )
+        # Crear usuario
+        self.user = User.objects.create_user(username="comprador@test.cl", email="comprador@test.cl", password="password123")
+        self.perfil = PerfilUsuario.objects.create(user=self.user)
+        self.perfil.cupones.add(self.cupon)
+        
+        self.login_url = reverse('auth_login')
+        self.validar_url = reverse('cupon-validar')
+        self.pedidos_url = reverse('pedido-list')
+        self.cupones_list_url = reverse('cupon-list')
+
+    def test_flujo_completo_uso_cupon_y_bloqueo(self):
+        # 1. Login
+        res_login = self.client.post(self.login_url, {"email": "comprador@test.cl", "password": "password123"}, format='json')
+        token = res_login.data['token']
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+
+        # 2. Verificar que el cupón aparece en el listado de guardados
+        res_list = self.client.get(self.cupones_list_url)
+        self.assertEqual(len(res_list.data), 1)
+        self.assertEqual(res_list.data[0]['codigo'], 'DESCUENTO50')
+
+        # 3. Validar cupón (debe ser exitoso)
+        res_validar = self.client.post(self.validar_url, {"codigo": "DESCUENTO50", "email": "comprador@test.cl"}, format='json')
+        self.assertEqual(res_validar.status_code, status.HTTP_200_OK)
+
+        # 4. Crear un pedido usando el cupón
+        pedido_data = {
+            "nombre_completo": "Comprador Test",
+            "email": "comprador@test.cl",
+            "telefono": "123",
+            "direccion": "Casa 1",
+            "ciudad": "Ciudad",
+            "metodo_pago": "webpay",
+            "total": 3000.00,
+            "cupon_codigo": "DESCUENTO50",
+            "items": [
+                {
+                    "producto": self.prod.id,
+                    "nombre_producto": self.prod.nombre,
+                    "precio": self.prod.precio,
+                    "cantidad": 1
+                }
+            ]
+        }
+        res_pedido = self.client.post(self.pedidos_url, pedido_data, format='json')
+        self.assertEqual(res_pedido.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Pedido.objects.filter(user=self.user, cupon=self.cupon).count(), 1)
+
+        # 5. Intentar validar el cupón otra vez (debe dar error porque ya se usó)
+        res_validar_2 = self.client.post(self.validar_url, {"codigo": "DESCUENTO50", "email": "comprador@test.cl"}, format='json')
+        self.assertEqual(res_validar_2.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("error", res_validar_2.data)
+
+        # 6. Intentar crear otro pedido con el mismo cupón (debe fallar a nivel de serializer)
+        res_pedido_2 = self.client.post(self.pedidos_url, pedido_data, format='json')
+        self.assertEqual(res_pedido_2.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # 7. Verificar que ya no figura en el listado de cupones guardados del perfil
+        res_list_2 = self.client.get(self.cupones_list_url)
+        self.assertEqual(len(res_list_2.data), 0)
+
+    def test_uso_cupon_invitado_bloquea_mismo_email(self):
+        # 1. Crear un pedido como invitado con un email y un cupón
+        pedido_data = {
+            "nombre_completo": "Invitado Test",
+            "email": "invitado@test.cl",
+            "telefono": "123",
+            "direccion": "Casa 1",
+            "ciudad": "Ciudad",
+            "metodo_pago": "webpay",
+            "total": 3000.00,
+            "cupon_codigo": "DESCUENTO50",
+            "items": [
+                {
+                    "producto": self.prod.id,
+                    "nombre_producto": self.prod.nombre,
+                    "precio": self.prod.precio,
+                    "cantidad": 1
+                }
+            ]
+        }
+        res_pedido = self.client.post(self.pedidos_url, pedido_data, format='json')
+        self.assertEqual(res_pedido.status_code, status.HTTP_201_CREATED)
+
+        # 2. Intentar validar el cupón con ese mismo email
+        res_validar = self.client.post(self.validar_url, {"codigo": "DESCUENTO50", "email": "invitado@test.cl"}, format='json')
+        self.assertEqual(res_validar.status_code, status.HTTP_400_BAD_REQUEST)
+
+        # 3. Intentar crear otro pedido como invitado con el mismo email y cupón (debe fallar)
+        res_pedido_2 = self.client.post(self.pedidos_url, pedido_data, format='json')
+        self.assertEqual(res_pedido_2.status_code, status.HTTP_400_BAD_REQUEST)
+
+
