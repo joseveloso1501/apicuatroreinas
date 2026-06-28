@@ -56,16 +56,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "ecommerce"),
-        "USER": os.getenv("DB_USER", "admin"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "admin123"),
-        "HOST": os.getenv("DB_HOST", "db"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+
+# Nombre de la conexión Cloud SQL (ej: project-id:region:instance-name)
+INSTANCE_CONNECTION_NAME = os.getenv("INSTANCE_CONNECTION_NAME")
+
+if INSTANCE_CONNECTION_NAME:
+    # Conexión nativa de producción en Cloud Run (vía Sockets Unix)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": f"/cloudsql/{INSTANCE_CONNECTION_NAME}",
+        }
     }
-}
+else:
+    # Conexión local de desarrollo (vía TCP)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DB_NAME", "ecommerce"),
+            "USER": os.getenv("DB_USER", "admin"),
+            "PASSWORD": os.getenv("DB_PASSWORD", "admin123"),
+            "HOST": os.getenv("DB_HOST", "db"),
+            "PORT": os.getenv("DB_PORT", "5432"),
+        }
+    }
+
 
 AUTH_PASSWORD_VALIDATORS = []
 
@@ -88,14 +106,14 @@ CORS_ALLOW_CREDENTIALS = True
 # Permitir CORS en media files
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 
-# # Django Storages config
-# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# Django Storages config
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 
-# GS_BUCKET_NAME = 'el-nombre-de-tu-bucket-gcp'
-# GS_PROJECT_ID = 'tu-proyecto-id-gcp'
+GS_BUCKET_NAME = 'bucket4reinas'
+GS_PROJECT_ID = 'apicuatroreinas'
 
-# # Opcional: credenciales por archivo JSON en local/producción
-# # (En Cloud Run se recomienda usar Service Accounts nativas de GCP sin archivo de claves)
+# Opcional: credenciales por archivo JSON en local/producción
+# (En Cloud Run se recomienda usar Service Accounts nativas de GCP sin archivo de claves)
 # GS_CREDENTIALS = google.oauth2.service_account.Credentials.from_service_account_file(
 #     os.path.join(BASE_DIR, 'ruta-a-tus-credenciales.json')
 # )

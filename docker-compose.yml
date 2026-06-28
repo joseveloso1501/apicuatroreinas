@@ -27,12 +27,20 @@ services:
       - db
     environment:
       - DEBUG=1
-      - DB_NAME=ecommerce
-      - DB_USER=admin
-      - DB_PASSWORD=admin123
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
+      # Conexión a GCP Cloud SQL (vía Proxy local en puerto 5433)
+      - DB_NAME=bd4reinas
+      - DB_USER=postgres
+      - DB_PASSWORD=8mEYrnGT3eu
+      - DB_HOST=/cloudsql/apicuatroreinas:southamerica-west1:bd4reinas
+      - DB_PORT=5433
+      - DATABASE_URL=postgres://postgres:8mEYrnGT3eu@host.docker.internal:5433/bd4reinas
+      # Conexión local (Descomentar para usar base de datos Docker local)
+      # - DB_NAME=ecommerce
+      # - DB_USER=admin
+      # - DB_PASSWORD=admin123
+      # - DB_HOST=db
+      # - DB_PORT=5432
+      # - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
       - ALLOWED_HOSTS=*
       - CORS_ALLOWED_ORIGINS=http://localhost:5173
 
