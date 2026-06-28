@@ -106,3 +106,4 @@ coverage.xml
 *.seed.lockfile.lockfile
 *.seed.lockfile.lockfile.lock
 notas.txt
+cloud-sql-proxy
