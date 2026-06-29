@@ -6,9 +6,9 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_DB: ecommerce
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: bd4reinas
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 8mEYrnGT3eu
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
@@ -33,7 +33,6 @@ services:
       - DB_PASSWORD=8mEYrnGT3eu
       - DB_HOST=/cloudsql/apicuatroreinas:southamerica-west1:bd4reinas
       - DB_PORT=5433
-      - DATABASE_URL=postgres://postgres:8mEYrnGT3eu@host.docker.internal:5433/bd4reinas
       # Conexión local (Descomentar para usar base de datos Docker local)
       # - DB_NAME=ecommerce
       # - DB_USER=admin
