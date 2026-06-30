@@ -13,8 +13,8 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Exponer el puerto 8080
-EXPOSE 8080
+# Exponer el puerto 8000
+EXPOSE 8000
 
 # Comando por defecto
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "backend.wsgi:application"]
+CMD ["gunicorn", "--bind", "[IP_ADDRESS]", "backend.wsgi:application"]
