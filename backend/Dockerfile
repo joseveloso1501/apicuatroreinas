@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8080
 
 # Comando por defecto
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "backend.wsgi:application"]
