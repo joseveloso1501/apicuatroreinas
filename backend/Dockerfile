@@ -13,6 +13,9 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
+# Recopilar archivos estáticos
+RUN python manage.py collectstatic --noinput
+
 # Exponer el puerto 8000
 EXPOSE 8000
 
