@@ -6,7 +6,7 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_DB: bd4reinas
+      POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 8mEYrnGT3eu
     volumes:
@@ -34,7 +34,7 @@ services:
     environment:
       - DEBUG=1
       # Conexión a GCP Cloud SQL (vía Proxy local en puerto 5433)
-      - DB_NAME=bd4reinas
+      - DB_NAME=postgres
       - DB_USER=postgres
       - DB_PASSWORD=8mEYrnGT3eu
       - DB_HOST=/cloudsql/apicuatroreinas:southamerica-west1:bd4reinas
@@ -59,12 +59,11 @@ services:
     ports:
       - "5173:5173"
     
-    # environment:
-    #   - VITE_API_URL=http://backend:8000
-    # Se remueve VITE_API_URL para permitir que Vite lea el archivo frontend/.env
-    
-    depends_on:
-      - backend
+    environment:
+      - VITE_API_URL=https://backend-337307900667.southamerica-west1.run.app
+
+    # depends_on:
+    #   - backend
 
 volumes:
   pgdata:
