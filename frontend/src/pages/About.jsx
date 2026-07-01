@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
+  ? `${baseURL}/media`
+  : 'https://storage.googleapis.com/bucket4reinas/media';
 
-// const imgCajones = `${baseURL}/media/galeria/cajones_gemini.png`
-// const imgPilares = `${baseURL}/media/galeria/IMG_1153.JPG`
-// const imgPanales = `${baseURL}/media/galeria/panales_miel_gemini.png`
-// const imgMiel = `${baseURL}/media/galeria/miel_gemini.png`
-// const imgCaballetes = `${baseURL}/media/galeria/caballetes_gemini.png`
-// const imgPropoleo = `${baseURL}/media/galeria/propoleo_gemini.png`
+// const imgCajones = `${mediaBaseURL}/galeria/cajones_gemini.png`
+// const imgPilares = `${mediaBaseURL}/galeria/IMG_1153.JPG`
+// const imgPanales = `${mediaBaseURL}/galeria/panales_miel_gemini.png`
+// const imgMiel = `${mediaBaseURL}/galeria/miel_gemini.png`
+// const imgCaballetes = `${mediaBaseURL}/galeria/caballetes_gemini.png`
+// const imgPropoleo = `${mediaBaseURL}/galeria/propoleo_gemini.png`
 
-const imgCajones = `${baseURL}/media/galeria/apiario.jpg`
-const imgPilares = `${baseURL}/media/galeria/panal.jpg`
-const imgYo = `${baseURL}/media/galeria/yoSostengoMarco.jpg`
-const imgMiel = `${baseURL}/media/galeria/envasesMiel.JPG`
-const mielMano = `${baseURL}/media/galeria/mielMano.jpg`
-const sombrero = `${baseURL}/media/galeria/sombrero.jpg`
-const barbaAbejas = `${baseURL}/media/galeria/barbaAbejas.jpg`
+const imgCajones = `${mediaBaseURL}/galeria/apiario.jpg`
+const imgPilares = `${mediaBaseURL}/galeria/panal.jpg`
+const imgYo = `${mediaBaseURL}/galeria/yoSostengoMarco.jpg`
+const imgMiel = `${mediaBaseURL}/galeria/envasesMiel.JPG`
+const mielMano = `${mediaBaseURL}/galeria/mielMano.jpg`
+const sombrero = `${mediaBaseURL}/galeria/sombrero.jpg`
+const barbaAbejas = `${mediaBaseURL}/galeria/barbaAbejas.jpg`
 
 const GALERIA = [
   { id: 1, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },

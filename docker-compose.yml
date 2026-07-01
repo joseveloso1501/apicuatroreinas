@@ -19,37 +19,35 @@ services:
   #     timeout: 5s
   #     retries: 5
 
-  backend:
-    build: ./backend
-    container_name: django_backend
-    image: joseveloso/ecommerce_apicultura-backend:v1
-    command: python manage.py runserver 0.0.0.0:8080
-    volumes:
-      - ./backend:/app
-      - ~/.config/gcloud:/root/.config/gcloud:ro
-    ports:
-      - "8080:8080"
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
-    environment:
-      - DEBUG=1
-      # Conexión a GCP Cloud SQL (vía Proxy local en puerto 5433)
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=8mEYrnGT3eu
-      - DB_HOST=host.docker.internal
-      - DB_PORT=5433
-      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
-      # Conexión local (Descomentar para usar base de datos Docker local)
-      # - DB_NAME=ecommerce
-      # - DB_USER=admin
-      # - DB_PASSWORD=admin123
-      # - DB_HOST=db
-      # - DB_PORT=5432
-      # - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
-      - ALLOWED_HOSTS=*
-      - CORS_ALLOWED_ORIGINS=http://localhost:5173
+  # backend:
+  #   build: ./backend
+  #   container_name: django_backend
+  #   image: joseveloso/ecommerce_apicultura-backend:v1
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - ./backend:/app
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     - DEBUG=1
+  #     # Conexión a GCP Cloud SQL (vía Proxy local en puerto 5433)
+  #     - DB_NAME=postgres
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=8mEYrnGT3eu
+  #     - DB_HOST=/cloudsql/apicuatroreinas:southamerica-west1:bd4reinas
+  #     - DB_PORT=5433
+  #     # Conexión local (Descomentar para usar base de datos Docker local)
+  #     # - DB_NAME=ecommerce
+  #     # - DB_USER=admin
+  #     # - DB_PASSWORD=admin123
+  #     # - DB_HOST=db
+  #     # - DB_PORT=5432
+  #     # - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
+  #     - ALLOWED_HOSTS=*
+  #     - CORS_ALLOWED_ORIGINS=http://localhost:5173
 
   frontend:
     build: 

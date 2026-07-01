@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import { useAuth } from './AuthContext'
 
@@ -25,21 +25,40 @@ export function CartProvider({ children }) {
   }, [cart])
 
   // Sincronizar al iniciar o cerrar sesión
+  const prevTokenRef = useRef(token)
+
   useEffect(() => {
     const syncCartOnAuthChange = async () => {
+      const prevToken = prevTokenRef.current
+      prevTokenRef.current = token
+
       if (token) {
-        try {
-          // Combinar el carrito local con el del servidor
-          const res = await axios.post(`${baseURL}/api/carrito/merge/`, { items: cart }, {
-            headers: { Authorization: `Token ${token}` }
-          })
-          setCart(res.data)
-        } catch (err) {
-          console.error("Error combinando el carrito con el servidor:", err)
+        // Carga inicial o restauración de sesión: la BD es la fuente de verdad.
+        if (prevToken === token) {
+          try {
+            const res = await axios.get(`${baseURL}/api/carrito/`, {
+              headers: { Authorization: `Token ${token}` }
+            })
+            setCart(res.data)
+          } catch (err) {
+            console.error("Error al obtener el carrito del servidor:", err)
+          }
+        } else {
+          // Transición de inicio de sesión: combinamos el carrito local con el del servidor.
+          try {
+            const res = await axios.post(`${baseURL}/api/carrito/merge/`, { items: cart }, {
+              headers: { Authorization: `Token ${token}` }
+            })
+            setCart(res.data)
+          } catch (err) {
+            console.error("Error al combinar el carrito:", err)
+          }
         }
       } else {
-        // Al cerrar sesión, vaciar el carrito
-        setCart([])
+        // Transición de cierre de sesión: vaciar el carrito.
+        if (prevToken) {
+          setCart([])
+        }
       }
     }
     
