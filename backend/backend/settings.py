@@ -122,6 +122,7 @@ STORAGES = {
 GS_BUCKET_NAME = 'bucket4reinas'
 GS_PROJECT_ID = 'apicuatroreinas'
 GS_QUERYSTRING_AUTH = False
+GS_LOCATION = 'media'
 
 # Opcional: credenciales por archivo JSON en local/producción
 # (En Cloud Run se recomienda usar Service Accounts nativas de GCP sin archivo de claves)
