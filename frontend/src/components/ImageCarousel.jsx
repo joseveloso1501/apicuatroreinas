@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react'
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
+  ? `${baseURL}/media`
+  : 'https://storage.googleapis.com/bucket4reinas/media';
 
 export default function ImageCarousel() {
   const [currentImage, setCurrentImage] = useState(0)
 
   const images = [
-    `${baseURL}/media/galeria/abejaEnCerezo.jpg`,
-    `${baseURL}/media/galeria/envasesMiel.JPG`,
-    `${baseURL}/media/galeria/lavanda.jpg`,
-    `${baseURL}/media/galeria/apiario.jpg`,
-    `${baseURL}/media/galeria/magnolio.HEIC`,
-    `${baseURL}/media/galeria/quillay3.jpg`,
-    `${baseURL}/media/galeria/perritos.jpg`,
-    `${baseURL}/media/galeria/avellano.jpg`,
-    //`${baseURL}/media/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
-    //`${baseURL}/media/galeria/miel_gemini.png`,
-    //`${baseURL}/media/galeria/panales_miel_gemini.png`,
-    //`${baseURL}/media/galeria/quillay3.jpg`,
-    //`${baseURL}/media/galeria/propoleo_gemini.png`,
-    //`${baseURL}/media/galeria/flores-abejas.jpg`,
+    `${mediaBaseURL}/galeria/abejaEnCerezo.jpg`,
+    `${mediaBaseURL}/galeria/envasesMiel.JPG`,
+    `${mediaBaseURL}/galeria/lavanda.jpg`,
+    `${mediaBaseURL}/galeria/apiario.jpg`,
+    `${mediaBaseURL}/galeria/magnolio.HEIC`,
+    `${mediaBaseURL}/galeria/quillay3.jpg`,
+    `${mediaBaseURL}/galeria/perritos.jpg`,
+    `${mediaBaseURL}/galeria/avellano.jpg`,
+    //`${mediaBaseURL}/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
+    //`${mediaBaseURL}/galeria/miel_gemini.png`,
+    //`${mediaBaseURL}/galeria/panales_miel_gemini.png`,
+    //`${mediaBaseURL}/galeria/quillay3.jpg`,
+    //`${mediaBaseURL}/galeria/propoleo_gemini.png`,
+    //`${mediaBaseURL}/galeria/flores-abejas.jpg`,
   ]
 
   // Cambiar imagen cada n segundos
