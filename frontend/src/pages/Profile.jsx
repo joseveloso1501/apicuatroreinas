@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth } from '../context/AuthContext'
 
@@ -73,8 +74,18 @@ export default function Profile() {
   const [formSuccess, setFormSuccess] = useState(null)
   const [submitting, setSubmitting] = useState(false)
 
+  const [searchParams, setSearchParams] = useSearchParams()
+
   // Estado del Dashboard
   const [activeTab, setActiveTab] = useState('profile') // profile, orders, coupons, security
+
+  // Sincronizar activeTab con el parámetro "tab" de la URL
+  useEffect(() => {
+    const tabParam = searchParams.get('tab')
+    if (tabParam && ['profile', 'orders', 'coupons', 'security'].includes(tabParam)) {
+      setActiveTab(tabParam)
+    }
+  }, [searchParams])
 
   // Estados de datos (pedidos y cupones)
   const [pedidos, setPedidos] = useState([])
@@ -513,7 +524,7 @@ export default function Profile() {
           {/* Navegación Lateral (Sidebar) */}
           <div className="lg:col-span-3 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-1.5">
             <button
-              onClick={() => setActiveTab('profile')}
+              onClick={() => setSearchParams({ tab: 'profile' })}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'profile'
                   ? 'bg-amber text-white shadow-md'
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
@@ -522,7 +533,7 @@ export default function Profile() {
               <span>👤</span> Mi perfil
             </button>
             <button
-              onClick={() => setActiveTab('orders')}
+              onClick={() => setSearchParams({ tab: 'orders' })}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'orders'
                   ? 'bg-amber text-white shadow-md'
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
@@ -531,7 +542,7 @@ export default function Profile() {
               <span>📦</span> Mis pedidos
             </button>
             <button
-              onClick={() => setActiveTab('coupons')}
+              onClick={() => setSearchParams({ tab: 'coupons' })}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'coupons'
                   ? 'bg-amber text-white shadow-md'
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
@@ -540,7 +551,7 @@ export default function Profile() {
               <span>🎫</span> Mis cupones
             </button>
             <button
-              onClick={() => setActiveTab('security')}
+              onClick={() => setSearchParams({ tab: 'security' })}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'security'
                   ? 'bg-amber text-white shadow-md'
                   : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
