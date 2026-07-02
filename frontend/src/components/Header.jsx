@@ -7,7 +7,7 @@ import CartDrawer from './CartDrawer'
 export default function Header(){
   const [open, setOpen] = useState(false)
   const { cartCount, setIsCartOpen } = useCart()
-  const { user } = useAuth()
+  const { user, logout } = useAuth()
 
   // Clases dinámicas para los enlaces de escritorio
   const navLinkClass = ({ isActive }) => 
@@ -17,7 +17,7 @@ export default function Header(){
 
   // Clases dinámicas para los enlaces en móvil
   const mobileNavLinkClass = ({ isActive }) => 
-    `px-4 py-2.5 rounded-xl font-bold text-sm transition-all duration-200 ${
+    `px-4 py-2.5 rounded-xl font-bold text-base transition-all duration-200 ${
       isActive 
         ? 'bg-amber/10 text-amber-600 border-l-4 border-amber pl-3' 
         : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
@@ -63,13 +63,13 @@ export default function Header(){
             
             {/* Menú Desplegable de Escritorio */}
             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100">
-              <Link to="/productos?categoria=Alimentos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/productos?categoria=Alimentos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center">
                   Alimentos
               </Link>
-              <Link to="/productos?categoria=Medicinas" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/productos?categoria=Medicinas" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center">
                   Medicinas
               </Link>
-              <Link to="/productos?categoria=Insumos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/productos?categoria=Insumos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center">
                  Insumos
               </Link>
               {/* <Link to="/productos" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
@@ -110,14 +110,14 @@ export default function Header(){
             
             {/* Menú Desplegable Contacto */}
             <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100">
-              <Link to="/contacto" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors">
+              <Link to="/contacto" className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center">
                 Contáctanos aquí
               </Link>
               <a 
                 href="https://wa.me/56956110251" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors"
+                className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
               >
                 Whatsapp
               </a>
@@ -125,13 +125,87 @@ export default function Header(){
                 href="https://www.instagram.com/api4reinas/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors"
+                className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
               >
                 Instagram
               </a>
             </div>
           </div>
 
+          {/* Botón/Dropdown Perfil (Escritorio) */}
+          <div className="relative group">
+            <NavLink 
+              to="/profile" 
+              className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 flex items-center gap-1.5 select-none cursor-pointer"
+              aria-label="Ir a perfil"
+            >
+              {({ isActive }) => (
+                <>
+                  {user ? (
+                    <div className="w-7 h-7 rounded-full bg-honey flex items-center justify-center text-darkbee font-extrabold text-xs shadow-inner">
+                      {(user.first_name || 'U').charAt(0).toUpperCase()}
+                    </div>
+                  ) : (
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  )}
+                  
+                  <span className="hidden lg:inline text-xs font-bold text-gray-700">
+                    {user ? (user.first_name || 'Mi Cuenta') : 'Iniciar Sesión'}
+                  </span>
+
+                  {/* Flecha de menú desplegable (sólo si ha iniciado sesión) */}
+                  {user && (
+                    <svg className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  )}
+
+                  <span className={`absolute bottom-0 left-0 h-[2px] bg-amber transition-all duration-300 ${
+                    isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`} />
+                </>
+              )}
+            </NavLink>
+
+            {/* Menú Desplegable Perfil de Escritorio (sólo si ha iniciado sesión) */}
+            {user && (
+              <div className="absolute top-full right-0 mt-1 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100">
+                <Link 
+                  to="/profile?tab=profile" 
+                  className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
+                >
+                  Mi perfil
+                </Link>
+                <Link 
+                  to="/profile?tab=orders" 
+                  className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
+                >
+                  Mis pedidos
+                </Link>
+                <Link 
+                  to="/profile?tab=coupons" 
+                  className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
+                >
+                  Mis cupones
+                </Link>
+                <Link 
+                  to="/profile?tab=security" 
+                  className="block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
+                >
+                  Seguridad
+                </Link>
+                <button 
+                  onClick={logout}
+                  className="w-full block px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50/50 hover:text-red-700 transition-colors text-center cursor-pointer border-t border-gray-100 mt-1 pt-2"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
+          </div>
+          
           {/* Botón Carrito de Compras (Escritorio) */}
           <button 
             onClick={() => setIsCartOpen(true)} 
@@ -148,26 +222,6 @@ export default function Header(){
             )}
           </button>
 
-          {/* Botón Perfil (Escritorio) */}
-          <Link 
-            to="/profile" 
-            className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 flex items-center gap-1.5 select-none cursor-pointer"
-            aria-label="Ir a perfil"
-          >
-            {user ? (
-              <div className="w-7 h-7 rounded-full bg-honey flex items-center justify-center text-darkbee font-extrabold text-xs shadow-inner">
-                {(user.first_name || 'U').charAt(0).toUpperCase()}
-              </div>
-            ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-            )}
-            <span className="hidden lg:inline text-xs font-bold text-gray-700">
-              {user ? (user.first_name || 'Mi Perfil') : 'Iniciar Sesión'}
-            </span>
-          </Link>
-          
           <Link 
             to="/productos" 
             className="btn-primary transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-md flex items-center justify-center"
@@ -188,7 +242,7 @@ export default function Header(){
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
             </svg>
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-amber text-white text-[12px] font-extrabold w-4.5 h-4.5 rounded-full flex items-center justify-center border border-white">
+              <span className="absolute -top-1 -right-1 bg-amber text-white text-[12px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center border border-white animate-pulse">
                 {cartCount}
               </span>
             )}
@@ -230,28 +284,27 @@ export default function Header(){
             <NavLink to="/productos" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Productos</NavLink>
             {/* Sub-items del menú en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
-              <Link to="/productos?categoria=Alimentos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Alimentos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                  Alimentos
               </Link>
-              <Link to="/productos?categoria=Medicinas" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Medicinas" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                  Medicinas
               </Link>
-              <Link to="/productos?categoria=Insumos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Insumos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 Insumos
               </Link>
-              {/* <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              {/* <Link to="/productos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                  Subproductos
               </Link>
-              <Link to="/productos" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                  Material biológico
               </Link> */}
             </div>
             <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Nosotros</NavLink>
             <NavLink to="/contacto" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
-            
             {/* Sub-items del menú Contacto en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
-              <Link to="/contacto" onClick={()=>setOpen(false)} className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/contacto" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                  Contáctanos aquí
               </Link>
               <a 
@@ -259,7 +312,7 @@ export default function Header(){
                 target="_blank" 
                 rel="noopener noreferrer" 
                 onClick={()=>setOpen(false)} 
-                className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
+                className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
               >
                  Whatsapp
               </a>
@@ -268,12 +321,37 @@ export default function Header(){
                 target="_blank" 
                 rel="noopener noreferrer" 
                 onClick={()=>setOpen(false)} 
-                className="text-xs font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
+                className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
               >
                  Instagram
               </a>
             </div>
             <NavLink to="/profile" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Mi cuenta</NavLink>
+              {user && (
+                <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
+                  <Link to="/profile?tab=profile" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                    Mi perfil
+                  </Link>
+                  <Link to="/profile?tab=orders" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                    Mis pedidos
+                  </Link>
+                  <Link to="/profile?tab=coupons" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                    Mis cupones
+                  </Link>
+                  <Link to="/profile?tab=security" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                    Seguridad
+                  </Link>  
+                  <button 
+                    onClick={() => {
+                      logout()
+                      setOpen(false)
+                    }} 
+                    className="text-left text-sm font-bold text-red-500 hover:text-red-700 flex items-center gap-1.5 py-1 cursor-pointer"
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              )}
           </div>
         </div>
       )}
