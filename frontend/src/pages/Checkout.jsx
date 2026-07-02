@@ -355,7 +355,7 @@ export default function Checkout() {
                 {/* Métodos de Pago */}
                 <div className="space-y-4 pt-4">
                   <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
-                    2. Selecciona Pasarela de Pago
+                    2. Selecciona método de pago
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
