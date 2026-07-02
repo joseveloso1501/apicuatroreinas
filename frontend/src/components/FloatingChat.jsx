@@ -37,7 +37,7 @@ export default function FloatingChat() {
               e.stopPropagation()
               setShowTooltip(false)
             }}
-            className="ml-2 text-gray-400 hover:text-gray-600 font-bold"
+            className="ml-2 text-gray-400 hover:text-gray-600 font-bold text-lg"
           >
             ×
           </button>
