@@ -59,8 +59,8 @@ services:
       - "5173:5173"
     
     environment:
-     # - VITE_API_URL=https://backend-337307900667.southamerica-west1.run.app
-     - VITE_API_URL=http://localhost:8080
+      - VITE_API_URL=https://backend-337307900667.southamerica-west1.run.app
+     #- VITE_API_URL=http://localhost:8080
 
     # depends_on:
     #   - backend
