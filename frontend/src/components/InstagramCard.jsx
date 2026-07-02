@@ -1,43 +1,69 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
+  ? `${baseURL}/media`
+  : 'https://storage.googleapis.com/bucket4reinas/media';
+
+const FALLBACK_POSTS = [
+  { id: 1, imagen: `${mediaBaseURL}/galeria/envasesMiel.JPG`, likes: 98, comments: 8, link: 'https://www.instagram.com/api4reinas/' },
+  { id: 2, imagen: `${mediaBaseURL}/galeria/yoSostengoMarco.jpg`, likes: 156, comments: 12, link: 'https://www.instagram.com/api4reinas/' },
+  { id: 3, imagen: `${mediaBaseURL}/galeria/envasesMiel.JPG`, likes: 124, comments: 8, link: 'https://www.instagram.com/api4reinas/' },
+  { id: 4, imagen: `${mediaBaseURL}/galeria/mielMano.jpg`, likes: 133, comments: 5, link: 'https://www.instagram.com/api4reinas/' },
+  { id: 5, imagen: `${mediaBaseURL}/galeria/sombrero.jpg`, likes: 210, comments: 14, link: 'https://www.instagram.com/api4reinas/' },
+  { id: 6, imagen: `${mediaBaseURL}/galeria/barbaAbejas.jpg`, likes: 93, comments: 8, link: 'https://www.instagram.com/api4reinas/' },
+]
+
 export default function InstagramCard() {
-  //const [isFollowing, setIsFollowing] = useState(false)
-  const [isFollowing] = useState(false)
+  const [isFollowing, setIsFollowing] = useState(false)
   const [logoUrl, setLogoUrl] = useState()
-
-  // const [followersCount, setFollowersCount] = useState(150)
-
+  const [followersCount, setFollowersCount] = useState(10)
+  const [posts, setPosts] = useState([])
   const profileUrl = 'https://www.instagram.com/api4reinas/'
 
   const handleFollowToggle = () => {
-    // if (isFollowing) {
-    //   setIsFollowing(false)
-    //   setFollowersCount(prev => prev - 1)
-    // } else {
-    //   setIsFollowing(true)
-    //   setFollowersCount(prev => prev + 1)
-    // }
+    if (isFollowing) {
+      setIsFollowing(false)
+      setFollowersCount(prev => prev - 1)
+    } else {
+      setIsFollowing(true)
+      setFollowersCount(prev => prev + 1)
+    }
     window.open(profileUrl, '_blank')
   }
 
   useEffect(() => {
-    const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-    
-    // Consultamos la lista de la galería en la API
     axios.get(`${baseURL}/api/galeria/`)
       .then(response => {
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
+        console.log("InstagramCard: Datos obtenidos de /api/galeria/:", data);
+        
         // Buscamos el elemento que contenga la imagen de perfil por su nombre de archivo
         const fotoPerfil = data.find(item => item.imagen && item.imagen.includes('imagenPerfilInstagramCard'));
         if (fotoPerfil) {
-          setLogoUrl(fotoPerfil.imagen); // Guarda la URL completa (ej: http://localhost:8000/media/galeria/imagenPerfil...)
+          console.log("InstagramCard: URL de la foto de perfil encontrada:", fotoPerfil.imagen);
+          setLogoUrl(fotoPerfil.imagen);
+        }
+        
+        // Filtramos la foto de perfil para la grilla
+        const gridItems = data.filter(item => item.imagen && !item.imagen.includes('imagenPerfilInstagramCard'));
+        console.log("InstagramCard: Posts filtrados para la grilla:", gridItems);
+        if (gridItems.length > 0) {
+          setPosts(gridItems);
         }
       })
       .catch(error => {
-        console.error("Error al obtener imagen de perfil de Instagram:", error);
+        console.error("InstagramCard: Error al obtener imágenes de galería:", error);
       });
   }, []);
+
+  useEffect(() => {
+    console.log("InstagramCard: Estado 'posts' actualizado:", posts);
+    console.log("InstagramCard: URL de las imágenes a renderizar:", 
+      (posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 9).map(p => ({ id: p.id, imagen: p.imagen }))
+    );
+  }, [posts]);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300">
@@ -51,8 +77,12 @@ export default function InstagramCard() {
           className="relative block w-20 h-20 rounded-full p-[3px] bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 active:scale-95 transition-transform"
         >
           <div className="w-full h-full rounded-full bg-white p-[2.5px]">
-            <div className="w-full h-full rounded-full bg-amber-100 flex items-center justify-center text-3xl shadow-inner select-none">
-              <img src={logoUrl} alt="Logo" className="w-16 h-16 rounded-full object-cover" />
+            <div className="w-full h-full rounded-full bg-amber-100 flex items-center justify-center text-3xl shadow-inner select-none overflow-hidden">
+              {logoUrl ? (
+                <img src={logoUrl} alt="Logo" className="w-16 h-16 rounded-full object-cover" />
+              ) : (
+                <span className="text-xl font-bold text-amber-700">🐝</span>
+              )}
             </div>
           </div>
         </a>
@@ -89,9 +119,9 @@ export default function InstagramCard() {
       </div>
 
       {/* Estadísticas */}
-      {/* <div className="grid grid-cols-3 text-center border-t border-b border-gray-100 py-3 mb-4">
+      {<div className="grid grid-cols-3 text-center border-t border-b border-gray-100 py-3 mb-4">
         <div>
-          <span className="block font-bold text-gray-900 text-sm">6</span>
+          <span className="block font-bold text-gray-900 text-sm">10</span>
           <span className="text-[10px] uppercase tracking-wider text-gray-400">Posts</span>
         </div>
         <div>
@@ -101,10 +131,10 @@ export default function InstagramCard() {
           <span className="text-[10px] uppercase tracking-wider text-gray-400">Seguidores</span>
         </div>
         <div>
-          <span className="block font-bold text-gray-900 text-sm">67</span>
+          <span className="block font-bold text-gray-900 text-sm">3</span>
           <span className="text-[10px] uppercase tracking-wider text-gray-400">Seguidos</span>
         </div>
-      </div> */}
+      </div>}
 
       {/* Biografía */}
       <div className="text-sm text-gray-700 space-y-1 mb-5">
@@ -122,30 +152,42 @@ export default function InstagramCard() {
       </div>
 
       {/* Navegación Falsa de Grid */}
-      <div className="flex justify-around border-t border-gray-100 pt-2 pb-3 text-gray-400">
-        <button className="text-amber-500" aria-label="Ver publicaciones">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M4 4h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 10h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4zM4 16h4v4H4zm6 0h4v4h-4zm6 0h4v4h-4z" />
-          </svg>
-        </button>
-        <button className="hover:text-gray-600 transition-colors" aria-label="Ver Reels">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-        </button>
-        <button className="hover:text-gray-600 transition-colors" aria-label="Ver etiquetados">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </button>
+      <div className="grid grid-cols-3 gap-2">
+        {(posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 9).map((post) => (
+          <a
+            key={post.id}
+            href={post.link || profileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block aspect-square overflow-hidden bg-gray-50 relative group rounded-md shadow-sm"
+          >
+            {/* Imagen del Post */}
+            <img 
+              src={post.imagen} 
+              alt={post.caption || "Publicación de Instagram"}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+              //loading="lazy"
+            />
+            
+            {/* Overlay interactivo en Hover */}
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 text-white font-semibold text-xs">
+              <span className="flex items-center gap-1 select-none">
+                ❤️ <span className="text-white">{/*post.likes*/}</span>
+              </span>
+              <span className="flex items-center gap-1 select-none">
+                💬 <span className="text-white">{/*post.comments*/}</span>
+              </span>
+            </div>
+          </a>
+        ))}
       </div>
-
+        
       {/* Grilla de publicaciones */}
-      <iframe
+      {/* {<iframe
         src="//lightwidget.com/widgets/4d28b0d4574e53e09ae0187176624cab.html"
         allowtransparency="true"
         className="lightwidget-widget w-full border-0 overflow-hidden rounded-md aspect-[3/3]"
-      />
+      />} */}
 
       {/* Botón final para ir al perfil */}
       <a
