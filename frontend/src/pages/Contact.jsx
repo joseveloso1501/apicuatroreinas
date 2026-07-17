@@ -9,6 +9,21 @@ export default function Contact() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const cardContactClass = "bg-yellow-50/40 rounded-xl p-5 flex items-center gap-4 border border-yellow-100"
+  const iconContainerClass = "p-3 bg-white rounded-lg shadow-sm"
+  const cardContactLabelClass = "block text-xs text-gray-500 uppercase font-semibold"
+  const cardContactValueClass = "text-sm font-bold text-gray-700 hover:text-amber truncate block"
+  const cardContactDescClass = "block text-xs text-gray-400"
+  const inputClass = "w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm disabled:opacity-60"
+  const labelClass = "text-xs font-semibold text-gray-700 uppercase tracking-wider"
+  const iconProps = {
+    className: "w-6 h-6 text-amber",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "2",
+    viewBox: "0 0 24 24"
+  }
+
   const submit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -43,23 +58,7 @@ export default function Contact() {
     <section className="py-16 bg-gradient-to-b from-yellow-50/50 to-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-
-          {/* Columna izquierda: Tarjeta de Instagram y Call to Action */}
-          <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
-            <div className="w-full text-center lg:text-left px-2">
-              <span className="inline-block px-3 py-1 bg-amber text-white rounded-full text-xs font-semibold mb-2 uppercase tracking-widest select-none shadow-sm">
-            Nuestra comunidad
-          </span>
-              <p className="text-sm text-gray-600">
-                ¡Síguenos en Instagram para enterarte de nuestras cosechas de miel en tiempo real y aprender sobre el cuidado de las abejas!
-              </p>
-            </div>
-            
-            <div className="w-full">
-              <InstagramCard />
-            </div>
-          </div>
-
+          
           {/* Columna derecha: Formulario e Información de Contacto */}
           <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-2xl border border-gray-100 shadow-sm space-y-8">
             <div>
@@ -74,7 +73,7 @@ export default function Contact() {
                 <span className="text-3xl select-none">🐝✨</span>
                 <p className="text-green-800 font-medium">¡Mensaje enviado con éxito!</p>
                 <p className="text-sm text-green-700">Muchas gracias por escribirnos. Nuestro equipo se pondrá en contacto contigo pronto.</p>
-                <button 
+                <button
                   onClick={() => {
                     setSent(false)
                     setError('')
@@ -93,63 +92,64 @@ export default function Contact() {
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div className="space-y-1.5">
-                    <label htmlFor="name" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <label htmlFor="name" className={labelClass}>
                       Nombre
                     </label>
-                    <input 
+                    <input
                       id="name"
                       type="text"
                       required
                       disabled={loading}
-                      className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm disabled:opacity-60" 
-                      placeholder="Tu nombre completo" 
-                      value={name} 
-                      onChange={e => setName(e.target.value)} 
+                      className={inputClass}
+                      placeholder="Tu nombre completo"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="email" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <label htmlFor="email" className={labelClass}>
                       Correo Electrónico
                     </label>
-                    <input 
+                    <input
                       id="email"
                       type="email"
                       required
                       disabled={loading}
-                      className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm disabled:opacity-60" 
-                      placeholder="ejemplo@correo.com" 
-                      value={email} 
-                      onChange={e => setEmail(e.target.value)} 
+                      className={inputClass}
+                      placeholder="nombre@correo.com"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="message" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <label htmlFor="message" className={labelClass}>
                     Mensaje
                   </label>
-                  <textarea 
+                  <textarea
                     id="message"
                     required
                     disabled={loading}
                     rows="4"
-                    className="w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm min-h-[140px] resize-y disabled:opacity-60" 
-                    placeholder="Cuéntanos cómo podemos ayudarte..." 
-                    value={message} 
-                    onChange={e => setMessage(e.target.value)} 
+                    className={`${inputClass} min-h-[140px] resize-y`}
+                    placeholder="Cuéntanos cómo podemos ayudarte..."
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
                   />
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   disabled={loading}
                   className="w-full md:w-auto px-8 py-3 bg-amber text-white font-semibold rounded-full hover:bg-amber-600 active:scale-95 transition-all duration-150 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <span>{loading ? 'Enviando...' : 'Enviar Mensaje'}</span>
+                  <span>{loading ? 'Enviando...' : 'Enviar mensaje'}</span>
                   {!loading && (
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m22 2-7 20-4-9-9-4Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M22 2 11 13" />
                     </svg>
                   )}
                 </button>
@@ -157,56 +157,83 @@ export default function Contact() {
             )}
 
             {/* Datos de Contacto Directo */}
-            <div className="border-t border-gray-100 pt-8 space-y-4">
+            <div className="border-t border-gray-100 mt-8 pt-8 space-y-4">
               <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider">
-                Información de contacto 
+                Información de contacto
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center gap-3 p-3 bg-yellow-50/30 rounded-xl border border-yellow-100">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <svg className="w-5 h-5 text-amber" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              <div className="flex flex-col gap-4">
+                {/* Email Card */}
+                <div className={cardContactClass}>
+                  <div className={iconContainerClass}>
+                    <svg {...iconProps}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] text-gray-400 uppercase font-semibold">Email</span>
-                    <a href="mailto:contacto@apicuatroreinas.cl" className="text-xs font-semibold text-gray-700 hover:text-amber truncate block">
-                      contacto@apicuatroreinas.cl
+                    <span className={cardContactLabelClass}>Email</span>
+                    <a href="mailto:apicuatroreinas@gmail.com" className={cardContactValueClass}>
+                      apicuatroreinas@gmail.com
                     </a>
+                    <span className={cardContactDescClass}>Te responderemos a la brevedad</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-yellow-50/30 rounded-xl border border-yellow-100">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <svg className="w-5 h-5 text-amber" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                {/* Teléfono Card */}
+                <div className={cardContactClass}>
+                  <div className={iconContainerClass}>
+                    <svg {...iconProps}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] text-gray-400 uppercase font-semibold">Teléfono</span>
-                    <a href="tel:+56912345678" className="text-xs font-semibold text-gray-700 hover:text-amber truncate block">
+                    <span className={cardContactLabelClass}>Teléfono</span>
+                    <a href="tel:+56956110251" className={cardContactValueClass}>
                       +56 9 5611 0251
                     </a>
+                    <span className={cardContactDescClass}>Lunes a Viernes de 9:00 a 18:00</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 p-3 bg-yellow-50/30 rounded-xl border border-yellow-100">
-                  <div className="p-2 bg-white rounded-lg shadow-sm">
-                    <svg className="w-5 h-5 text-amber" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                {/* Ubicación Card */}
+                <div className={cardContactClass}>
+                  <div className={iconContainerClass}>
+                    <svg {...iconProps}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] text-gray-400 uppercase font-semibold">Ubicación</span>
-                    <span className="text-xs font-semibold text-gray-700 truncate block">
-                      Ruta 5 Sur Km 521, Los Angeles, Chile
+                    <span className={cardContactLabelClass}>Ubicación</span>
+                    <span className={cardContactValueClass}>
+                      Ruta 5 Sur Km 521, Los Ángeles, Chile
                     </span>
+                    <span className={cardContactDescClass}>Despacho a todo el país</span>
                   </div>
                 </div>
               </div>
             </div>
+
           </div>
+          {/* Columna izquierda: Tarjeta de Instagram y Call to Action */}
+          <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
+            <div className="w-full text-center px-2">
+              <span className="inline-block px-3 py-1 bg-amber text-white rounded-full text-xs font-semibold mb-2 uppercase tracking-widest select-none shadow-sm">
+                Nuestra comunidad
+              </span>
+              <p className="text-sm text-gray-600">
+                ¡Síguenos en Instagram para enterarte de nuestras cosechas de miel en tiempo real y aprender sobre el cuidado de las abejas!
+              </p>
+            </div>
+
+            <div className="w-full">
+              <InstagramCard />
+            </div>
+          </div>
+
+
+
+
+
 
         </div>
       </div>
