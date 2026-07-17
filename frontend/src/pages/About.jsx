@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
+import InstagramCard from '../components/InstagramCard'
+
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
@@ -21,12 +23,12 @@ const sombrero = `${mediaBaseURL}/galeria/sombrero.jpg`
 const barbaAbejas = `${mediaBaseURL}/galeria/barbaAbejas.jpg`
 
 const GALERIA = [
-  { id: 1, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas', likes: 98, comments: 8 },
-  { id: 2, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico', likes: 156, comments: 12 },
-  { id: 3, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨', likes: 124, comments: 8 },
-  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨', likes: 133, comments: 5 },
-  { id: 5, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía 🎩', likes: 210, comments: 14 },
-  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝', likes: 93, comments: 8 },
+  { id: 1, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨'},
+  { id: 2, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas'},
+  { id: 3, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía 🎩'},
+  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨'},
+  { id: 5, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico'},
+  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝'},
 ]
 
 export default function About() {
@@ -129,14 +131,14 @@ export default function About() {
       <div className="max-w-6xl mx-auto px-6 pt-16">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h3 className="text-xl font-bold text-gray-900">Galería de Imágenes</h3>
+            <h3 className="text-xl font-bold text-gray-900"> </h3>
             <a
               href="https://www.instagram.com/api4reinas/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-extrabold text-amber hover:text-amber-600 flex items-center gap-1 hover:underline"
             >
-              @api4reinas 📸
+              Siguenos en Instagram 👉 @api4reinas
             </a>
           </div>
           <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
@@ -186,9 +188,9 @@ export default function About() {
 
             {/* Introducción */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes Somos</h3>
+              <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes somos</h3>
               <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-                En <strong>Apícola Cuatro Reinas</strong> somos un apiario emergente que nace con un profundo entusiasmo y un compromiso desde el momento cero. Nos mueve el respeto por la naturaleza, la preocupación por los detalles y la convicción de que las cosas se pueden hacer de una manera diferente. Combinamos la sabiduría de la apicultura tradicional con el respaldo de la ciencia y la tecnología para ofrecer lo mejor de la colmena al mundo.
+                En <strong>Apícola Cuatro Reinas</strong> somos un apiario emergente que nace con mucho entusiasmo y un compromiso desde el momento cero. Nos mueve el respeto por la naturaleza, la preocupación por los detalles y la convicción de que las cosas se pueden hacer de una manera diferente. Combinamos la sabiduría de la apicultura tradicional con el respaldo de la ciencia y la tecnología para ofrecer lo mejor de nuestra colmena al mundo.
               </p>
             </div>
 
@@ -206,10 +208,10 @@ export default function About() {
               >
                 <div className="flex items-center gap-2 text-amber-600">
                   <span className="text-xl select-none">🎯</span>
-                  <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra Misión</h4>
+                  <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra misión</h4>
                 </div>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Entregar productos apícolas de la más alta calidad, bajo una premisa fundamental: la mínima intervención posible. Nos esforzamos en cada etapa del proceso para que cada producto conserve intactas sus propiedades naturales, su pureza y su calidad de origen, llevando de la colmena a tu mesa un alimento vivo, auténtico y respetuoso.
+                  Queremos entregar productos apícolas de la más alta calidad bajo una premisa fundamental: la mínima intervención posible. Nos esforzamos en cada etapa del proceso para que cada producto conserve intactas sus propiedades naturales, su pureza y su calidad de origen.
                 </p>
               </div>
 
@@ -222,10 +224,10 @@ export default function About() {
               >
                 <div className="flex items-center gap-2 text-amber-600">
                   <span className="text-xl select-none">👁️‍🗨️</span>
-                  <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra Visión</h4>
+                  <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra visión</h4>
                 </div>
                 <p className="text-xs text-gray-600 leading-relaxed">
-                  Miramos al futuro con un objetivo claro: la protección de las abejas. Buscamos ser un aporte al mantenimiento del equilibrio ecosistémico y el cuidado del medio ambiente. No nos quedamos solo en la observación, aspiramos a ser agentes de cambio mediante el desarrollo de tecnologías innovadoras que potencien el bienestar, la salud y la preservación de las abejas.
+                  Buscamos ser un aporte al mantenimiento del equilibrio ecosistémico y el cuidado del medio ambiente. Aspiramos a ser agentes de cambio mediante el desarrollo de tecnologías innovadoras que potencien el bienestar, la salud y la preservación de las abejas.
                 </p>
               </div>
             </div>
@@ -238,10 +240,10 @@ export default function About() {
           <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
             <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-md space-y-4">
               <h4 className="font-extrabold text-gray-900 text-base border-b border-gray-100 pb-3 flex items-center gap-2 select-none">
-                El Valor de la Apicultura
+                El valor de la apicultura
               </h4>
               <p className="text-xs text-gray-600 leading-relaxed">
-                La apicultura es la ciencia y el arte de mantener colmenas de abejas con fines ecológicos y productivos. Los apicultores cuidan a las abejas, les proporcionan colmenas seguras y manejan su alimentación y salud, logrando obtener productos como miel, cera, propóleos, jalea real y polen.
+                La apicultura es ciencia y arte, su objetivo es mantener colmenas de abejas con fines ecológicos y productivos. Los apicultores cuidan a las abejas, les proporcionan colmenas seguras y manejan su alimentación y salud, logrando obtener productos como miel, cera, propóleos, jalea real y polen.
               </p>
               <p className="text-xs text-gray-600 leading-relaxed">
                 Además, la apicultura es clave para la polinización de plantas y cultivos, lo que ayuda a la producción de alimentos y mantiene el equilibrio de los ecosistemas.
@@ -258,7 +260,6 @@ export default function About() {
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -273,7 +274,7 @@ export default function About() {
         {/* Contenido de Pilares */}
         <div ref={pilaresRef} className="relative z-10 max-w-6xl mx-auto px-4 space-y-10">
           <h3 className="text-3xl font-black text-white border-b border-white/20 pb-4 tracking-tight select-none text-center md:text-left">
-            Nuestros Pilares Fundamentales
+            Nuestros pilares fundamentales
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -288,9 +289,9 @@ export default function About() {
                 🌱
               </span>
               <div className="space-y-2">
-                <h5 className="font-extrabold text-base text-white">Buenas Prácticas desde el Origen</h5>
+                <h5 className="font-extrabold text-base text-white">Buenas prácticas desde el origen</h5>
                 <p className="text-xs text-yellow-50/80 leading-relaxed">
-                  Implementamos manejos éticos y responsables en el apiario desde el primer día, priorizando siempre la salud de la colmena sobre la producción masiva.
+                  Implementamos manejos éticos y responsables, priorizando siempre la salud de la colmena por sobre la producción masiva.
                 </p>
               </div>
             </div>
@@ -306,9 +307,9 @@ export default function About() {
                 🔬
               </span>
               <div className="space-y-2">
-                <h5 className="font-extrabold text-base text-white">Ciencia y Tecnología Aplicada</h5>
+                <h5 className="font-extrabold text-base text-white">Ciencia y tecnología aplicada</h5>
                 <p className="text-xs text-yellow-50/80 leading-relaxed">
-                  Nos apoyamos en herramientas científicas y tecnológicas para monitorear, entender y proteger a nuestras abejas de manera más eficiente y menos invasiva.
+                  Nos apoyamos en herramientas científicas y tecnológicas para monitorear, entender y proteger a nuestras abejas.
                 </p>
               </div>
             </div>
@@ -324,9 +325,9 @@ export default function About() {
                 💖
               </span>
               <div className="space-y-2">
-                <h5 className="font-extrabold text-base text-white">Pasión por el Detalle</h5>
+                <h5 className="font-extrabold text-base text-white">Pasión por el detalle</h5>
                 <p className="text-xs text-yellow-50/80 leading-relaxed">
-                  Como equipo joven y dinámico, ponemos nuestro corazón en cada proceso, asegurando que la delicadeza y el rigor técnico se reflejen en la excelencia de nuestros productos.
+                  Como equipo joven y dinámico, queremos que nuestra pasión se refleje en la excelencia de nuestros productos.
                 </p>
               </div>
             </div>
