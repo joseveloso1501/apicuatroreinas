@@ -7,12 +7,15 @@ const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0
   : 'https://storage.googleapis.com/bucket4reinas/media';
 
 const FALLBACK_POSTS = [
-  { id: 1, imagen: `${mediaBaseURL}/galeria/envasesMiel.JPG`, likes: 98, comments: 8, link: 'https://www.instagram.com/api4reinas/' },
-  { id: 2, imagen: `${mediaBaseURL}/galeria/yoSostengoMarco.jpg`, likes: 156, comments: 12, link: 'https://www.instagram.com/api4reinas/' },
-  { id: 3, imagen: `${mediaBaseURL}/galeria/envasesMiel.JPG`, likes: 124, comments: 8, link: 'https://www.instagram.com/api4reinas/' },
-  { id: 4, imagen: `${mediaBaseURL}/galeria/mielMano.jpg`, likes: 133, comments: 5, link: 'https://www.instagram.com/api4reinas/' },
-  { id: 5, imagen: `${mediaBaseURL}/galeria/sombrero.jpg`, likes: 210, comments: 14, link: 'https://www.instagram.com/api4reinas/' },
-  { id: 6, imagen: `${mediaBaseURL}/galeria/barbaAbejas.jpg`, likes: 93, comments: 8, link: 'https://www.instagram.com/api4reinas/' },
+  { id: 1, imagen: `${mediaBaseURL}/galeria/envasesMiel.JPG`, likes: 98, comments: 8, link: 'https://www.instagram.com/p/DZyGN7XCJ31/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 2, imagen: `${mediaBaseURL}/galeria/mielMano1Kg.png`, likes: 156, comments: 12, link: 'https://www.instagram.com/p/DZv7ZGyjF1d/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 3, imagen: `${mediaBaseURL}/galeria/mielMano.jpg`, likes: 124, comments: 8, link: 'https://www.instagram.com/p/DZvzbgSDPQY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 4, imagen: `${mediaBaseURL}/galeria/descargaCentrifuga.jpg`, likes: 133, comments: 5, link: 'https://www.instagram.com/reel/DZvxTzkMeiK/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 5, imagen: `${mediaBaseURL}/galeria/centrifuga.jpg`, likes: 210, comments: 14, link: 'https://www.instagram.com/reel/DZvdNGaoDdP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 6, imagen: `${mediaBaseURL}/galeria/rastrillo.jpg`, likes: 93, comments: 8, link: 'https://www.instagram.com/reel/DZvaIkDoo14/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 7, imagen: `${mediaBaseURL}/galeria/miel265Final.png`, likes: 210, comments: 14, link: 'https://www.instagram.com/p/DZlBdcXCNis/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 8, imagen: `${mediaBaseURL}/galeria/flores-abejas.jpg`, likes: 210, comments: 14, link: 'https://www.instagram.com/p/DZgSWzMGkc1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
+  { id: 9, imagen: `${mediaBaseURL}/galeria/mielSet.png`, likes: 210, comments: 14, link: 'https://www.instagram.com/p/DZgSJkAGhJL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
 ]
 
 export default function InstagramCard() {
@@ -61,7 +64,7 @@ export default function InstagramCard() {
   useEffect(() => {
     console.log("InstagramCard: Estado 'posts' actualizado:", posts);
     console.log("InstagramCard: URL de las imágenes a renderizar:", 
-      (posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 9).map(p => ({ id: p.id, imagen: p.imagen }))
+      FALLBACK_POSTS.slice(0, 9).map(p => ({ id: p.id, imagen: p.imagen }))
     );
   }, [posts]);
 
@@ -139,7 +142,7 @@ export default function InstagramCard() {
       {/* Biografía */}
       <div className="text-sm text-gray-700 space-y-1 mb-5">
         <h4 className="font-bold text-gray-950">Apícola Cuatro Reinas</h4>
-        <p>Productos de la colmena directos a tu casa 🍯🐝</p>
+        <p>Productos de nuestra colmena, directo a tu hogar 🍯🐝</p>
         <p>Miel 100% pura y orgánica de Quillay y multifloral 🌸, miel en panal, propóleo natural y más 🍯✨</p>
         <a
           href={profileUrl}
@@ -147,13 +150,13 @@ export default function InstagramCard() {
           rel="noopener noreferrer"
           className="inline-block text-blue-600 hover:underline font-medium text-xs mt-1"
         >
-          linktr.ee/api4reinas
+          https://frontend-sgyhmcn2xa-tl.a.run.app
         </a>
       </div>
 
       {/* Navegación Falsa de Grid */}
       <div className="grid grid-cols-3 gap-2">
-        {(posts.length > 0 ? posts : FALLBACK_POSTS).slice(0, 9).map((post) => (
+        {FALLBACK_POSTS.slice(0, 9).map((post) => (
           <a
             key={post.id}
             href={post.link || profileUrl}
