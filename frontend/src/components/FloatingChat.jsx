@@ -3,7 +3,7 @@ import { FaWhatsapp } from 'react-icons/fa'
 
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false)
-  const [message, setMessage] = useState('Hola, quisiera atención personalizada')
+  const [message, setMessage] = useState('')
   const [showTooltip, setShowTooltip] = useState(false)
 
   // Mostrar un tooltip de atención después de 3 segundos para motivar el click
@@ -31,7 +31,13 @@ export default function FloatingChat() {
       
       {/* Tooltip de atención inicial (se puede cerrar o se oculta al abrir el chat) */}
       {showTooltip && !isOpen && (
-        <div className="absolute right-0 bottom-16 mb-2 w-48 bg-white text-gray-800 text-xs py-2 px-3.5 rounded-xl shadow-xl border border-gray-100 animate-bounce flex items-center justify-between">
+        <div 
+          onClick={() => {
+            setIsOpen(true)
+            setShowTooltip(false)
+          }}
+          className="absolute right-0 bottom-16 mb-2 w-48 bg-white text-gray-800 text-xs py-2 px-3.5 rounded-xl shadow-xl border border-gray-100 animate-bounce flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors"
+        >
           <span>💬 ¿Necesitas ayuda?</span>
           <button 
             onClick={(e) => {
