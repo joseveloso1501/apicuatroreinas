@@ -107,7 +107,7 @@ export default function Products(){
     <section className="py-12 bg-gradient-to-b from-yellow-50/20 to-white min-h-screen">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-extrabold text-darkbee tracking-tight mb-2">Productos</h2>
-        <p className="text-gray-500 text-sm mb-8">Explora los mejores productos de la colmena directos a tu mesa.</p>
+        <p className="text-gray-500 text-sm mb-8">Explora los mejores productos de nuestra colmena</p>
 
         {/* Panel de Filtros Premium */}
         {!loading && (
