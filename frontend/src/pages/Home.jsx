@@ -11,7 +11,7 @@ const BEES = [
 ]
 
 export default function Home(){
-  const line1 = "Productos de nuestra colmena,"
+  const line1 = "Desde el corazón de nuestra colmena,"
   const line2 = "directamente a tu hogar"
   const [typedLine1, setTypedLine1] = useState("")
   const [typedLine2, setTypedLine2] = useState("")
@@ -60,7 +60,7 @@ export default function Home(){
             <p className={`mt-4 text-base md:text-xl text-yellow-50/90 max-w-2xl mx-auto select-none transition-all duration-1000 transform ${
               isDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}>
-              Miel, propóleo y más. Descubre lo que las abejas pueden hacer para ti con las flores de nuestra tierra. 🐝🍯
+              Descubre lo que nuestras abejas pueden hacer por ti con las flores de su tierra.
             </p>
             <div className={`mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-300 transform ${
               isDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
