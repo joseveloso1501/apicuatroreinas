@@ -745,13 +745,23 @@ export default function Profile() {
                               <div className="space-y-1">
                                 <h4 className="font-bold text-gray-400 uppercase tracking-wider text-[9px]">Datos de Despacho</h4>
                                 <p className="font-semibold text-gray-800">{pedido.nombre_completo}</p>
-                                <p className="text-gray-600">{pedido.direccion}, {pedido.ciudad}</p>
-                                <p className="text-gray-600">Tel: {pedido.telefono}</p>
+                                <p className="text-gray-600">Teléfono: {pedido.telefono}</p>
+                                <p className="text-gray-600">Dirección: {pedido.direccion}, {pedido.ciudad}</p>
                               </div>
                               <div className="space-y-1">
                                 <h4 className="font-bold text-gray-400 uppercase tracking-wider text-[9px]">Información Adicional</h4>
                                 <p className="text-gray-600">Método de pago: <strong className="capitalize">{pedido.metodo_pago}</strong></p>
-                                <p className="text-gray-600">Email: {pedido.email}</p>
+                                {pedido.metodo_pago?.toLowerCase() === 'transferencia' && (
+                                  <div className="text-gray-600 space-y-0.5 mt-2 bg-amber-50/50 p-2.5 rounded-xl border border-amber-100/50">
+                                    <p className="font-semibold text-gray-700">Datos para transferencia:</p>
+                                    <p>Jose Veloso</p>
+                                    <p>19.600.494-7</p>
+                                    <p>Banco de Chile</p>
+                                    <p>Cuenta Corriente</p>
+                                    <p>00-225-52723-05</p>
+                                    <p>apicuatroreinas@gmail.com</p>
+                                  </div>
+                                )}
                               </div>
                             </div>
 
