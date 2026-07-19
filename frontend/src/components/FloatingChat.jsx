@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { FaWhatsapp } from 'react-icons/fa'
+import { useCart } from '../context/CartContext'
 
 export default function FloatingChat() {
   const [isOpen, setIsOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [showTooltip, setShowTooltip] = useState(false)
+  const { isCartOpen } = useCart()
+
+  // Ocultar chat y tooltip si se abre el carrito
+  useEffect(() => {
+    if (isCartOpen) {
+      setShowTooltip(false)
+      setIsOpen(false)
+    }
+  }, [isCartOpen])
 
   // Clases de estilo encapsuladas
   const chatContainerClass = "absolute right-0 bottom-16 w-80 bg-white rounded-2xl border border-gray-100 shadow-2xl overflow-hidden transition-all duration-300 transform origin-bottom-right"
