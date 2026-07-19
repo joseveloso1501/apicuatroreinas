@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import InstagramCard from '../components/InstagramCard'
 
 export default function Contact() {
+  //   ESTADOS Y HOOKS  
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
@@ -9,6 +10,7 @@ export default function Contact() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  //   CLASES DE ESTILO ENCAPSULADAS  
   const cardContactClass = "bg-yellow-50/40 rounded-xl p-5 flex items-center gap-4 border border-yellow-100"
   const iconContainerClass = "p-3 bg-white rounded-lg shadow-sm"
   const cardContactLabelClass = "block text-xs text-gray-500 uppercase font-semibold"
@@ -16,6 +18,12 @@ export default function Contact() {
   const cardContactDescClass = "block text-xs text-gray-400"
   const inputClass = "w-full p-3.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all duration-200 text-gray-800 placeholder-gray-400 text-sm disabled:opacity-60"
   const labelClass = "text-xs font-semibold text-gray-700 uppercase tracking-wider"
+
+  // Botones y alertas
+  const submitBtnClass = "w-full md:w-auto px-8 py-3 bg-amber text-white font-semibold rounded-full hover:bg-amber-600 active:scale-95 transition-all duration-150 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+  const badgeClass = "inline-block px-3 py-1 bg-amber text-white rounded-full text-xs font-semibold mb-2 uppercase tracking-widest select-none shadow-sm"
+
+  // Configuración de iconos SVG
   const iconProps = {
     className: "w-6 h-6 text-amber",
     fill: "none",
@@ -24,6 +32,7 @@ export default function Contact() {
     viewBox: "0 0 24 24"
   }
 
+  //   MANEJADOR DE ENVIO (API CALL)  
   const submit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -54,11 +63,12 @@ export default function Contact() {
     }
   }
 
+  //   RENDERIZADO DEL COMPONENTE  
   return (
     <section className="py-16 bg-gradient-to-b from-yellow-50/50 to-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
+
           {/* Columna derecha: Formulario e Información de Contacto */}
           <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-2xl border border-gray-100 shadow-sm space-y-8">
             <div>
@@ -143,7 +153,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full md:w-auto px-8 py-3 bg-amber text-white font-semibold rounded-full hover:bg-amber-600 active:scale-95 transition-all duration-150 shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                  className={submitBtnClass}
                 >
                   <span>{loading ? 'Enviando...' : 'Enviar mensaje'}</span>
                   {!loading && (
@@ -217,24 +227,17 @@ export default function Contact() {
           {/* Columna izquierda: Tarjeta de Instagram y Call to Action */}
           <div className="lg:col-span-5 space-y-6 flex flex-col items-center">
             <div className="w-full text-center px-2">
-              <span className="inline-block px-3 py-1 bg-amber text-white rounded-full text-xs font-semibold mb-2 uppercase tracking-widest select-none shadow-sm">
+              <span className={badgeClass}>
                 Nuestra comunidad
               </span>
               <p className="text-sm text-gray-600">
                 ¡Síguenos en Instagram para enterarte de nuestras cosechas de miel en tiempo real y aprender sobre el cuidado de las abejas!
               </p>
             </div>
-
             <div className="w-full">
               <InstagramCard />
             </div>
           </div>
-
-
-
-
-
-
         </div>
       </div>
     </section>

@@ -19,12 +19,27 @@ const FALLBACK_POSTS = [
 ]
 
 export default function InstagramCard() {
+  //   ESTADOS Y PROPIEDADES  
   const [isFollowing, setIsFollowing] = useState(false)
   const [logoUrl, setLogoUrl] = useState()
   const [followersCount, setFollowersCount] = useState(10)
   const [posts, setPosts] = useState([])
   const profileUrl = 'https://www.instagram.com/api4reinas/'
 
+  //   CLASES DE ESTILO ENCAPSULADAS  
+  const cardContainerClass = "bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300"
+  const statsLabelClass = "text-[10px] uppercase tracking-wider text-gray-400"
+  const statsValueClass = "block font-bold text-gray-900 text-sm"
+  const gridItemClass = "block aspect-square overflow-hidden bg-gray-50 relative group rounded-md shadow-sm"
+  const overlayHoverClass = "absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 text-white font-semibold text-xs"
+
+  const followBtnClass = (following) =>
+    `w-full py-1.5 px-4 rounded-lg font-semibold text-xs transition-all duration-200 active:scale-95 ${following
+      ? 'bg-gray-100 text-gray-800 border border-gray-200 hover:bg-gray-200'
+      : 'bg-amber text-white hover:bg-amber-600 shadow-sm'
+    }`
+
+  //   MANEJADORES DE EVENTOS  
   const handleFollowToggle = () => {
     if (isFollowing) {
       setIsFollowing(false)
@@ -36,19 +51,20 @@ export default function InstagramCard() {
     window.open(profileUrl, '_blank')
   }
 
+  //   EFECTOS (API CALLS)  
   useEffect(() => {
     axios.get(`${baseURL}/api/galeria/`)
       .then(response => {
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
         console.log("InstagramCard: Datos obtenidos de /api/galeria/:", data);
-        
+
         // Buscamos el elemento que contenga la imagen de perfil por su nombre de archivo
         const fotoPerfil = data.find(item => item.imagen && item.imagen.includes('imagenPerfilInstagramCard'));
         if (fotoPerfil) {
           console.log("InstagramCard: URL de la foto de perfil encontrada:", fotoPerfil.imagen);
           setLogoUrl(fotoPerfil.imagen);
         }
-        
+
         // Filtramos la foto de perfil para la grilla
         const gridItems = data.filter(item => item.imagen && !item.imagen.includes('imagenPerfilInstagramCard'));
         console.log("InstagramCard: Posts filtrados para la grilla:", gridItems);
@@ -63,13 +79,14 @@ export default function InstagramCard() {
 
   useEffect(() => {
     console.log("InstagramCard: Estado 'posts' actualizado:", posts);
-    console.log("InstagramCard: URL de las imágenes a renderizar:", 
+    console.log("InstagramCard: URL de las imágenes a renderizar:",
       FALLBACK_POSTS.slice(0, 9).map(p => ({ id: p.id, imagen: p.imagen }))
     );
   }, [posts]);
 
+  //   RENDERIZADO DEL COMPONENTE  
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300">
+    <div className={cardContainerClass}>
       {/* Cabecera del perfil */}
       <div className="flex items-center gap-4 mb-5">
         {/* Avatar con gradiente estilo Story */}
@@ -111,10 +128,7 @@ export default function InstagramCard() {
             //onClick={() => window.open(profileUrl, '_blank')}
 
             onClick={handleFollowToggle}
-            className={`w-full py-1.5 px-4 rounded-lg font-semibold text-xs transition-all duration-200 active:scale-95 ${isFollowing
-              ? 'bg-gray-100 text-gray-800 border border-gray-200 hover:bg-gray-200'
-              : 'bg-amber text-white hover:bg-amber-600 shadow-sm'
-              }`}
+            className={followBtnClass(isFollowing)}
           >
             {isFollowing ? 'Siguiendo' : 'Seguir'}
           </button>
@@ -124,28 +138,28 @@ export default function InstagramCard() {
       {/* Estadísticas */}
       {<div className="grid grid-cols-3 text-center border-t border-b border-gray-100 py-3 mb-4">
         <div>
-          <span className="block font-bold text-gray-900 text-sm">10</span>
-          <span className="text-[10px] uppercase tracking-wider text-gray-400">Posts</span>
+          <span className={statsValueClass}>10</span>
+          <span className={statsLabelClass}>Posts</span>
         </div>
         <div>
-          <span className="block font-bold text-gray-900 text-sm">
+          <span className={statsValueClass}>
             {followersCount.toLocaleString()}
           </span>
-          <span className="text-[10px] uppercase tracking-wider text-gray-400">Seguidores</span>
+          <span className={statsLabelClass}>Seguidores</span>
         </div>
         <div>
-          <span className="block font-bold text-gray-900 text-sm">3</span>
-          <span className="text-[10px] uppercase tracking-wider text-gray-400">Seguidos</span>
+          <span className={statsValueClass}>3</span>
+          <span className={statsLabelClass}>Seguidos</span>
         </div>
       </div>}
 
       {/* Biografía */}
       <div className="text-sm text-gray-700 space-y-1 mb-5">
         <h4 className="font-bold text-gray-950">Apícola Cuatro Reinas</h4>
-        <p>Productos de nuestra colmena, directo a tu hogar 🍯🐝</p>
-        <p>Miel 100% pura y orgánica de Quillay y multifloral 🌸, miel en panal, propóleo natural y más 🍯✨</p>
+        <p>Productos de nuestra colmena directo a tu hogar 🐝</p>
+        <p>Miel 100% pura y orgánica de Quillay y multifloral 🌸, propóleo natural y más 🍯✨</p>
         <a
-          href={profileUrl}
+          href={`https://frontend-sgyhmcn2xa-tl.a.run.app`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-block text-blue-600 hover:underline font-medium text-xs mt-1"
@@ -162,18 +176,18 @@ export default function InstagramCard() {
             href={post.link || profileUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="block aspect-square overflow-hidden bg-gray-50 relative group rounded-md shadow-sm"
+            className={gridItemClass}
           >
             {/* Imagen del Post */}
-            <img 
-              src={post.imagen} 
+            <img
+              src={post.imagen}
               alt={post.caption || "Publicación de Instagram"}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-              //loading="lazy"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            //loading="lazy"
             />
-            
+
             {/* Overlay interactivo en Hover */}
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 text-white font-semibold text-xs">
+            <div className={overlayHoverClass}>
               <span className="flex items-center gap-1 select-none">
                 ❤️ <span className="text-white">{/*post.likes*/}</span>
               </span>
@@ -184,7 +198,7 @@ export default function InstagramCard() {
           </a>
         ))}
       </div>
-        
+
       {/* Grilla de publicaciones */}
       {/* {<iframe
         src="//lightwidget.com/widgets/4d28b0d4574e53e09ae0187176624cab.html"

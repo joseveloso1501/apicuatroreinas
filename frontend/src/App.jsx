@@ -12,7 +12,7 @@ import FloatingChat from './components/FloatingChat'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 
-export default function App(){
+export default function App() {
   return (
     <AuthProvider>
       <CartProvider>

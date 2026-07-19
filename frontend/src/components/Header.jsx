@@ -10,37 +10,34 @@ const DropdownArrow = () => (
   </svg>
 )
 
-export default function Header(){
+export default function Header() {
   const [open, setOpen] = useState(false)
   const { cartCount, setIsCartOpen } = useCart()
   const { user, logout } = useAuth()
 
   // Clases dinámicas para los enlaces de escritorio
-  const navLinkClass = ({ isActive }) => 
-    `relative py-1.5 text-sm font-semibold transition-colors duration-200 group select-none ${
-      isActive ? 'text-amber-600' : 'text-gray-600 hover:text-amber-600'
+  const navLinkClass = ({ isActive }) =>
+    `relative py-1.5 text-sm font-semibold transition-colors duration-200 group select-none ${isActive ? 'text-amber-600' : 'text-gray-600 hover:text-amber-600'
     }`
 
   // Clases dinámicas para los enlaces del menú desplegable
   const navSubLinkClass = () =>
     "block px-4 py-2 text-xs font-bold text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600 transition-colors text-center"
-    
+
   // Clases dinámicas para la barra indicadora activa
   const activeIndicatorClass = ({ isActive, customBottom = 'bottom-0' }) =>
-    `absolute ${customBottom} left-0 h-[2px] bg-amber transition-all duration-300 ${
-      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+    `absolute ${customBottom} left-0 h-[2px] bg-amber transition-all duration-300 ${isActive ? 'w-full' : 'w-0 group-hover:w-full'
     }`
 
   // Clases para el contenedor de menú desplegable
-  const dropdownContainerClass = 
+  const dropdownContainerClass =
     "absolute top-full left-1/2 -translate-x-1/2 mt-2 w-44 bg-white border border-gray-100 rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top scale-95 group-hover:scale-100"
 
   // Clases dinámicas para los enlaces en móvil
-  const mobileNavLinkClass = ({ isActive }) => 
-    `px-4 py-2.5 rounded-xl font-bold text-base transition-all duration-200 ${
-      isActive 
-        ? 'bg-amber/10 text-amber-600 border-l-4 border-amber pl-3' 
-        : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
+  const mobileNavLinkClass = ({ isActive }) =>
+    `px-4 py-2.5 rounded-xl font-bold text-base transition-all duration-200 ${isActive
+      ? 'bg-amber/10 text-amber-600 border-l-4 border-amber pl-3'
+      : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
     }`
 
   return (
@@ -53,7 +50,7 @@ export default function Header(){
 
         {/* Menú de Escritorio */}
         <nav className="hidden md:flex gap-8 items-center">
-          
+
           <NavLink to="/" className={navLinkClass}>
             {({ isActive }) => (
               <>
@@ -76,21 +73,21 @@ export default function Header(){
                 </>
               )}
             </NavLink>
-            
+
             {/* Menú Desplegable de Escritorio */}
             <div className={dropdownContainerClass}>
               <NavLink to="/productos?categoria=Alimentos" className={navSubLinkClass}>
-                  Alimentos
+                Alimentos
               </NavLink>
               <NavLink to="/productos?categoria=Medicinas" className={navSubLinkClass}>
-                  Medicinas
+                Medicinas
               </NavLink>
               <NavLink to="/productos?categoria=Insumos" className={navSubLinkClass}>
-                 Insumos
+                Insumos
               </NavLink>
             </div>
           </div>
-          
+
           <NavLink to="/sobre" className={navLinkClass}>
             {({ isActive }) => (
               <>
@@ -112,24 +109,24 @@ export default function Header(){
                 </>
               )}
             </NavLink>
-            
+
             {/* Menú Desplegable Contacto */}
             <div className={dropdownContainerClass}>
               <NavLink to="/contacto" className={navSubLinkClass}>
                 Contáctanos aquí
               </NavLink>
-              <a 
-                href="https://wa.me/56956110251" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://wa.me/56956110251"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={navSubLinkClass({ isActive: false })}
               >
                 Whatsapp
               </a>
-              <a 
-                href="https://www.instagram.com/api4reinas/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://www.instagram.com/api4reinas/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={navSubLinkClass({ isActive: false })}
               >
                 Instagram
@@ -139,8 +136,8 @@ export default function Header(){
 
           {/* Botón/Dropdown Perfil (Escritorio) */}
           <div className="relative group">
-            <NavLink 
-              to="/profile" 
+            <NavLink
+              to="/profile"
               className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 flex items-center gap-1.5 select-none cursor-pointer"
               aria-label="Ir a perfil"
             >
@@ -155,7 +152,7 @@ export default function Header(){
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   )}
-                  
+
                   <span className="hidden lg:inline text-xs font-bold text-gray-700">
                     {user ? (user.first_name || 'Mi Cuenta') : 'Iniciar Sesión'}
                   </span>
@@ -171,31 +168,31 @@ export default function Header(){
             {/* Menú Desplegable Perfil de Escritorio (sólo si ha iniciado sesión) */}
             {user && (
               <div className={dropdownContainerClass}>
-                <NavLink 
-                  to="/profile?tab=profile" 
+                <NavLink
+                  to="/profile?tab=profile"
                   className={navSubLinkClass}
                 >
                   Mi perfil
                 </NavLink>
-                <NavLink 
-                  to="/profile?tab=orders" 
+                <NavLink
+                  to="/profile?tab=orders"
                   className={navSubLinkClass}
                 >
                   Mis pedidos
                 </NavLink>
-                <NavLink 
-                  to="/profile?tab=coupons" 
+                <NavLink
+                  to="/profile?tab=coupons"
                   className={navSubLinkClass}
                 >
                   Mis cupones
                 </NavLink>
-                <NavLink 
-                  to="/profile?tab=security" 
+                <NavLink
+                  to="/profile?tab=security"
                   className={navSubLinkClass}
                 >
                   Seguridad
                 </NavLink>
-                <button 
+                <button
                   onClick={logout}
                   className="w-full block px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50/50 hover:text-red-700 transition-colors text-center cursor-pointer border-t border-gray-100 mt-1 pt-2"
                 >
@@ -204,15 +201,15 @@ export default function Header(){
               </div>
             )}
           </div>
-          
+
           {/* Botón Carrito de Compras (Escritorio) */}
-          <button 
-            onClick={() => setIsCartOpen(true)} 
+          <button
+            onClick={() => setIsCartOpen(true)}
             className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Abrir carrito"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-amber text-white text-[12px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center border border-white animate-pulse">
@@ -221,8 +218,8 @@ export default function Header(){
             )}
           </button>
 
-          <Link 
-            to="/productos" 
+          <Link
+            to="/productos"
             className="btn-primary transition-all duration-200 hover:scale-105 active:scale-95 hover:shadow-md flex items-center justify-center"
           >
             Tienda
@@ -232,13 +229,13 @@ export default function Header(){
         {/* Controles para Móvil */}
         <div className="flex items-center gap-3 md:hidden">
           {/* Botón Carrito (Móvil) */}
-          <button 
-            onClick={() => setIsCartOpen(true)} 
+          <button
+            onClick={() => setIsCartOpen(true)}
             className="relative p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Abrir carrito"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-amber text-white text-[12px] font-extrabold w-6 h-6 rounded-full flex items-center justify-center border border-white animate-pulse">
@@ -248,8 +245,8 @@ export default function Header(){
           </button>
 
           {/* Botón Perfil (Móvil) */}
-          <Link 
-            to="/profile" 
+          <Link
+            to="/profile"
             className="p-2 text-gray-600 hover:text-amber-600 active:scale-95 transition-all duration-200 cursor-pointer"
             aria-label="Ir a perfil"
           >
@@ -265,8 +262,8 @@ export default function Header(){
           </Link>
 
           {/* Botón Menú Hambuguesa */}
-          <button 
-            onClick={()=>setOpen(!open)} 
+          <button
+            onClick={() => setOpen(!open)}
             className="p-2 rounded-md bg-yellow-100/50 hover:bg-yellow-100 text-darkbee active:scale-95 transition-all"
             aria-label="Abrir menú"
           >
@@ -279,17 +276,17 @@ export default function Header(){
       {open && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-inner">
           <div className="px-4 py-3 flex flex-col gap-2">
-            <NavLink to="/" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Inicio</NavLink>
-            <NavLink to="/productos" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Productos</NavLink>
+            <NavLink to="/" onClick={() => setOpen(false)} className={mobileNavLinkClass}>Inicio</NavLink>
+            <NavLink to="/productos" onClick={() => setOpen(false)} className={mobileNavLinkClass}>Productos</NavLink>
             {/* Sub-items del menú en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
-              <Link to="/productos?categoria=Alimentos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                 Alimentos
+              <Link to="/productos?categoria=Alimentos" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                Alimentos
               </Link>
-              <Link to="/productos?categoria=Medicinas" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                 Medicinas
+              <Link to="/productos?categoria=Medicinas" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                Medicinas
               </Link>
-              <Link to="/productos?categoria=Insumos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+              <Link to="/productos?categoria=Insumos" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
                 Insumos
               </Link>
               {/* <Link to="/productos" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
@@ -299,58 +296,58 @@ export default function Header(){
                  Material biológico
               </Link> */}
             </div>
-            <NavLink to="/sobre" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Nosotros</NavLink>
-            <NavLink to="/contacto" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
+            <NavLink to="/sobre" onClick={() => setOpen(false)} className={mobileNavLinkClass}>Nosotros</NavLink>
+            <NavLink to="/contacto" onClick={() => setOpen(false)} className={mobileNavLinkClass}>Contacto</NavLink>
             {/* Sub-items del menú Contacto en Móvil */}
             <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
-              <Link to="/contacto" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                 Contáctanos aquí
+              <Link to="/contacto" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                Contáctanos aquí
               </Link>
-              <a 
-                href="https://wa.me/56956110251" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                onClick={()=>setOpen(false)} 
+              <a
+                href="https://wa.me/56956110251"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
                 className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
               >
-                 Whatsapp
+                Whatsapp
               </a>
-              <a 
-                href="https://www.instagram.com/api4reinas/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                onClick={()=>setOpen(false)} 
+              <a
+                href="https://www.instagram.com/api4reinas/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
                 className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1"
               >
-                 Instagram
+                Instagram
               </a>
             </div>
-            <NavLink to="/profile" onClick={()=>setOpen(false)} className={mobileNavLinkClass}>Mi cuenta</NavLink>
-              {user && (
-                <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
-                  <Link to="/profile?tab=profile" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                    Mi perfil
-                  </Link>
-                  <Link to="/profile?tab=orders" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                    Mis pedidos
-                  </Link>
-                  <Link to="/profile?tab=coupons" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                    Mis cupones
-                  </Link>
-                  <Link to="/profile?tab=security" onClick={()=>setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
-                    Seguridad
-                  </Link>  
-                  <button 
-                    onClick={() => {
-                      logout()
-                      setOpen(false)
-                    }} 
-                    className="text-left text-sm font-bold text-red-500 hover:text-red-700 flex items-center gap-1.5 py-1 cursor-pointer"
-                  >
-                    Cerrar sesión
-                  </button>
-                </div>
-              )}
+            <NavLink to="/profile" onClick={() => setOpen(false)} className={mobileNavLinkClass}>Mi cuenta</NavLink>
+            {user && (
+              <div className="pl-6 flex flex-col gap-2 -mt-1 mb-2">
+                <Link to="/profile?tab=profile" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                  Mi perfil
+                </Link>
+                <Link to="/profile?tab=orders" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                  Mis pedidos
+                </Link>
+                <Link to="/profile?tab=coupons" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                  Mis cupones
+                </Link>
+                <Link to="/profile?tab=security" onClick={() => setOpen(false)} className="text-sm font-bold text-gray-500 hover:text-amber flex items-center gap-1.5 py-1">
+                  Seguridad
+                </Link>
+                <button
+                  onClick={() => {
+                    logout()
+                    setOpen(false)
+                  }}
+                  className="text-left text-sm font-bold text-red-500 hover:text-red-700 flex items-center gap-1.5 py-1 cursor-pointer"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

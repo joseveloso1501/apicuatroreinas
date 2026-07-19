@@ -23,12 +23,12 @@ const sombrero = `${mediaBaseURL}/galeria/sombrero.jpg`
 const barbaAbejas = `${mediaBaseURL}/galeria/barbaAbejas.jpg`
 
 const GALERIA = [
-  { id: 1, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨'},
-  { id: 2, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas'},
-  { id: 3, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía 🎩'},
-  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨'},
-  { id: 5, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico'},
-  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝'},
+  { id: 1, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨' },
+  { id: 2, image: imgCajones, caption: 'Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas' },
+  { id: 3, image: sombrero, caption: 'En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía 🎩' },
+  { id: 4, image: mielMano, caption: 'Miel a horas de ser envasada, pureza en su maximo esplendor ✨' },
+  { id: 5, image: imgYo, caption: 'Trabajando en el apiario de Cuatro Reinas 🐝🍯 #apicultura #organico' },
+  { id: 6, image: barbaAbejas, caption: 'Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝' },
 ]
 
 export default function About() {
@@ -39,6 +39,24 @@ export default function About() {
   const pilaresRef = useRef(null)
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(null)
+
+  // Clases comunes para animación y layouts
+  const slideInLeftStateClass = (visible) => visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-16'
+
+  // Misión y Visión
+  const visionCardBaseClass = "rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out transform"
+  const visionHeaderClass = "flex items-center gap-2 text-amber-600"
+  const visionTitleClass = "font-bold text-sm uppercase tracking-wider"
+  const visionDescClass = "text-xs text-gray-600 leading-relaxed"
+
+  // Pilares
+  const pilarCardClass = "flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out transform"
+  const pilarIconClass = "text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner"
+  const pilarTitleClass = "font-extrabold text-base text-white"
+  const pilarDescClass = "text-xs text-yellow-50/80 leading-relaxed"
+
+  // Navegación Lightbox
+  const navBtnBaseClass = "absolute top-1/2 -translate-y-1/2 z-50 bg-black/40 hover:bg-amber text-white w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-md select-none border border-white/10"
 
   // Observer para Misión y Visión
   useEffect(() => {
@@ -201,32 +219,26 @@ export default function About() {
             >
               {/* Misión */}
               <div
-                className={`bg-yellow-50/20 border border-yellow-100 rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out transform ${isVisible
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 -translate-x-16'
-                  }`}
+                className={`bg-yellow-50/20 border border-yellow-100 ${visionCardBaseClass} ${slideInLeftStateClass(isVisible)}`}
               >
-                <div className="flex items-center gap-2 text-amber-600">
+                <div className={visionHeaderClass}>
                   <span className="text-xl select-none">🎯</span>
-                  <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra misión</h4>
+                  <h4 className={visionTitleClass}>Nuestra misión</h4>
                 </div>
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  Queremos entregar productos apícolas de la más alta calidad bajo una premisa fundamental: la mínima intervención posible. Nos esforzamos en cada etapa del proceso para que cada producto conserve intactas sus propiedades naturales, su pureza y su calidad de origen.
+                <p className={visionDescClass}>
+                  Queremos entregar productos apícolas de la más alta calidad bajo una premisa fundamental: la mínima intervención posible. Nos esforzamos en cada etapa del proceso para que cada productoconserve intactas sus propiedades naturales, su pureza y su calidad de origen.
                 </p>
               </div>
 
               {/* Visión */}
               <div
-                className={`bg-amber/5 border border-amber/10 rounded-2xl p-6 shadow-xs space-y-3 transition-all duration-1000 ease-out delay-200 transform ${isVisible
-                  ? 'opacity-100 translate-x-0'
-                  : 'opacity-0 -translate-x-16'
-                  }`}
+                className={`bg-amber/5 border border-amber/10 ${visionCardBaseClass} delay-200 ${slideInLeftStateClass(isVisible)}`}
               >
-                <div className="flex items-center gap-2 text-amber-600">
+                <div className={visionHeaderClass}>
                   <span className="text-xl select-none">👁️‍🗨️</span>
-                  <h4 className="font-bold text-sm uppercase tracking-wider">Nuestra visión</h4>
+                  <h4 className={visionTitleClass}>Nuestra visión</h4>
                 </div>
-                <p className="text-xs text-gray-600 leading-relaxed">
+                <p className={visionDescClass}>
                   Buscamos ser un aporte al mantenimiento del equilibrio ecosistémico y el cuidado del medio ambiente. Aspiramos a ser agentes de cambio mediante el desarrollo de tecnologías innovadoras que potencien el bienestar, la salud y la preservación de las abejas.
                 </p>
               </div>
@@ -280,17 +292,14 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Pilar 1 */}
             <div
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out transform ${pilaresVisible
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-16'
-                }`}
+              className={`${pilarCardClass} ${slideInLeftStateClass(pilaresVisible)}`}
             >
-              <span className="text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner">
+              <span className={pilarIconClass}>
                 🌱
               </span>
               <div className="space-y-2">
-                <h5 className="font-extrabold text-base text-white">Buenas prácticas desde el origen</h5>
-                <p className="text-xs text-yellow-50/80 leading-relaxed">
+                <h5 className={pilarTitleClass}>Buenas prácticas</h5>
+                <p className={pilarDescClass}>
                   Implementamos manejos éticos y responsables, priorizando siempre la salud de la colmena por sobre la producción masiva.
                 </p>
               </div>
@@ -298,17 +307,14 @@ export default function About() {
 
             {/* Pilar 2 */}
             <div
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-200 transform ${pilaresVisible
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-16'
-                }`}
+              className={`${pilarCardClass} delay-200 ${slideInLeftStateClass(pilaresVisible)}`}
             >
-              <span className="text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner">
+              <span className={pilarIconClass}>
                 🔬
               </span>
               <div className="space-y-2">
-                <h5 className="font-extrabold text-base text-white">Ciencia y tecnología aplicada</h5>
-                <p className="text-xs text-yellow-50/80 leading-relaxed">
+                <h5 className={pilarTitleClass}>Ciencia y tecnología aplicada</h5>
+                <p className={pilarDescClass}>
                   Nos apoyamos en herramientas científicas y tecnológicas para monitorear, entender y proteger a nuestras abejas.
                 </p>
               </div>
@@ -316,17 +322,14 @@ export default function About() {
 
             {/* Pilar 3 */}
             <div
-              className={`flex items-start gap-4 p-6 rounded-2xl border border-white/10 bg-stone-900/80 hover:bg-stone-900/95 hover:border-white/25 transition-all duration-1000 ease-out delay-400 transform ${pilaresVisible
-                ? 'opacity-100 translate-x-0'
-                : 'opacity-0 -translate-x-16'
-                }`}
+              className={`${pilarCardClass} delay-400 ${slideInLeftStateClass(pilaresVisible)}`}
             >
-              <span className="text-3xl p-3 bg-amber/20 border border-amber/30 rounded-2xl select-none flex items-center justify-center shrink-0 shadow-inner">
+              <span className={pilarIconClass}>
                 💖
               </span>
               <div className="space-y-2">
-                <h5 className="font-extrabold text-base text-white">Pasión por el detalle</h5>
-                <p className="text-xs text-yellow-50/80 leading-relaxed">
+                <h5 className={pilarTitleClass}>Pasión por el detalle</h5>
+                <p className={pilarDescClass}>
                   Como equipo joven y dinámico, queremos que nuestra pasión se refleje en la excelencia de nuestros productos.
                 </p>
               </div>
@@ -351,7 +354,7 @@ export default function About() {
 
           {/* Botón Navegación Izquierda */}
           <button
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 bg-black/40 hover:bg-amber text-white w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-md select-none border border-white/10"
+            className={`${navBtnBaseClass} left-4 md:left-8`}
             onClick={(e) => {
               e.stopPropagation()
               setSelectedImageIndex((prev) => (prev - 1 + GALERIA.length) % GALERIA.length)
@@ -364,7 +367,7 @@ export default function About() {
 
           {/* Botón Navegación Derecha */}
           <button
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 bg-black/40 hover:bg-amber text-white w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-md select-none border border-white/10"
+            className={`${navBtnBaseClass} right-4 md:right-8`}
             onClick={(e) => {
               e.stopPropagation()
               setSelectedImageIndex((prev) => (prev + 1) % GALERIA.length)

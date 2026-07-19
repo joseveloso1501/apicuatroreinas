@@ -10,9 +10,12 @@ const BEES = [
   { id: 5, duration: '14s', delay: '9s', size: 'text-2xl' },
 ]
 
-export default function Home(){
-  const line1 = "Desde el corazón de nuestra colmena,"
-  const line2 = "directamente a tu hogar"
+export default function Home() {
+  const line1 = "Desde el corazón de nuestra colmena, directamente a tu hogar"
+  const line2 = "" //"directamente a tu hogar"
+  const btnBaseClass = "w-full sm:w-auto px-8 py-3.5 text-lg font-bold rounded-full hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-xl flex items-center justify-center cursor-pointer"
+  const fadeInUpClass = "transition-all duration-1000 transform"
+  const fadeInUpStateClass = (active) => active ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
   const [typedLine1, setTypedLine1] = useState("")
   const [typedLine2, setTypedLine2] = useState("")
   const [isDone, setIsDone] = useState(false)
@@ -20,13 +23,13 @@ export default function Home(){
   useEffect(() => {
     let index1 = 0
     let index2 = 0
-    
+
     const interval1 = setInterval(() => {
       setTypedLine1(line1.slice(0, index1 + 1))
       index1++
       if (index1 >= line1.length) {
         clearInterval(interval1)
-        
+
         setTimeout(() => {
           const interval2 = setInterval(() => {
             setTypedLine2(line2.slice(0, index2 + 1))
@@ -53,29 +56,25 @@ export default function Home(){
           <div>
             <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight select-none min-h-[5rem] sm:min-h-[7rem] md:min-h-[8rem] lg:min-h-[9rem]">
               {typedLine1}
-              <br className="hidden md:inline"/>
+              <br className="hidden md:inline" />
               {typedLine2}
-              {!isDone && <span className="animate-pulse text-amber-400">|</span>}
+              {/* {!isDone && <span className="animate-pulse text-amber-400">|</span>} */}
             </h1>
-            <p className={`mt-4 text-base md:text-xl text-yellow-50/90 max-w-2xl mx-auto select-none transition-all duration-1000 transform ${
-              isDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-              Descubre lo que nuestras abejas pueden hacer por ti con las flores de su tierra.
+            <p className={`mt-4 text-base md:text-xl text-yellow-50/90 max-w-2xl mx-auto select-none ${fadeInUpClass} ${fadeInUpStateClass(isDone)}`}>
+              Descubre lo que nuestras abejas son capaces de hacer por ti con las flores de su tierra.
             </p>
-            <div className={`mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center transition-all duration-1000 delay-300 transform ${
-              isDone ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}>
-              <Link 
-                to="/productos" 
-                className="w-full sm:w-auto px-8 py-3.5 bg-amber text-white text-lg font-bold rounded-full hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg hover:shadow-xl hover:bg-amber-600 flex items-center justify-center cursor-pointer"
+            <div className={`mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center ${fadeInUpClass} delay-300 ${fadeInUpStateClass(isDone)}`}>
+              <Link
+                to="/productos"
+                className={`${btnBaseClass} bg-amber text-white shadow-lg hover:bg-amber-600`}
               >
                 Ver productos
               </Link>
-              <Link 
-                to="/contacto" 
-                className="w-full sm:w-auto px-8 py-3.5 border-2 border-white text-white text-lg font-bold rounded-full hover:bg-yellow-50/50 hover:text-amber hover:scale-105 active:scale-95 transition-all duration-300 hover:shadow-xl flex items-center justify-center backdrop-blur-xs cursor-pointer"
+              <Link
+                to="/contacto"
+                className={`${btnBaseClass} border-2 border-white text-white hover:bg-yellow-50/50 hover:text-amber backdrop-blur-xs`}
               >
-                Contacto
+                Contáctanos
               </Link>
             </div>
           </div>
@@ -84,7 +83,8 @@ export default function Home(){
 
       {/* Animación de Abejas Volando */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-        <style dangerouslySetInnerHTML={{__html: `
+        <style dangerouslySetInnerHTML={{
+          __html: `
           @keyframes flyBee {
             0% {
               transform: translate(110vw, 105vh) scale(0.5) rotate(10deg);

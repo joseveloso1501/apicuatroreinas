@@ -3,7 +3,8 @@ import axios from 'axios'
 import { useCart } from '../context/CartContext'
 import { useSearchParams } from 'react-router-dom'
 
-export default function Products(){
+export default function Products() {
+  //   ESTADOS Y HOOKS  
   const [productos, setProductos] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
@@ -13,7 +14,28 @@ export default function Products(){
   const categoriaSeleccionada = searchParams.get('categoria') || 'Todos'
   const [sortOrder, setSortOrder] = useState('destacados')
 
-  useEffect(()=>{
+  //   CLASES DE ESTILO ENCAPSULADAS  
+  const cardBaseClass = "bg-white rounded-2xl border border-gray-100 shadow-sm transition-all duration-300"
+
+  // Botones base y dinámicos
+  const btnBaseClass = "rounded-full text-xs font-bold transition-all duration-250 cursor-pointer active:scale-95 shadow-xs border"
+  const categoryBtnClass = (selected) =>
+    `${btnBaseClass} px-4 py-2 transform ${selected
+      ? 'bg-gradient-to-r from-honey to-amber text-darkbee border-transparent shadow-md scale-105'
+      : 'bg-white hover:bg-yellow-50/40 text-gray-650 hover:text-amber-600 border-gray-100'
+    }`
+
+  const actionBtnClass = "bg-honey hover:bg-amber hover:text-white transition-all duration-200 cursor-pointer active:scale-95 text-darkbee rounded-full text-xs font-bold shadow-sm"
+  const viewProductBtnClass = "px-4 py-2 bg-amber hover:bg-amber-600 text-white font-bold rounded-full text-xs transition-all transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+
+  const addToCartBtnClass = (disabled) =>
+    `px-3 py-1.5 rounded-full transition-all duration-200 text-xs font-bold shadow-xs ${disabled
+      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+      : 'bg-honey hover:bg-amber hover:text-white hover:scale-105 active:scale-95 text-darkbee cursor-pointer'
+    }`
+
+  //   EFECTOS (CARGA DE PRODUCTOS DE LA API)  
+  useEffect(() => {
     // Obtiene la URL del backend dinámicamente desde la variable de entorno
     const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -48,8 +70,9 @@ export default function Products(){
         const remaining = Math.max(0, 2000 - elapsed);
         setTimeout(() => setLoading(false), remaining);
       });
-  },[])
+  }, [])
 
+  //   MANEJADORES DE EVENTOS  
   const handleCategoryChange = (cat) => {
     if (cat === 'Todos') {
       searchParams.delete('categoria')
@@ -63,7 +86,7 @@ export default function Products(){
     setSortOrder(e.target.value)
   }
 
-  // Filtrado y ordenamiento en el cliente
+  //   LOGICA DE FILTRADO Y ORDENAMIENTO EN EL CLIENTE  
   const filteredAndSortedProductos = useMemo(() => {
     let list = [...productos]
 
@@ -103,9 +126,10 @@ export default function Products(){
     return list
   }, [productos, categoriaSeleccionada, sortOrder])
 
+  //   RENDERIZADO DEL COMPONENTE ===
   return (
     <section className="py-12 bg-gradient-to-b from-yellow-50/20 to-white min-h-screen">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-3xl font-extrabold text-darkbee tracking-tight mb-2">Productos</h2>
         <p className="text-gray-500 text-sm mb-8">Explora los mejores productos de nuestra colmena</p>
 
@@ -117,7 +141,7 @@ export default function Products(){
               {['Todos', 'Alimentos', 'Medicinas', 'Insumos'].map(cat => {
                 const isSelected = categoriaSeleccionada.toLowerCase() === cat.toLowerCase() || (cat === 'Todos' && categoriaSeleccionada === 'Todos');
                 const icons = {
-                  Todos: '🐝',
+                  Todos: '', //se ve mejor sin emoji
                   Alimentos: '🍯',
                   Medicinas: '💊',
                   Insumos: '🛠️'
@@ -126,11 +150,7 @@ export default function Products(){
                   <button
                     key={cat}
                     onClick={() => handleCategoryChange(cat)}
-                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all duration-300 transform active:scale-95 cursor-pointer shadow-xs border ${
-                      isSelected
-                        ? 'bg-gradient-to-r from-honey to-amber text-darkbee border-transparent shadow-md scale-105'
-                        : 'bg-white hover:bg-yellow-50/40 text-gray-650 hover:text-amber-600 border-gray-100'
-                    }`}
+                    className={categoryBtnClass(isSelected)}
                   >
                     <span className="mr-1.5">{icons[cat]}</span>
                     {cat}
@@ -157,7 +177,7 @@ export default function Products(){
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
                   <svg className="fill-current h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                   </svg>
                 </div>
               </div>
@@ -211,7 +231,7 @@ export default function Products(){
                 handleCategoryChange('Todos');
                 setSortOrder('destacados');
               }}
-              className="px-6 py-2.5 bg-honey hover:bg-amber text-darkbee hover:text-white font-extrabold rounded-full text-xs shadow-md transition-all active:scale-95 cursor-pointer"
+              className={`${actionBtnClass} px-6 py-2.5 font-extrabold shadow-md`}
             >
               Restablecer Filtros
             </button>
@@ -221,11 +241,11 @@ export default function Products(){
             {filteredAndSortedProductos.map(p => {
               const cartItem = cart.find(item => item.id === p.id)
               const availableStock = p.stock - (cartItem ? cartItem.cantidad : 0)
-              
+
               return (
-                <article key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex flex-col hover:shadow-md transition-all duration-300 hover:scale-[1.01]">
+                <article key={p.id} className={`${cardBaseClass} p-4 flex flex-col hover:shadow-md hover:scale-[1.01]`}>
                   <div
-                    className="group h-40 bg-yellow-100/30 rounded-xl flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
+                    className="group w-full h-60 bg-yellow-100/30 rounded-xl flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
                     style={p.imagen ? {
                       backgroundImage: `url('${p.imagen}')`
                     } : {}}
@@ -236,7 +256,7 @@ export default function Products(){
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <button
                           onClick={() => setSelectedImage(p.imagen)}
-                          className="px-4 py-2 bg-amber hover:bg-amber-600 text-white font-bold rounded-full text-xs transition-all transform hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                          className={viewProductBtnClass}
                         >
                           Ver producto
                         </button>
@@ -251,7 +271,7 @@ export default function Products(){
                   )}
                   <h3 className="font-semibold text-lg text-darkbee">{p.nombre}</h3>
                   <p className="text-sm text-gray-600 flex-1 mb-2">{p.descripcion}</p>
-                  
+
                   {/* Alerta de Stock Bajo */}
                   {availableStock > 0 && availableStock <= 5 && (
                     <div className="mb-3 text-rose-600 font-extrabold text-[11px] select-none flex items-center gap-1.5 bg-rose-50/50 py-1 px-2.5 rounded-lg w-max border border-rose-100/50">
@@ -259,7 +279,7 @@ export default function Products(){
                       ¡Últimas {availableStock} unidades disponibles!
                     </div>
                   )}
-                  
+
                   <div className="mt-auto flex items-center justify-between">
                     <strong className="text-amber-600">
                       ${Math.round(Number(p.precio)).toLocaleString('es-CL')}
@@ -267,11 +287,7 @@ export default function Products(){
                     <button
                       onClick={() => availableStock > 0 && addToCart(p)}
                       disabled={availableStock <= 0}
-                      className={`px-3 py-1.5 rounded-full transition-all duration-200 text-xs font-bold shadow-xs ${
-                        availableStock <= 0 
-                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                          : 'bg-honey hover:bg-amber hover:text-white hover:scale-105 active:scale-95 text-darkbee cursor-pointer'
-                        }`}
+                      className={addToCartBtnClass(availableStock <= 0)}
                     >
                       {availableStock <= 0 ? 'Agotado' : 'Agregar al carrito'}
                     </button>

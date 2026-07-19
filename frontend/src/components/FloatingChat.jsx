@@ -6,6 +6,21 @@ export default function FloatingChat() {
   const [message, setMessage] = useState('')
   const [showTooltip, setShowTooltip] = useState(false)
 
+  // Clases de estilo encapsuladas
+  const chatContainerClass = "absolute right-0 bottom-16 w-80 bg-white rounded-2xl border border-gray-100 shadow-2xl overflow-hidden transition-all duration-300 transform origin-bottom-right"
+  const chatContainerStateClass = (open) => open
+    ? 'opacity-100 scale-100 translate-y-0'
+    : 'opacity-0 scale-90 translate-y-4 pointer-events-none'
+
+  const textareaClass = "w-full p-2.5 border border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-xs text-gray-800 resize-none min-h-[50px]"
+
+  const submitBtnClass = "w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-98"
+
+  const floatBtnClass = "w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer text-white relative"
+  const floatBtnStateClass = (open) => open
+    ? 'bg-gray-800 rotate-90'
+    : 'bg-emerald-500 hover:bg-emerald-600 hover:shadow-emerald-500/20 hover:shadow-2xl'
+
   // Mostrar un tooltip de atención después de 3 segundos para motivar el click
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -20,7 +35,7 @@ export default function FloatingChat() {
 
     // URL de WhatsApp de Apícola Cuatro Reinas con el mensaje personalizado url-encoded
     const whatsappUrl = `https://wa.me/56956110251?text=${encodeURIComponent(message)}`
-    
+
     // Abrir en una pestaña nueva
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
     setIsOpen(false)
@@ -28,10 +43,10 @@ export default function FloatingChat() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 font-sans">
-      
+
       {/* Tooltip de atención inicial (se puede cerrar o se oculta al abrir el chat) */}
       {showTooltip && !isOpen && (
-        <div 
+        <div
           onClick={() => {
             setIsOpen(true)
             setShowTooltip(false)
@@ -39,7 +54,7 @@ export default function FloatingChat() {
           className="absolute right-0 bottom-16 mb-2 w-48 bg-white text-gray-800 text-xs py-2 px-3.5 rounded-xl shadow-xl border border-gray-100 animate-bounce flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors"
         >
           <span>💬 ¿Necesitas ayuda?</span>
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation()
               setShowTooltip(false)
@@ -52,12 +67,8 @@ export default function FloatingChat() {
       )}
 
       {/* Cuadro de Chat Expandible */}
-      <div 
-        className={`absolute right-0 bottom-16 w-80 bg-white rounded-2xl border border-gray-100 shadow-2xl overflow-hidden transition-all duration-300 transform origin-bottom-right ${
-          isOpen 
-            ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-90 translate-y-4 pointer-events-none'
-        }`}
+      <div
+        className={`${chatContainerClass} ${chatContainerStateClass(isOpen)}`}
       >
         {/* Cabecera del Chat */}
         <div className="bg-emerald-600 text-white p-4 flex items-center justify-between">
@@ -73,7 +84,7 @@ export default function FloatingChat() {
               </span>
             </div>
           </div>
-          <button 
+          <button
             onClick={() => setIsOpen(false)}
             className="w-6 h-6 rounded-full hover:bg-emerald-700/50 flex items-center justify-center text-white font-bold transition-colors cursor-pointer"
             aria-label="Cerrar chat"
@@ -97,11 +108,11 @@ export default function FloatingChat() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Escribe tu mensaje aquí..."
-            className="w-full p-2.5 border border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 outline-none transition-all text-xs text-gray-800 resize-none min-h-[50px]"
+            className={textareaClass}
           />
           <button
             type="submit"
-            className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-xs shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-98"
+            className={submitBtnClass}
           >
             {/* Icono de enviar */}
             <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
@@ -118,17 +129,13 @@ export default function FloatingChat() {
           setIsOpen(!isOpen)
           setShowTooltip(false)
         }}
-        className={`w-14 h-14 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer text-white relative ${
-          isOpen 
-            ? 'bg-gray-800 rotate-90' 
-            : 'bg-emerald-500 hover:bg-emerald-600 hover:shadow-emerald-500/20 hover:shadow-2xl'
-        }`}
+        className={`${floatBtnClass} ${floatBtnStateClass(isOpen)}`}
         aria-label="Abrir chat de soporte"
       >
         {isOpen ? (
           // Icono X si está abierto
           <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         ) : (
           // Icono de WhatsApp oficial

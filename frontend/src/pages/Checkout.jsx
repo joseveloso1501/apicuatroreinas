@@ -5,17 +5,18 @@ import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 
 export default function Checkout() {
+  // ESTADOS Y HOOKS
   const { cart, cartTotal, clearCart } = useCart()
   const { user, token, baseURL } = useAuth()
-  
+
   // Estados para el formulario
   const [nombre, setNombre] = useState('')
   const [email, setEmail] = useState('')
   const [telefono, setTelefono] = useState('')
   const [direccion, setDireccion] = useState('')
   const [ciudad, setCiudad] = useState('')
-  const [metodoPago, setMetodoPago] = useState('webpay') // webpay, mercadopago
-  
+  const [metodoPago, setMetodoPago] = useState('webpay', 'mercadopago') // webpay, mercadopago
+
   // Estados para cupones
   const [userCoupons, setUserCoupons] = useState([])
   const [manualCouponCode, setManualCouponCode] = useState('')
@@ -30,7 +31,13 @@ export default function Checkout() {
   const [orderId, setOrderId] = useState('')
   const [orderSummary, setOrderSummary] = useState({ items: [], total: 0, descuento: 0 })
 
-  // Precargar datos del perfil de usuario autenticado
+  // clases de estilo encapsuladas
+  const labelClass = "text-xs font-semibold text-gray-700 uppercase tracking-wider"
+  const inputClass = "w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
+  const formGroupClass = "space-y-1.5"
+  const sectionTitleClass = "text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2"
+
+  // Precargar datos del perfil de usuario autenticado | efectos de control de sesión y precarga
   useEffect(() => {
     if (user) {
       setNombre(user.first_name ? `${user.first_name} ${user.last_name || ''}`.trim() : '')
@@ -52,7 +59,7 @@ export default function Checkout() {
     }
   }, [token])
 
-  // Validar y aplicar cupón
+  // Validar y aplicar cupón | manejo de eventos y errores
   const handleApplyCoupon = async (codeToApply) => {
     setCouponError(null)
     setCouponSuccess(null)
@@ -145,7 +152,7 @@ export default function Checkout() {
             {/* Header del recibo */}
             <div className="bg-green-600 text-white p-8 text-center space-y-2">
               <span className="text-5xl select-none">🐝✨</span>
-              <h2 className="text-3xl font-black tracking-tight">¡Pedido Procesado con Éxito!</h2>
+              <h2 className="text-3xl font-black tracking-tight">¡Pedido procesado con éxito!</h2>
               <p className="text-green-100 text-sm font-medium">Tu orden ha sido registrada en el sistema y está lista para envío.</p>
               <div className="inline-block px-4 py-1 bg-green-700/40 rounded-full text-xs font-bold mt-2">
                 Código de Orden: {orderId}
@@ -165,7 +172,7 @@ export default function Checkout() {
                 </div>
                 <div>
                   <h4 className="font-bold text-gray-400 uppercase tracking-wider text-xs mb-2">Información del Pago</h4>
-                  <p className="font-semibold text-gray-800">Pasarela Utilizada:</p>
+                  <p className="font-semibold text-gray-800">Método de pago utilizado:</p>
                   <p className="text-gray-600 capitalize font-medium text-amber-600">
                     {orderSummary.metodoPago === 'webpay' && 'Webpay Plus (Transbank)'}
                     {orderSummary.metodoPago === 'mercadopago' && 'Mercado Pago'}
@@ -173,7 +180,7 @@ export default function Checkout() {
                   <p className="font-semibold text-gray-800 mt-3">Estado de la transacción:</p>
                   <p className="text-green-600 font-bold flex items-center gap-1.5">
                     <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
-                    APROBADO (Guardado en base de datos)
+                    APROBADO (Guardado en nuestros registros)
                   </p>
                 </div>
               </div>
@@ -199,7 +206,7 @@ export default function Checkout() {
                     </div>
                   )}
                   <div className="border-t border-gray-100 pt-3 mt-3 flex justify-between items-center">
-                    <span className="font-bold text-gray-900">Total Pagado:</span>
+                    <span className="font-bold text-gray-900">Total pagado:</span>
                     <strong className="text-2xl font-black text-amber-600">
                       ${Math.round(orderSummary.total).toLocaleString('es-CL')}
                     </strong>
@@ -230,11 +237,12 @@ export default function Checkout() {
     )
   }
 
+  // RENDERIZADO DEL COMPONENTE (PANTALLA DE COMPRA)
   // Pantalla principal de Checkout
   return (
     <section className="py-16 bg-gradient-to-b from-yellow-50/50 to-white">
       <div className="max-w-6xl mx-auto px-4">
-        
+
         {cart.length === 0 ? (
           <div className="text-center py-16 space-y-4">
             <span className="text-5xl select-none">🛒</span>
@@ -251,7 +259,7 @@ export default function Checkout() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            
+
             {/* Columna Izquierda: Datos del Despacho y Pago */}
             <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-2xl border border-gray-100 shadow-sm space-y-8">
               <div>
@@ -265,22 +273,22 @@ export default function Checkout() {
                 </div>
               )}
 
-              <form onSubmit={handlePay} className="space-y-6">
+              <form id="checkout-form" onSubmit={handlePay} className="space-y-6">
                 {/* Datos de Despacho */}
                 <div className="space-y-4">
-                  <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
+                  <h3 className={sectionTitleClass}>
                     1. Información del Despacho
                   </h3>
-                  
-                  <div className="space-y-1.5">
-                    <label htmlFor="fullname" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+
+                  <div className={formGroupClass}>
+                    <label htmlFor="fullname" className={labelClass}>
                       Nombre Completo
                     </label>
-                    <input 
+                    <input
                       id="fullname"
                       type="text"
                       required
-                      className="w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
+                      className={inputClass}
                       placeholder="Juan Pérez"
                       value={nombre}
                       onChange={e => setNombre(e.target.value)}
@@ -288,30 +296,30 @@ export default function Checkout() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="email" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <div className={formGroupClass}>
+                      <label htmlFor="email" className={labelClass}>
                         Correo Electrónico
                       </label>
-                      <input 
+                      <input
                         id="email"
                         type="email"
                         required
-                        className="w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
+                        className={inputClass}
                         placeholder="juan@correo.com"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
                       />
                     </div>
-                    
-                    <div className="space-y-1.5">
-                      <label htmlFor="phone" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+
+                    <div className={formGroupClass}>
+                      <label htmlFor="phone" className={labelClass}>
                         Teléfono
                       </label>
-                      <input 
+                      <input
                         id="phone"
                         type="tel"
                         required
-                        className="w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
+                        className={inputClass}
                         placeholder="+56 9 1234 5678"
                         value={telefono}
                         onChange={e => setTelefono(e.target.value)}
@@ -320,30 +328,30 @@ export default function Checkout() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="address" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <div className={formGroupClass}>
+                      <label htmlFor="address" className={labelClass}>
                         Dirección
                       </label>
-                      <input 
+                      <input
                         id="address"
                         type="text"
                         required
-                        className="w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
+                        className={inputClass}
                         placeholder="Av. Providencia 1234, Depto 402"
                         value={direccion}
                         onChange={e => setDireccion(e.target.value)}
                       />
                     </div>
-                    
-                    <div className="space-y-1.5">
-                      <label htmlFor="city" className="text-xs font-semibold text-gray-700 uppercase tracking-wider">
+
+                    <div className={formGroupClass}>
+                      <label htmlFor="city" className={labelClass}>
                         Ciudad
                       </label>
-                      <input 
+                      <input
                         id="city"
                         type="text"
                         required
-                        className="w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
+                        className={inputClass}
                         placeholder="Santiago"
                         value={ciudad}
                         onChange={e => setCiudad(e.target.value)}
@@ -354,19 +362,18 @@ export default function Checkout() {
 
                 {/* Métodos de Pago */}
                 <div className="space-y-4 pt-4">
-                  <h3 className="text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2">
+                  <h3 className={sectionTitleClass}>
                     2. Selecciona método de pago
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Webpay */}
-                    <div 
+                    <div
                       onClick={() => setMetodoPago('webpay')}
-                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${
-                        metodoPago === 'webpay' 
-                          ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm' 
-                          : 'border-gray-200 hover:border-gray-300 bg-white'
-                      }`}
+                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${metodoPago === 'webpay'
+                        ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                        }`}
                     >
                       <div className="font-bold text-sm text-gray-900 mb-1">Webpay Plus</div>
                       <span className="text-[10px] text-gray-500 leading-normal">
@@ -378,13 +385,12 @@ export default function Checkout() {
                     </div>
 
                     {/* Mercado Pago */}
-                    <div 
+                    <div
                       onClick={() => setMetodoPago('mercadopago')}
-                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${
-                        metodoPago === 'mercadopago' 
-                          ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm' 
-                          : 'border-gray-200 hover:border-gray-300 bg-white'
-                      }`}
+                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${metodoPago === 'mercadopago'
+                        ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                        }`}
                     >
                       <div className="font-bold text-sm text-gray-900 mb-1">Mercado Pago</div>
                       <span className="text-[10px] text-gray-500 leading-normal">
@@ -397,24 +403,17 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-                  <p className="text-[10px] text-gray-400 max-w-sm text-center sm:text-left">
+                <div className="pt-4 border-t border-gray-100">
+                  <p className="text-[10px] text-gray-400 text-center sm:text-left leading-relaxed">
                     Al confirmar el pago, la orden se registrará en el sistema para proceder a la preparación y despacho.
                   </p>
-                  <button 
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full sm:w-auto px-8 py-3.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer active:scale-95 text-center disabled:opacity-50"
-                  >
-                    {submitting ? 'Procesando Pedido...' : 'Simular Pago y Finalizar'}
-                  </button>
                 </div>
               </form>
             </div>
 
             {/* Columna Derecha: Resumen del Pedido y Cupones */}
             <div className="lg:col-span-5 space-y-6">
-              
+
               {/* Cupones de Descuento */}
               <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
                 <h3 className="font-extrabold text-gray-900 text-sm tracking-tight border-b border-gray-100 pb-2">
@@ -495,7 +494,7 @@ export default function Checkout() {
                 <div className="divide-y divide-gray-50 max-h-80 overflow-y-auto pr-1">
                   {cart.map((item) => (
                     <div key={item.id} className="py-3 flex gap-3 items-center">
-                      <div 
+                      <div
                         className="w-12 h-12 rounded-lg bg-yellow-50 bg-cover bg-center flex-shrink-0"
                         style={item.imagen ? { backgroundImage: `url('${item.imagen}')` } : {}}
                       >
@@ -546,6 +545,15 @@ export default function Checkout() {
                     💡 <strong>¡Tip apícola!</strong> Agrega ${Math.round(30000 - totalConDescuento).toLocaleString('es-CL')} más en productos y obtén <strong>Despacho Gratis</strong> en tu compra.
                   </div>
                 )}
+
+                <button
+                  type="submit"
+                  form="checkout-form"
+                  disabled={submitting}
+                  className="w-full py-3.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer active:scale-95 text-center disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {submitting ? 'Procesando Pedido...' : 'Pagar y finalizar pedido'}
+                </button>
               </div>
 
             </div>

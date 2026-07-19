@@ -46,6 +46,7 @@ const formatRUT = (rut) => {
 }
 
 export default function Profile() {
+  //   ESTADOS Y HOOKS  
   const {
     user,
     token,
@@ -107,14 +108,26 @@ export default function Profile() {
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
 
+  // Estado de agregado de cupón
+  const [couponCodeInput, setCouponCodeInput] = useState('')
+
   // Estado de eliminación de cuenta
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [deleteConfirmText, setDeleteConfirmText] = useState('')
 
-  // Estado de agregado de cupón
-  const [couponCodeInput, setCouponCodeInput] = useState('')
+  //   CLASES DE ESTILO ENCAPSULADAS ===
+  const labelClass = "text-[10px] font-bold text-gray-500 uppercase tracking-wider"
+  const inputClass = "w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+  const btnPrimaryClass = "px-5 py-2.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-xl text-xs cursor-pointer active:scale-95 transition-all disabled:opacity-50"
+  const authSubmitBtnClass = "w-full py-2.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-xl text-xs cursor-pointer active:scale-95 transition-all shadow-md hover:shadow-lg disabled:opacity-50"
 
-  // Sincronizar campos de edición cuando el usuario carga
+  const tabButtonClass = (active) =>
+    `w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${active
+      ? 'bg-amber text-white shadow-md'
+      : 'text-gray-650 hover:bg-yellow-50/50 hover:text-amber-600'
+    }`
+
+  // Sincronizar campos de edición cuando el usuario carga | efectos de control de sesion y de carga
   useEffect(() => {
     if (user) {
       setEditFirstName(user.first_name || '')
@@ -170,7 +183,7 @@ export default function Profile() {
     }
   }
 
-  // Manejar Login / Registro
+  // Manejar Login / Registro | acciones y de eventos
   const handleAuthSubmit = async (e) => {
     e.preventDefault()
     setFormError(null)
@@ -318,7 +331,7 @@ export default function Profile() {
     }
   }
 
-  // Vista de carga
+  // Vista de carga y transicion
   if (authLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
@@ -354,22 +367,22 @@ export default function Profile() {
                 {isRegisterMode && (
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Nombre</label>
+                      <label className={labelClass}>Nombre</label>
                       <input
                         type="text"
                         required
-                        className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         placeholder="Rick"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Apellido</label>
+                      <label className={labelClass}>Apellido</label>
                       <input
                         type="text"
                         required
-                        className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         placeholder="Sánchez"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
@@ -379,11 +392,11 @@ export default function Profile() {
                 )}
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Correo Electrónico</label>
+                  <label className={labelClass}>Correo Electrónico</label>
                   <input
                     type="email"
                     required
-                    className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                    className={inputClass}
                     placeholder="rick@correo.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -394,20 +407,20 @@ export default function Profile() {
                   <>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">RUT (Opcional)</label>
+                        <label className={labelClass}>RUT (Opcional)</label>
                         <input
                           type="text"
-                          className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                          className={inputClass}
                           placeholder="12.345.678-9"
                           value={rut}
                           onChange={(e) => setRut(formatRUT(e.target.value))}
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Teléfono</label>
+                        <label className={labelClass}>Teléfono</label>
                         <input
                           type="tel"
-                          className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                          className={inputClass}
                           placeholder="+56 9 1234 5678"
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
@@ -417,20 +430,20 @@ export default function Profile() {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Dirección</label>
+                        <label className={labelClass}>Dirección</label>
                         <input
                           type="text"
-                          className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                          className={inputClass}
                           placeholder="Av. Providencia 1234"
                           value={address}
                           onChange={(e) => setAddress(e.target.value)}
                         />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ciudad</label>
+                        <label className={labelClass}>Ciudad</label>
                         <input
                           type="text"
-                          className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                          className={inputClass}
                           placeholder="Santiago"
                           value={city}
                           onChange={(e) => setCity(e.target.value)}
@@ -441,11 +454,11 @@ export default function Profile() {
                 )}
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Contraseña</label>
+                  <label className={labelClass}>Contraseña</label>
                   <input
                     type="password"
                     required
-                    className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                    className={inputClass}
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -454,11 +467,11 @@ export default function Profile() {
 
                 {isRegisterMode && (
                   <div className="space-y-1">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Confirmar Contraseña</label>
+                    <label className={labelClass}>Confirmar Contraseña</label>
                     <input
                       type="password"
                       required
-                      className="w-full p-2.5 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                      className={inputClass}
                       placeholder="••••••••"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -469,7 +482,7 @@ export default function Profile() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full mt-6 py-3 bg-amber hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-all text-xs cursor-pointer active:scale-[0.98] disabled:opacity-50"
+                  className={authSubmitBtnClass}
                 >
                   {submitting ? 'Procesando...' : isRegisterMode ? 'Crear Cuenta' : 'Iniciar Sesión'}
                 </button>
@@ -525,37 +538,25 @@ export default function Profile() {
           <div className="lg:col-span-3 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm space-y-1.5">
             <button
               onClick={() => setSearchParams({ tab: 'profile' })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'profile'
-                  ? 'bg-amber text-white shadow-md'
-                  : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
-                }`}
+              className={tabButtonClass(activeTab === 'profile')}
             >
               <span>👤</span> Mi perfil
             </button>
             <button
               onClick={() => setSearchParams({ tab: 'orders' })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'orders'
-                  ? 'bg-amber text-white shadow-md'
-                  : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
-                }`}
+              className={tabButtonClass(activeTab === 'orders')}
             >
               <span>📦</span> Mis pedidos
             </button>
             <button
               onClick={() => setSearchParams({ tab: 'coupons' })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'coupons'
-                  ? 'bg-amber text-white shadow-md'
-                  : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
-                }`}
+              className={tabButtonClass(activeTab === 'coupons')}
             >
-              <span>🎫</span> Mis cupones
+              <span>🎟️</span> Mis cupones
             </button>
             <button
               onClick={() => setSearchParams({ tab: 'security' })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs transition-all text-left ${activeTab === 'security'
-                  ? 'bg-amber text-white shadow-md'
-                  : 'text-gray-600 hover:bg-yellow-50/50 hover:text-amber-600'
-                }`}
+              className={tabButtonClass(activeTab === 'security')}
             >
               <span>🔒</span> Seguridad
             </button>
@@ -586,21 +587,21 @@ export default function Profile() {
                 <form onSubmit={handleUpdateProfile} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Nombre</label>
+                      <label className={labelClass}>Nombre</label>
                       <input
                         type="text"
                         required
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={editFirstName}
                         onChange={(e) => setEditFirstName(e.target.value)}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Apellido</label>
+                      <label className={labelClass}>Apellido</label>
                       <input
                         type="text"
                         required
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={editLastName}
                         onChange={(e) => setEditLastName(e.target.value)}
                       />
@@ -609,20 +610,20 @@ export default function Profile() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">RUT (Opcional)</label>
+                      <label className={labelClass}>RUT (Opcional)</label>
                       <input
                         type="text"
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         placeholder="12.345.678-9"
                         value={editRut}
                         onChange={(e) => setEditRut(formatRUT(e.target.value))}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Teléfono de Contacto</label>
+                      <label className={labelClass}>Teléfono de Contacto</label>
                       <input
                         type="tel"
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={editPhone}
                         onChange={(e) => setEditPhone(e.target.value)}
                       />
@@ -631,19 +632,19 @@ export default function Profile() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Dirección de Despacho</label>
+                      <label className={labelClass}>Dirección de Despacho</label>
                       <input
                         type="text"
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={editAddress}
                         onChange={(e) => setEditAddress(e.target.value)}
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ciudad</label>
+                      <label className={labelClass}>Ciudad</label>
                       <input
                         type="text"
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={editCity}
                         onChange={(e) => setEditCity(e.target.value)}
                       />
@@ -718,14 +719,14 @@ export default function Profile() {
                           <div className="flex items-center gap-3">
                             <span
                               className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border ${pedido.estado === 'pendiente'
-                                  ? 'bg-yellow-50 text-yellow-600 border-yellow-200'
-                                  : pedido.estado === 'pagado'
-                                    ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
-                                    : pedido.estado === 'enviado'
-                                      ? 'bg-blue-50 text-blue-600 border-blue-200'
-                                      : pedido.estado === 'entregado'
-                                        ? 'bg-gray-100 text-gray-600 border-gray-200'
-                                        : 'bg-red-50 text-red-600 border-red-200'
+                                ? 'bg-yellow-50 text-yellow-600 border-yellow-200'
+                                : pedido.estado === 'pagado'
+                                  ? 'bg-emerald-50 text-emerald-600 border-emerald-200'
+                                  : pedido.estado === 'enviado'
+                                    ? 'bg-blue-50 text-blue-600 border-blue-200'
+                                    : pedido.estado === 'entregado'
+                                      ? 'bg-gray-100 text-gray-600 border-gray-200'
+                                      : 'bg-red-50 text-red-600 border-red-200'
                                 }`}
                             >
                               {pedido.estado}
@@ -773,33 +774,33 @@ export default function Profile() {
                                 {/* Paso 1 */}
                                 <div className="z-10 flex flex-col items-center gap-1 bg-white px-2">
                                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 ${['pendiente', 'pagado', 'enviado', 'entregado'].includes(pedido.estado)
-                                      ? 'border-green-500 bg-green-50 text-green-600'
-                                      : 'border-gray-300 bg-white text-gray-400'
+                                    ? 'border-green-500 bg-green-50 text-green-600'
+                                    : 'border-gray-300 bg-white text-gray-400'
                                     }`}>✓</div>
                                   <span>Recibido</span>
                                 </div>
                                 {/* Paso 2 */}
                                 <div className="z-10 flex flex-col items-center gap-1 bg-white px-2">
                                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 ${['pagado', 'enviado', 'entregado'].includes(pedido.estado)
-                                      ? 'border-green-500 bg-green-50 text-green-600'
-                                      : 'border-gray-300 bg-white text-gray-400'
+                                    ? 'border-green-500 bg-green-50 text-green-600'
+                                    : 'border-gray-300 bg-white text-gray-400'
                                     }`}>✓</div>
                                   <span>Pagado</span>
                                 </div>
                                 {/* Paso 3 */}
                                 <div className="z-10 flex flex-col items-center gap-1 bg-white px-2">
                                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 ${['enviado', 'entregado'].includes(pedido.estado)
-                                      ? 'border-green-500 bg-green-50 text-green-600'
-                                      : 'border-gray-300 bg-white text-gray-400'
-                                    }`}>🚚</div>
+                                    ? 'border-green-500 bg-green-50 text-green-600'
+                                    : 'border-gray-300 bg-white text-gray-400'
+                                    }`}>✓</div>
                                   <span>En camino</span>
                                 </div>
                                 {/* Paso 4 */}
                                 <div className="z-10 flex flex-col items-center gap-1 bg-white px-2">
                                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs border-2 ${pedido.estado === 'entregado'
-                                      ? 'border-green-500 bg-green-50 text-green-600'
-                                      : 'border-gray-300 bg-white text-gray-400'
-                                    }`}>🎁</div>
+                                    ? 'border-green-500 bg-green-50 text-green-600'
+                                    : 'border-gray-300 bg-white text-gray-400'
+                                    }`}>✓</div>
                                   <span>Entregado</span>
                                 </div>
                               </div>
@@ -845,14 +846,14 @@ export default function Profile() {
                     type="text"
                     required
                     placeholder="CÓDIGO DE CUPÓN (Ej: CUPON10)"
-                    className="flex-1 p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs uppercase"
+                    className={`flex-1 uppercase ${inputClass}`}
                     value={couponCodeInput}
                     onChange={(e) => setCouponCodeInput(e.target.value)}
                   />
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-5 py-2.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-xl text-xs cursor-pointer active:scale-95 transition-all disabled:opacity-50"
+                    className={btnPrimaryClass}
                   >
                     {submitting ? 'Validando...' : 'Agregar'}
                   </button>
@@ -919,33 +920,33 @@ export default function Profile() {
 
                   <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Contraseña Actual</label>
+                      <label className={labelClass}>Contraseña Actual</label>
                       <input
                         type="password"
                         required
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={oldPassword}
                         onChange={(e) => setOldPassword(e.target.value)}
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Nueva Contraseña</label>
+                      <label className={labelClass}>Nueva Contraseña</label>
                       <input
                         type="password"
                         required
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Confirmar Nueva Contraseña</label>
+                      <label className={labelClass}>Confirmar Nueva Contraseña</label>
                       <input
                         type="password"
                         required
-                        className="w-full p-2.5 bg-yellow-50/10 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none text-xs"
+                        className={inputClass}
                         value={confirmNewPassword}
                         onChange={(e) => setConfirmNewPassword(e.target.value)}
                       />
@@ -954,7 +955,7 @@ export default function Profile() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="px-5 py-2.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-xl text-xs cursor-pointer active:scale-95 transition-all disabled:opacity-50"
+                      className={btnPrimaryClass}
                     >
                       {submitting ? 'Cambiando...' : 'Cambiar Contraseña'}
                     </button>
