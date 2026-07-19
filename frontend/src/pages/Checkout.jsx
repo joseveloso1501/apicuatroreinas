@@ -30,12 +30,29 @@ export default function Checkout() {
   const [isSuccess, setIsSuccess] = useState(false)
   const [orderId, setOrderId] = useState('')
   const [orderSummary, setOrderSummary] = useState({ items: [], total: 0, descuento: 0 })
+  const [copied, setCopied] = useState(false)
+
+  const handleCopyDetails = () => {
+    const text = `Jose Veloso\n19.600.494-7\nBanco de Chile\nCuenta Corriente\n00-225-52723-05\napicuatroreinas@gmail.com`
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    }).catch(err => {
+      console.error('Error al copiar: ', err)
+    })
+  }
 
   // clases de estilo encapsuladas
   const labelClass = "text-xs font-semibold text-gray-700 uppercase tracking-wider"
   const inputClass = "w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
   const formGroupClass = "space-y-1.5"
   const sectionTitleClass = "text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2"
+
+  // Clases de botones reutilizables
+  const btnBaseClass = "bg-amber hover:bg-amber-600 text-white font-bold transition-all cursor-pointer"
+  const btnSmallClass = `${btnBaseClass} px-4 py-2 rounded-xl text-xs`
+  const btnLargeClass = `${btnBaseClass} w-full py-3.5 rounded-full shadow-md hover:shadow-lg active:scale-95 text-center text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2`
+  const btnLinkDangerClass = "text-red-500 font-bold hover:underline bg-transparent border-none cursor-pointer"
 
   // Estilo de tarjeta para los métodos de pago (activo/inactivo/deshabilitado)
   const paymentMethodCardClass = (active, disabled = false) =>
@@ -465,9 +482,18 @@ export default function Checkout() {
 
                   {metodoPago === 'transferencia' && (
                     <div className="mt-4 p-5 bg-amber-50/30 border border-amber-200/80 rounded-2xl space-y-4 animate-fadeIn">
-                      <div className="flex items-center gap-2 pb-2 border-b border-amber-200/50">
-                        <span className="text-lg">🏦</span>
-                        <h4 className="font-bold text-sm text-gray-900">Datos para Transferencia Bancaria</h4>
+                      <div className="flex items-center justify-between pb-2 border-b border-amber-200/50">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">🏦</span>
+                          <h4 className={labelClass}>Datos para transferencia bancaria</h4>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleCopyDetails}
+                          className={btnSmallClass}
+                        >
+                          {copied ? '¡Copiado! ✓' : 'Copiar datos'}
+                        </button>
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
@@ -557,7 +583,7 @@ export default function Checkout() {
                     <button
                       type="button"
                       onClick={() => handleApplyCoupon(manualCouponCode)}
-                      className="px-4 py-2 bg-amber hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
+                      className={btnSmallClass}
                     >
                       Aplicar
                     </button>
@@ -581,7 +607,7 @@ export default function Checkout() {
                         setAppliedCoupon(null)
                         setCouponSuccess(null)
                       }}
-                      className="text-red-500 font-bold hover:underline bg-transparent border-none cursor-pointer"
+                      className={btnLinkDangerClass}
                     >
                       Remover
                     </button>
@@ -662,7 +688,7 @@ export default function Checkout() {
                     !ciudad.trim() ||
                     !['webpay', 'mercadopago', 'transferencia'].includes(metodoPago)
                   }
-                  className="w-full py-3.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer active:scale-95 text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className={btnLargeClass}
                 >
                   {submitting ? 'Procesando Pedido...' : 'Pagar y finalizar pedido'}
                 </button>
