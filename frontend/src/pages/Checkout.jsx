@@ -15,7 +15,7 @@ export default function Checkout() {
   const [telefono, setTelefono] = useState('')
   const [direccion, setDireccion] = useState('')
   const [ciudad, setCiudad] = useState('')
-  const [metodoPago, setMetodoPago] = useState('webpay', 'mercadopago') // webpay, mercadopago
+  const [metodoPago, setMetodoPago] = useState('') // webpay, mercadopago, transferencia
 
   // Estados para cupones
   const [userCoupons, setUserCoupons] = useState([])
@@ -36,6 +36,22 @@ export default function Checkout() {
   const inputClass = "w-full p-3 bg-yellow-50/20 border border-gray-200 rounded-xl focus:border-amber focus:ring-2 focus:ring-amber/20 outline-none transition-all text-sm text-gray-800"
   const formGroupClass = "space-y-1.5"
   const sectionTitleClass = "text-sm font-bold text-gray-900 uppercase tracking-wider border-b border-gray-100 pb-2"
+
+  // Estilo de tarjeta para los métodos de pago (activo/inactivo/deshabilitado)
+  const paymentMethodCardClass = (active, disabled = false) =>
+    `p-4 border rounded-xl flex flex-col justify-between transition-all ${
+      disabled
+        ? 'border-gray-200 bg-gray-50/50 opacity-60 cursor-not-allowed select-none'
+        : `cursor-pointer ${
+            active
+              ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm'
+              : 'border-gray-200 hover:border-gray-300 bg-white'
+          }`
+    }`
+
+  // Estilos de la tarjeta lateral de resumen de compra y cupones
+  const sidebarCardClass = "bg-white p-6 rounded-2xl border border-gray-100 shadow-sm"
+  const sidebarSectionTitleClass = "font-extrabold text-gray-900 text-sm tracking-tight border-b border-gray-100"
 
   // Precargar datos del perfil de usuario autenticado | efectos de control de sesión y precarga
   useEffect(() => {
@@ -95,6 +111,10 @@ export default function Checkout() {
   const handlePay = async (e) => {
     e.preventDefault()
     if (cart.length === 0) return
+    if (!['webpay', 'mercadopago', 'transferencia'].includes(metodoPago)) {
+      setErrorPay('Por favor selecciona un método de pago antes de continuar.')
+      return
+    }
     setSubmitting(true)
     setErrorPay(null)
 
@@ -152,9 +172,15 @@ export default function Checkout() {
             {/* Header del recibo */}
             <div className="bg-green-600 text-white p-8 text-center space-y-2">
               <span className="text-5xl select-none">🐝✨</span>
-              <h2 className="text-3xl font-black tracking-tight">¡Pedido procesado con éxito!</h2>
-              <p className="text-green-100 text-sm font-medium">Tu orden ha sido registrada en el sistema y está lista para envío.</p>
-              <div className="inline-block px-4 py-1 bg-green-700/40 rounded-full text-xs font-bold mt-2">
+              <h2 className="text-3xl font-black tracking-tight">
+                {orderSummary.metodoPago === 'transferencia' ? '¡Pedido recibido!' : '¡Pedido procesado con éxito!'}
+              </h2>
+              <p className="text-green-100 text-sm font-medium">
+                {orderSummary.metodoPago === 'transferencia'
+                  ? 'Tu orden ha sido registrada. Procesaremos el despacho una vez verificado el pago.'
+                  : 'Tu orden ha sido registrada en el sistema y está siendo preparada para su envío.'}
+              </p>
+              <div className="inline-block px-4 py-1 bg-black/20 rounded-full text-xs font-bold mt-2">
                 Código de Orden: {orderId}
               </div>
             </div>
@@ -173,15 +199,23 @@ export default function Checkout() {
                 <div>
                   <h4 className="font-bold text-gray-400 uppercase tracking-wider text-xs mb-2">Información del Pago</h4>
                   <p className="font-semibold text-gray-800">Método de pago utilizado:</p>
-                  <p className="text-gray-600 capitalize font-medium text-amber-600">
+                  <p className="text-amber-600 text-sm">
                     {orderSummary.metodoPago === 'webpay' && 'Webpay Plus (Transbank)'}
                     {orderSummary.metodoPago === 'mercadopago' && 'Mercado Pago'}
+                    {orderSummary.metodoPago === 'transferencia' && 'Transferencia bancaria'}
                   </p>
                   <p className="font-semibold text-gray-800 mt-3">Estado de la transacción:</p>
-                  <p className="text-green-600 font-bold flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
-                    APROBADO (Guardado en nuestros registros)
-                  </p>
+                  {orderSummary.metodoPago === 'transferencia' ? (
+                    <p className="text-amber font-bold flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber inline-block animate-pulse"></span>
+                      PENDIENTE DE PAGO / VERIFICACIÓN
+                    </p>
+                  ) : (
+                    <p className="text-green-600 font-bold flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
+                      APROBADO (Guardado en nuestros registros)
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -214,12 +248,32 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div className="bg-amber-50/50 border border-amber-200/50 rounded-xl p-5 space-y-2 text-xs text-amber-800">
-                <h4 className="font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
-                  🐝 ¡Gracias por tu compra!
-                </h4>
-                <p>Puedes hacer seguimiento de este pedido y revisar su estado en la pestaña <strong>Mis pedidos</strong> en tu perfil.</p>
-              </div>
+              {orderSummary.metodoPago === 'transferencia' ? (
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 space-y-3 text-xs text-amber-850">
+                  <h4 className="font-bold uppercase tracking-wider flex items-center gap-1.5 select-none text-amber-900">
+                    🏦 Información para Transferencia Bancaria
+                  </h4>
+                  <p>Por favor, realiza la transferencia electrónica con los siguientes datos:</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-white/60 p-3 rounded-lg border border-amber-100 font-medium text-gray-800">
+                    <div><span className="text-gray-500">Nombre:</span> Jose Veloso</div>
+                    <div><span className="text-gray-500">RUT:</span> 19.600.494-7</div>
+                    <div><span className="text-gray-500">Banco:</span> Banco de Chile</div>
+                    <div><span className="text-gray-500">Tipo Cuenta:</span> Cuenta Corriente</div>
+                    <div><span className="text-gray-500">Nº Cuenta:</span> 00-225-52723-05</div>
+                    <div><span className="text-gray-500">Correo:</span> apicuatroreinas@gmail.com</div>
+                  </div>
+                  <p className="font-semibold text-[11px] text-amber-950">
+                    ⚠️ El pedido se procesará una vez verificado el pago. Envía tu comprobante a <strong>apicuatroreinas@gmail.com</strong> indicando el código del pedido: <strong>{orderId}</strong>.
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-amber-50/50 border border-amber-200/50 rounded-xl p-5 space-y-2 text-xs text-amber-800">
+                  <h4 className="font-bold uppercase tracking-wider flex items-center gap-1.5 select-none">
+                    🐝 ¡Gracias por tu compra!
+                  </h4>
+                  <p>Puedes hacer seguimiento de este pedido y revisar su estado en la pestaña <strong>Mis pedidos</strong> en tu perfil.</p>
+                </div>
+              )}
 
               {/* Botón de retorno */}
               <div className="text-center pt-4">
@@ -369,38 +423,88 @@ export default function Checkout() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Webpay */}
                     <div
-                      onClick={() => setMetodoPago('webpay')}
-                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${metodoPago === 'webpay'
-                        ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                        }`}
+                      className={paymentMethodCardClass(metodoPago === 'webpay', true)}
                     >
-                      <div className="font-bold text-sm text-gray-900 mb-1">Webpay Plus</div>
-                      <span className="text-[10px] text-gray-500 leading-normal">
+                      <div className="font-bold text-sm text-gray-400 mb-1">Webpay Plus</div>
+                      <span className="text-[10px] text-gray-400 leading-normal">
                         Tarjetas de crédito/débito en Chile.
                       </span>
-                      <div className="mt-3 text-[10px] font-bold text-red-600 bg-red-50 py-0.5 px-2 rounded-md w-max">
-                        Transbank
+                      <div className="mt-3 text-[10px] font-bold text-gray-400 bg-gray-200/50 py-0.5 px-2 rounded-md w-max">
+                        No disponible
                       </div>
                     </div>
 
                     {/* Mercado Pago */}
                     <div
-                      onClick={() => setMetodoPago('mercadopago')}
-                      className={`p-4 border rounded-xl cursor-pointer flex flex-col justify-between transition-all ${metodoPago === 'mercadopago'
-                        ? 'border-amber bg-amber/5 ring-1 ring-amber shadow-sm'
-                        : 'border-gray-200 hover:border-gray-300 bg-white'
-                        }`}
+                      className={paymentMethodCardClass(metodoPago === 'mercadopago', true)}
                     >
-                      <div className="font-bold text-sm text-gray-900 mb-1">Mercado Pago</div>
-                      <span className="text-[10px] text-gray-500 leading-normal">
+                      <div className="font-bold text-sm text-gray-400 mb-1">Mercado Pago</div>
+                      <span className="text-[10px] text-gray-400 leading-normal">
                         Dinero en cuenta o cuotas.
                       </span>
-                      <div className="mt-3 text-[10px] font-bold text-sky-600 bg-sky-50 py-0.5 px-2 rounded-md w-max">
-                        MercadoLibre
+                      <div className="mt-3 text-[10px] font-bold text-gray-400 bg-gray-200/50 py-0.5 px-2 rounded-md w-max">
+                        No disponible
                       </div>
                     </div>
+
+                    {/* Transferencia directa */}
+                    <div
+                      onClick={() => setMetodoPago('transferencia')}
+                      className={paymentMethodCardClass(metodoPago === 'transferencia', false)}
+                    >
+                      <div className="font-bold text-sm text-gray-900 mb-1">Transferencia bancaria</div>
+                      <span className="text-[10px] text-gray-500 leading-normal">
+                        Transferir directamente en tu banco.
+                      </span>
+                      <div className="mt-3 text-[10px] font-bold text-blue-600 bg-blue-50 py-0.5 px-2 rounded-md w-max">
+                        Transferencia
+                      </div>
+                    </div>
+                    
                   </div>
+
+                  {metodoPago === 'transferencia' && (
+                    <div className="mt-4 p-5 bg-amber-50/30 border border-amber-200/80 rounded-2xl space-y-4 animate-fadeIn">
+                      <div className="flex items-center gap-2 pb-2 border-b border-amber-200/50">
+                        <span className="text-lg">🏦</span>
+                        <h4 className="font-bold text-sm text-gray-900">Datos para Transferencia Bancaria</h4>
+                      </div>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div className="space-y-1">
+                          <p className="text-gray-500">Nombre del Titular:</p>
+                          <p className="font-bold text-gray-800 text-sm">Jose Veloso</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-gray-500">RUT:</p>
+                          <p className="font-bold text-gray-800 text-sm">19.600.494-7</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-gray-500">Banco:</p>
+                          <p className="font-bold text-gray-800 text-sm">Banco de Chile</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-gray-500">Tipo de Cuenta:</p>
+                          <p className="font-bold text-gray-800 text-sm">Cuenta Corriente</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-gray-500">Número de Cuenta:</p>
+                          <p className="font-bold text-gray-800 text-sm">00-225-52723-05</p>
+                        </div>
+                        <div className="space-y-1">
+                          <p className="text-gray-500">Correo Electrónico:</p>
+                          <p className="font-bold text-gray-850 text-sm">apicuatroreinas@gmail.com</p>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-amber-100/50 border border-amber-200/60 rounded-xl p-3 text-xs text-amber-900 flex items-start gap-2">
+                        <span className="text-sm">ℹ️</span>
+                        <p className="font-semibold leading-relaxed">
+                          El pedido se procesará una vez verificado el pago.
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-4 border-t border-gray-100">
@@ -415,8 +519,8 @@ export default function Checkout() {
             <div className="lg:col-span-5 space-y-6">
 
               {/* Cupones de Descuento */}
-              <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
-                <h3 className="font-extrabold text-gray-900 text-sm tracking-tight border-b border-gray-100 pb-2">
+              <div className={`${sidebarCardClass} space-y-4`}>
+                <h3 className={`${sidebarSectionTitleClass} pb-2`}>
                   Cupones de Descuento
                 </h3>
 
@@ -486,8 +590,8 @@ export default function Checkout() {
               </div>
 
               {/* Resumen de la Compra */}
-              <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-sm space-y-6">
-                <h3 className="font-extrabold text-gray-900 text-sm tracking-tight border-b border-gray-100 pb-3">
+              <div className={`${sidebarCardClass} md:p-8 space-y-6`}>
+                <h3 className={`${sidebarSectionTitleClass} pb-3`}>
                   Resumen de la Compra
                 </h3>
 
@@ -549,8 +653,16 @@ export default function Checkout() {
                 <button
                   type="submit"
                   form="checkout-form"
-                  disabled={submitting}
-                  className="w-full py-3.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer active:scale-95 text-center disabled:opacity-50 flex items-center justify-center gap-2"
+                  disabled={
+                    submitting ||
+                    !nombre.trim() ||
+                    !email.trim() ||
+                    !telefono.trim() ||
+                    !direccion.trim() ||
+                    !ciudad.trim() ||
+                    !['webpay', 'mercadopago', 'transferencia'].includes(metodoPago)
+                  }
+                  className="w-full py-3.5 bg-amber hover:bg-amber-600 text-white font-bold rounded-full shadow-md hover:shadow-lg transition-all text-sm cursor-pointer active:scale-95 text-center disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {submitting ? 'Procesando Pedido...' : 'Pagar y finalizar pedido'}
                 </button>
