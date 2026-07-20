@@ -712,7 +712,7 @@ export default function Profile() {
                         >
                           <div className="space-y-1">
                             <span className="text-[10px] font-extrabold text-amber-600 uppercase tracking-widest">
-                              Orden #{pedido.id}
+                              Orden # AQ-{pedido.id}
                             </span>
                             <div className="text-xs font-black text-gray-800">
                               Total: ${Math.round(pedido.total).toLocaleString('es-CL')}
