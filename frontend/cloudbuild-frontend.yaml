@@ -2,15 +2,16 @@ steps:
   # Paso 1: Construir la imagen del contenedor del frontend con Nginx y Dockerfile.prod
   # Se inyecta la URL del backend de producción usando el build-arg VITE_API_URL
   - name: 'gcr.io/cloud-builders/docker'
+    dir: 'frontend'
     args:
       - 'build'
       - '-f'
-      - 'frontend/Dockerfile.prod'
+      - 'Dockerfile.prod'
       - '-t'
       - 'gcr.io/$PROJECT_ID/frontend:$_COMMIT_SHA'
       - '--build-arg'
       - 'VITE_API_URL=https://backend-337307900667.southamerica-west1.run.app'
-      - './frontend'
+      - '.'
 
   # Paso 2: Subir la imagen a Artifact Registry / Container Registry
   - name: 'gcr.io/cloud-builders/docker'
