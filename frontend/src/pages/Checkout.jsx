@@ -275,12 +275,12 @@ export default function Checkout() {
                     <div><span className="text-gray-500">Nombre:</span> Jose Veloso</div>
                     <div><span className="text-gray-500">RUT:</span> 19.600.494-7</div>
                     <div><span className="text-gray-500">Banco:</span> Banco de Chile</div>
-                    <div><span className="text-gray-500">Tipo Cuenta:</span> Cuenta Corriente</div>
+                    <div><span className="text-gray-500">Tipo cuenta:</span> Cuenta Corriente</div>
                     <div><span className="text-gray-500">Nº Cuenta:</span> 00-225-52723-05</div>
                     <div><span className="text-gray-500">Correo:</span> apicuatroreinas@gmail.com</div>
                   </div>
                   <p className="font-semibold text-[11px] text-amber-950">
-                    ⚠️ El pedido se procesará una vez verificado el pago. Envía tu comprobante a <strong>apicuatroreinas@gmail.com</strong> indicando el código del pedido: <strong>{orderId}</strong>.
+                    ⚠️ El pedido se procesará una vez verificado el pago. Envía tu comprobante a <strong>apicuatroreinas@gmail.com</strong> indicando en el asunto el código del pedido: <strong>{orderId}</strong>.
                   </p>
                 </div>
               ) : (
