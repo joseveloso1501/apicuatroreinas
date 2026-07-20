@@ -4,6 +4,12 @@ import axios from 'axios'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 
+// Helper para validar formato de correo electrónico
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 export default function Checkout() {
   // ESTADOS Y HOOKS
   const { cart, cartTotal, clearCart } = useCart()
@@ -128,6 +134,13 @@ export default function Checkout() {
   const handlePay = async (e) => {
     e.preventDefault()
     if (cart.length === 0) return
+
+    // Validar formato de correo electrónico
+    if (!validateEmail(email)) {
+      setErrorPay('El correo electrónico ingresado no es válido.')
+      return
+    }
+
     if (!['webpay', 'mercadopago', 'transferencia'].includes(metodoPago)) {
       setErrorPay('Por favor selecciona un método de pago antes de continuar.')
       return

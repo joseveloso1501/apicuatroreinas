@@ -45,6 +45,12 @@ const formatRUT = (rut) => {
   return `${formattedCuerpo}-${dv}`
 }
 
+// Helper para validar formato de correo electrónico
+const validateEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 export default function Profile() {
   //   ESTADOS Y HOOKS  
   const {
@@ -190,6 +196,12 @@ export default function Profile() {
     setSubmitting(true)
 
     if (isRegisterMode) {
+      if (!validateEmail(email)) {
+        setFormError('El correo electrónico ingresado no es válido.')
+        setSubmitting(false)
+        return
+      }
+
       if (password !== confirmPassword) {
         setFormError('Las contraseñas no coinciden.')
         setSubmitting(false)
