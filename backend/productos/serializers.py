@@ -161,3 +161,50 @@ class CarritoItemSerializer(serializers.ModelSerializer):
                 return request.build_absolute_uri(obj.producto.imagen.url)
             return obj.producto.imagen.url
         return None
+
+
+from .models import InstagramPerfil, InstagramPerfilPublicacion
+
+class InstagramPerfilPublicacionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='galeria.id', read_only=True)
+    imagen = serializers.SerializerMethodField()
+    likes = serializers.IntegerField(source='galeria.likes', read_only=True)
+    comments = serializers.IntegerField(source='galeria.comments', read_only=True)
+    link = serializers.URLField(source='galeria.link', read_only=True)
+    caption = serializers.CharField(source='galeria.caption', read_only=True)
+
+    class Meta:
+        model = InstagramPerfilPublicacion
+        fields = ['id', 'imagen', 'likes', 'comments', 'link', 'caption', 'indice']
+
+    def get_imagen(self, obj):
+        if obj.galeria.imagen:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.galeria.imagen.url)
+            return obj.galeria.imagen.url
+        return None
+
+class InstagramPerfilSerializer(serializers.ModelSerializer):
+    imagen_perfil_url = serializers.SerializerMethodField()
+    posts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = InstagramPerfil
+        fields = [
+            'id', 'username', 'nombre', 'biografia', 
+            'cantidad_posts', 'cantidad_seguidores', 'cantidad_seguidos', 
+            'imagen_perfil', 'imagen_perfil_url', 'posts'
+        ]
+
+    def get_imagen_perfil_url(self, obj):
+        if obj.imagen_perfil and obj.imagen_perfil.imagen:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.imagen_perfil.imagen.url)
+            return obj.imagen_perfil.imagen.url
+        return None
+
+    def get_posts(self, obj):
+        queryset = obj.publicaciones.all().order_by('indice')
+        return InstagramPerfilPublicacionSerializer(queryset, many=True, context=self.context).data

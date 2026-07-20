@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     ProductoViewSet, CategoriaViewSet, GaleriaViewSet, ContactoView,
     RegisterView, LoginView, ProfileView, ChangePasswordView, DeleteAccountView,
-    CuponViewSet, PedidoViewSet, CarritoView, CarritoMergeView
+    CuponViewSet, PedidoViewSet, CarritoView, CarritoMergeView, InstagramPerfilViewSet
 )
 
 router = DefaultRouter()
@@ -12,6 +12,7 @@ router.register(r'productos', ProductoViewSet)
 router.register(r'galeria', GaleriaViewSet) # Nueva ruta
 router.register(r'cupones', CuponViewSet)
 router.register(r'pedidos', PedidoViewSet)
+router.register(r'instagram-perfil', InstagramPerfilViewSet)
 
 urlpatterns = [
     path('contacto/', ContactoView.as_view(), name='contacto'),

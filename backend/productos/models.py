@@ -67,8 +67,17 @@ class Galeria(models.Model):
     link = models.URLField(blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def nombre_archivo(self):
+        if self.imagen:
+            import os
+            return os.path.basename(self.imagen.name)
+        return ""
+
     def __str__(self):
-        return f"{self.caption[:30] if self.caption else self.id}"
+        return self.nombre_archivo or f"Galería #{self.id}"
+
+
 
 class Cupon(models.Model):
     codigo = models.CharField(max_length=50, unique=True)
@@ -145,3 +154,53 @@ def restaurar_stock_pedido(sender, instance, **kwargs):
             item.producto.save()
 
 
+class InstagramPerfil(models.Model):
+    username = models.CharField(max_length=100, unique=True, verbose_name="Nombre de usuario")
+    nombre = models.CharField(max_length=150, verbose_name="Nombre de perfil")
+    biografia = models.TextField(blank=True, null=True, verbose_name="Biografía")
+    cantidad_posts = models.PositiveIntegerField(default=0, verbose_name="Cantidad de posts")
+    cantidad_seguidores = models.PositiveIntegerField(default=0, verbose_name="Cantidad de seguidores")
+    cantidad_seguidos = models.PositiveIntegerField(default=0, verbose_name="Cantidad de seguidos")
+    imagen_perfil = models.ForeignKey(
+        Galeria,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='perfiles_avatar_instagram',
+        verbose_name="Imagen de perfil (desde Galería)"
+    )
+
+    class Meta:
+        verbose_name = "Perfil de Instagram"
+        verbose_name_plural = "Perfiles de Instagram"
+
+    def __str__(self):
+        return f"@{self.username} - {self.nombre}"
+
+
+class InstagramPerfilPublicacion(models.Model):
+    perfil = models.ForeignKey(
+        InstagramPerfil,
+        on_delete=models.CASCADE,
+        related_name='publicaciones',
+        verbose_name="Perfil de Instagram"
+    )
+    galeria = models.ForeignKey(
+        Galeria,
+        on_delete=models.CASCADE,
+        related_name='perfil_publicaciones',
+        verbose_name="Publicación (desde Galería)"
+    )
+    indice = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Índice de antigüedad (orden)"
+    )
+
+    class Meta:
+        verbose_name = "Publicación de Perfil"
+        verbose_name_plural = "Publicaciones de Perfil"
+        ordering = ['indice']
+        unique_together = ('perfil', 'galeria')
+
+    def __str__(self):
+        return f"{self.perfil.username} - Post {self.galeria.id} (Índice: {self.indice})"

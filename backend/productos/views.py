@@ -352,3 +352,10 @@ class CarritoMergeView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+from .models import InstagramPerfil
+from .serializers import InstagramPerfilSerializer
+
+class InstagramPerfilViewSet(viewsets.ModelViewSet):
+    queryset = InstagramPerfil.objects.all()
+    serializer_class = InstagramPerfilSerializer
+

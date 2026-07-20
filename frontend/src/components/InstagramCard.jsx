@@ -21,10 +21,22 @@ const FALLBACK_POSTS = [
 export default function InstagramCard() {
   //   ESTADOS Y PROPIEDADES  
   const [isFollowing, setIsFollowing] = useState(false)
-  const [logoUrl, setLogoUrl] = useState()
-  const [followersCount, setFollowersCount] = useState(10)
-  const [posts, setPosts] = useState([])
-  const profileUrl = 'https://www.instagram.com/api4reinas/'
+  const [profileData, setProfileData] = useState({
+    username: 'api4reinas',
+    nombre: 'Apícola Cuatro Reinas',
+    biografia: 'Productos de nuestra colmena directo a tu hogar 🐝\nMiel 100% pura y orgánica de Quillay y multifloral 🌸, propóleo natural y más 🍯✨',
+    cantidad_posts: 100,
+    cantidad_seguidores: 100,
+    cantidad_seguidos: 100,
+    imagen_perfil_url: '',
+    posts: []
+  })
+
+  const profileUrl = profileData.username 
+    ? `https://www.instagram.com/${profileData.username}/`
+    : 'https://www.instagram.com/api4reinas/'
+  
+  const logoUrl = profileData.imagen_perfil_url
 
   //   CLASES DE ESTILO ENCAPSULADAS  
   const cardContainerClass = "bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300"
@@ -43,46 +55,49 @@ export default function InstagramCard() {
   const handleFollowToggle = () => {
     if (isFollowing) {
       setIsFollowing(false)
-      setFollowersCount(prev => prev - 1)
+      setProfileData(prev => ({
+        ...prev,
+        cantidad_seguidores: prev.cantidad_seguidores - 1
+      }))
     } else {
       setIsFollowing(true)
-      setFollowersCount(prev => prev + 1)
+      setProfileData(prev => ({
+        ...prev,
+        cantidad_seguidores: prev.cantidad_seguidores + 1
+      }))
     }
     window.open(profileUrl, '_blank')
   }
 
   //   EFECTOS (API CALLS)  
   useEffect(() => {
-    axios.get(`${baseURL}/api/galeria/`)
+    axios.get(`${baseURL}/api/instagram-perfil/`)
       .then(response => {
         const data = Array.isArray(response.data) ? response.data : response.data.results || [];
-        console.log("InstagramCard: Datos obtenidos de /api/galeria/:", data);
+        console.log("InstagramCard: Datos obtenidos de /api/instagram-perfil/:", data);
 
-        // Buscamos el elemento que contenga la imagen de perfil por su nombre de archivo
-        const fotoPerfil = data.find(item => item.imagen && item.imagen.includes('imagenPerfilInstagramCard'));
-        if (fotoPerfil) {
-          console.log("InstagramCard: URL de la foto de perfil encontrada:", fotoPerfil.imagen);
-          setLogoUrl(fotoPerfil.imagen);
-        }
-
-        // Filtramos la foto de perfil para la grilla
-        const gridItems = data.filter(item => item.imagen && !item.imagen.includes('imagenPerfilInstagramCard'));
-        console.log("InstagramCard: Posts filtrados para la grilla:", gridItems);
-        if (gridItems.length > 0) {
-          setPosts(gridItems);
+        if (data.length > 0) {
+          const perfil = data[0];
+          setProfileData({
+            username: perfil.username || 'api4reinas',
+            nombre: perfil.nombre || 'Apícola Cuatro Reinas',
+            biografia: perfil.biografia || '',
+            cantidad_posts: perfil.cantidad_posts || 0,
+            cantidad_seguidores: perfil.cantidad_seguidores || 0,
+            cantidad_seguidos: perfil.cantidad_seguidos || 0,
+            imagen_perfil_url: perfil.imagen_perfil_url || '',
+            posts: perfil.posts || []
+          });
         }
       })
       .catch(error => {
-        console.error("InstagramCard: Error al obtener imágenes de galería:", error);
+        console.error("InstagramCard: Error al obtener datos de perfil de Instagram:", error);
       });
   }, []);
 
-  useEffect(() => {
-    console.log("InstagramCard: Estado 'posts' actualizado:", posts);
-    console.log("InstagramCard: URL de las imágenes a renderizar:",
-      FALLBACK_POSTS.slice(0, 9).map(p => ({ id: p.id, imagen: p.imagen }))
-    );
-  }, [posts]);
+  const displayPosts = profileData.posts && profileData.posts.length > 0
+    ? profileData.posts
+    : FALLBACK_POSTS;
 
   //   RENDERIZADO DEL COMPONENTE  
   return (
@@ -109,24 +124,25 @@ export default function InstagramCard() {
 
         {/* Info y Botón Seguir */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5 mb-1.5">
+          <div className="flex items-center gap-1.5 mb-0.5">
             <a
               href={profileUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-bold text-gray-900 hover:text-amber-600 transition-colors truncate text-base"
             >
-              api4reinas
+              {profileData.username}
             </a>
             {/* Badge de verificado */}
             <svg className="w-4 h-4 text-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
               <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
             </svg>
           </div>
+          <div className="text-[13px] text-gray-500 mb-2 truncate">
+            {profileData.nombre}
+          </div>
 
           <button
-            //onClick={() => window.open(profileUrl, '_blank')}
-
             onClick={handleFollowToggle}
             className={followBtnClass(isFollowing)}
           >
@@ -136,28 +152,28 @@ export default function InstagramCard() {
       </div>
 
       {/* Estadísticas */}
-      {<div className="grid grid-cols-3 text-center border-t border-b border-gray-100 py-3 mb-4">
+      <div className="grid grid-cols-3 text-center border-t border-b border-gray-100 py-3 mb-4">
         <div>
-          <span className={statsValueClass}>10</span>
+          <span className={statsValueClass}>{profileData.cantidad_posts}</span>
           <span className={statsLabelClass}>Posts</span>
         </div>
         <div>
           <span className={statsValueClass}>
-            {followersCount.toLocaleString()}
+            {profileData.cantidad_seguidores.toLocaleString()}
           </span>
           <span className={statsLabelClass}>Seguidores</span>
         </div>
         <div>
-          <span className={statsValueClass}>3</span>
+          <span className={statsValueClass}>{profileData.cantidad_seguidos}</span>
           <span className={statsLabelClass}>Seguidos</span>
         </div>
-      </div>}
+      </div>
 
       {/* Biografía */}
       <div className="text-sm text-gray-700 space-y-1 mb-5">
-        <h4 className="font-bold text-gray-950">Apícola Cuatro Reinas</h4>
-        <p>Productos de nuestra colmena directo a tu hogar 🐝</p>
-        <p>Miel 100% pura y orgánica de Quillay y multifloral 🌸, propóleo natural y más 🍯✨</p>
+        {profileData.biografia && profileData.biografia.split('\n').map((line, idx) => (
+          <p key={idx}>{line}</p>
+        ))}
         <a
           href={`https://frontend-sgyhmcn2xa-tl.a.run.app`}
           target="_blank"
@@ -170,7 +186,7 @@ export default function InstagramCard() {
 
       {/* Navegación Falsa de Grid */}
       <div className="grid grid-cols-3 gap-2">
-        {FALLBACK_POSTS.slice(0, 9).map((post) => (
+        {displayPosts.slice(0, 9).map((post) => (
           <a
             key={post.id}
             href={post.link || profileUrl}
@@ -183,28 +199,20 @@ export default function InstagramCard() {
               src={post.imagen}
               alt={post.caption || "Publicación de Instagram"}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-            //loading="lazy"
             />
 
             {/* Overlay interactivo en Hover */}
             <div className={overlayHoverClass}>
               <span className="flex items-center gap-1 select-none">
-                ❤️ <span className="text-white">{/*post.likes*/}</span>
+                ❤️ <span className="text-white">{post.likes !== undefined ? post.likes : 0}</span>
               </span>
               <span className="flex items-center gap-1 select-none">
-                💬 <span className="text-white">{/*post.comments*/}</span>
+                💬 <span className="text-white">{post.comments !== undefined ? post.comments : 0}</span>
               </span>
             </div>
           </a>
         ))}
       </div>
-
-      {/* Grilla de publicaciones */}
-      {/* {<iframe
-        src="//lightwidget.com/widgets/4d28b0d4574e53e09ae0187176624cab.html"
-        allowtransparency="true"
-        className="lightwidget-widget w-full border-0 overflow-hidden rounded-md aspect-[3/3]"
-      />} */}
 
       {/* Botón final para ir al perfil */}
       <a
