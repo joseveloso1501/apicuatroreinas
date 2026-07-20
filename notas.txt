@@ -114,7 +114,7 @@ services:
 =================================================================================
 propositos de las ramas:
     main: usa docker compose para levantar frontend, backend y base de datos de forma local
-    test: usa docker compose para levantar backend y frontend, es copia de prod
+    test: usa docker compose para levantar backend y frontend, se usa base de datos de produccion en la nube
     prod: usa docker compose para levantar frontend en local, backend y base de datos en la nube usa cloud run y cloud sql
 
 =================================================================================
