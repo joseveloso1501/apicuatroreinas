@@ -496,7 +496,7 @@ export default function Profile() {
                   }}
                   className="text-xs text-amber-600 font-bold hover:underline bg-transparent border-none cursor-pointer"
                 >
-                  {isRegisterMode ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate aquí'}
+                  {isRegisterMode ? '¿Ya tienes cuenta? Inicia sesión aquí' : '¿No tienes cuenta? Regístrate aquí'}
                 </button>
               </div>
             </div>
