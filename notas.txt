@@ -1,0 +1,174 @@
+
+https://backend-337307900667.southamerica-west1.run.app
+
+
+=================================================================================
+Comandos cloud run:
+# Inicia el proxy apuntando a un puerto local, ej: 5433
+./cloud-sql-proxy --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+# (Agrega --address 0.0.0.0 para permitir conexiones desde contenedores Docker)
+./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+
+# Asegúrate de usar las credenciales de tu DB en GCP
+export DB_HOST=127.0.0.1
+export DB_PORT=5433
+export DB_NAME=postgres
+export DB_USER=postgres
+export DB_PASSWORD=8mEYrnGT3eu
+
+ENVs para Cloud Run:
+INSTANCE_CONNECTION_NAME = apicuatroreinas:southamerica-west1:bd4reinas
+DB_NAME = postgres
+DB_USER = postgres
+DB_PASSWORD = 8mEYrnGT3eu
+
+docker exec -e DB_HOST=127.0.0.1 -e DB_PORT=5433 -e DB_NAME=postgres -e DB_USER=postgres -e DB_PASSWORD=8mEYrnGT3eu django_backend python manage.py migrate
+
+=================================================================================
+paso a paso para ejecutar migraciones en base de datos 
+
+./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+docker compose down
+docker compose up backend
+
+docker exec -it django_backend python manage.py migrate
+
+Si en algún momento cambias de cuenta o expiran tus credenciales en tu Mac, solo debes ejecutar gcloud auth application-default login en tu terminal local).
+
+
+=================================================================================
+copia docker compose: 
+
+# version: '3.9'
+
+services:
+  # db:
+  #   image: postgres:16
+  #   container_name: postgres_db
+  #   restart: always
+  #   environment:
+  #     POSTGRES_DB: postgres
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: 8mEYrnGT3eu
+  #   volumes:
+  #     - pgdata:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d bd4reinas"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+
+  backend:
+    build: ./backend
+    container_name: django_backend
+    image: joseveloso/ecommerce_apicultura-backend:v1
+    command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - ./backend:/app
+      - ~/.config/gcloud:/root/.config/gcloud:ro
+    ports:
+      - "8080:8080"
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    environment:
+      - DEBUG=1
+      # Conexión a GCP Cloud SQL (vía Proxy local en puerto 5433)
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=8mEYrnGT3eu
+      - DB_HOST=host.docker.internal
+      - DB_PORT=5433
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
+      # Conexión local (Descomentar para usar base de datos Docker local)
+      # - DB_NAME=ecommerce
+      # - DB_USER=admin
+      # - DB_PASSWORD=admin123
+      # - DB_HOST=db
+      # - DB_PORT=5432
+      # - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
+      - ALLOWED_HOSTS=*
+      - CORS_ALLOWED_ORIGINS=http://localhost:5173
+
+  frontend:
+    build: 
+      context: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    
+    environment:
+     # - VITE_API_URL=https://backend-337307900667.southamerica-west1.run.app
+     - VITE_API_URL=http://localhost:8080
+
+    # depends_on:
+    #   - backend
+
+# volumes:
+#   pgdata:
+
+=================================================================================
+propositos de las ramas:
+    main: usa docker compose para levantar frontend, backend y base de datos de forma local
+    test: usa docker compose para levantar backend y frontend, es copia de prod
+    prod: usa docker compose para levantar frontend en local, backend y base de datos en la nube usa cloud run y cloud sql
+
+=================================================================================
+grilla de publicaciones
+
+<iframe
+        src="//lightwidget.com/widgets/4d28b0d4574e53e09ae0187176624cab.html"
+        allowtransparency="true"
+        className="lightwidget-widget w-full border-0 overflow-hidden rounded-md aspect-[3/3]"
+      />
+
+=================================================================================
+datos de servidor SMTP
+
+Server SMTP Turbo-SMTP:
+Parameter	
+Value
+
+SMTP Server
+pro.eu.turbo-smtp.com
+
+SMTP Authentication
+Enabled
+
+SMTP Username
+Consumer Key = 
+9e8c40a12a4972d3cba4
+
+SMTP Password	
+Consumer Secret = 
+G73icmIZ1xHUSNeoKQDh
+
+SMTP Ports	
+SSL 
+465, 25025
+non-SSL
+25, 587, 2525
+
+=================================================================================
+crear un esquema de la base de datos
+
+comando para levantar el proxy local para conectar a la base de datos en la nube
+./cloud-sql-proxy --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+
+comando para crear un esquema de la base de datos (requiere Conexión mediante socket a la instancia en GCP)
+PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -s -F p -E UTF-8 -f apicuatroreinas_schema.sql
+
+comando para crear un respaldo completo de la base de datos
+PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -F p -E UTF-8 -f apicuatroreinas_completa.sql
+=================================================================================
+
+futura refactorizacion de informacion hardcodeada
+ImageCarousel tiene 'https://storage.googleapis.com/bucket4reinas/media' 
+About tambien tiene ese enlace
+
+archivos a ignorar 
