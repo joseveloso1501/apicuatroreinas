@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: '0.0.0.0',
-    allowedHosts: ['all', 'pyromania-overpay-extended.ngrok-free.dev','https://vacations-sessions-kent-turning.trycloudflare.com'],
+    allowedHosts: ['all', 'pyromania-overpay-extended.ngrok-free.dev','backend-337307900667.southamerica-west1.run.app'],
     proxy: {
       '/api': {
         // Si se usa Docker Compose para levantar frontend y backend,
