@@ -6,18 +6,6 @@ const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0
   ? `${baseURL}/media`
   : 'https://storage.googleapis.com/bucket4reinas/media';
 
-const FALLBACK_POSTS = [
-  { id: 1, imagen: `${mediaBaseURL}/galeria/envasesMiel.JPG`, likes: 98, comments: 8, link: 'https://www.instagram.com/p/DZyGN7XCJ31/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 2, imagen: `${mediaBaseURL}/galeria/mielMano1Kg.png`, likes: 156, comments: 12, link: 'https://www.instagram.com/p/DZv7ZGyjF1d/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 3, imagen: `${mediaBaseURL}/galeria/mielMano.jpg`, likes: 124, comments: 8, link: 'https://www.instagram.com/p/DZvzbgSDPQY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 4, imagen: `${mediaBaseURL}/galeria/descargaCentrifuga.jpg`, likes: 133, comments: 5, link: 'https://www.instagram.com/reel/DZvxTzkMeiK/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 5, imagen: `${mediaBaseURL}/galeria/centrifuga.jpg`, likes: 210, comments: 14, link: 'https://www.instagram.com/reel/DZvdNGaoDdP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 6, imagen: `${mediaBaseURL}/galeria/rastrillo.jpg`, likes: 93, comments: 8, link: 'https://www.instagram.com/reel/DZvaIkDoo14/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 7, imagen: `${mediaBaseURL}/galeria/miel265Final.png`, likes: 210, comments: 14, link: 'https://www.instagram.com/p/DZlBdcXCNis/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 8, imagen: `${mediaBaseURL}/galeria/flores-abejas.jpg`, likes: 210, comments: 14, link: 'https://www.instagram.com/p/DZgSWzMGkc1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-  { id: 9, imagen: `${mediaBaseURL}/galeria/mielSet.png`, likes: 210, comments: 14, link: 'https://www.instagram.com/p/DZgSJkAGhJL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==' },
-]
-
 export default function InstagramCard() {
   //   ESTADOS Y PROPIEDADES  
   const [isFollowing, setIsFollowing] = useState(false)
@@ -25,7 +13,7 @@ export default function InstagramCard() {
     username: 'api4reinas',
     nombre: 'Apícola Cuatro Reinas',
     biografia: 'Productos de nuestra colmena directo a tu hogar 🐝\nMiel 100% pura y orgánica de Quillay y multifloral 🌸, propóleo natural y más 🍯✨',
-    cantidad_posts: 100,
+    cantidad_posts: 10,
     cantidad_seguidores: 100,
     cantidad_seguidos: 100,
     imagen_perfil_url: '',
@@ -79,14 +67,14 @@ export default function InstagramCard() {
         if (data.length > 0) {
           const perfil = data[0];
           setProfileData({
-            username: perfil.username || 'api4reinas',
-            nombre: perfil.nombre || 'Apícola Cuatro Reinas',
-            biografia: perfil.biografia || '',
-            cantidad_posts: perfil.cantidad_posts || 0,
-            cantidad_seguidores: perfil.cantidad_seguidores || 0,
-            cantidad_seguidos: perfil.cantidad_seguidos || 0,
-            imagen_perfil_url: perfil.imagen_perfil_url || '',
-            posts: perfil.posts || []
+            username: perfil.username,
+            nombre: perfil.nombre,
+            biografia: perfil.biografia,
+            cantidad_posts: perfil.cantidad_posts,
+            cantidad_seguidores: perfil.cantidad_seguidores,
+            cantidad_seguidos: perfil.cantidad_seguidos,
+            imagen_perfil_url: perfil.imagen_perfil_url,
+            posts: perfil.posts
           });
         }
       })
@@ -95,9 +83,7 @@ export default function InstagramCard() {
       });
   }, []);
 
-  const displayPosts = profileData.posts && profileData.posts.length > 0
-    ? profileData.posts
-    : FALLBACK_POSTS;
+  const displayPosts = profileData.posts || [];
 
   //   RENDERIZADO DEL COMPONENTE  
   return (
@@ -174,14 +160,6 @@ export default function InstagramCard() {
         {profileData.biografia && profileData.biografia.split('\n').map((line, idx) => (
           <p key={idx}>{line}</p>
         ))}
-        <a
-          href={`https://frontend-sgyhmcn2xa-tl.a.run.app`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block text-blue-600 hover:underline font-medium text-xs mt-1"
-        >
-          https://frontend-sgyhmcn2xa-tl.a.run.app
-        </a>
       </div>
 
       {/* Navegación Falsa de Grid */}
