@@ -206,5 +206,5 @@ class InstagramPerfilSerializer(serializers.ModelSerializer):
         return None
 
     def get_posts(self, obj):
-        queryset = obj.publicaciones.all().order_by('indice')
+        queryset = obj.publicaciones.all().order_by('-indice')[:9]
         return InstagramPerfilPublicacionSerializer(queryset, many=True, context=self.context).data
