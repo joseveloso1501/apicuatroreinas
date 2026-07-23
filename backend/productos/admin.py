@@ -39,7 +39,8 @@ class InstagramPerfilPublicacionInline(admin.TabularInline):
     ordering = ('indice',)
 
 class InstagramPerfilAdmin(admin.ModelAdmin):
-    list_display = ['username', 'nombre', 'cantidad_posts', 'cantidad_seguidores', 'cantidad_seguidos']
+    list_display = ['id', 'username', 'nombre', 'cantidad_posts', 'cantidad_seguidores', 'cantidad_seguidos']
+    readonly_fields = ['id']
     search_fields = ['username', 'nombre']
     inlines = [InstagramPerfilPublicacionInline]
 
