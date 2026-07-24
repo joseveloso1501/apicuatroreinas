@@ -14,16 +14,16 @@ export default function InstagramCard() {
     nombre: 'Apícola Cuatro Reinas',
     biografia: 'Productos de nuestra colmena directo a tu hogar 🐝\nMiel 100% pura y orgánica de Quillay y multifloral 🌸, propóleo natural y más 🍯✨',
     cantidad_posts: 10,
-    cantidad_seguidores: 100,
-    cantidad_seguidos: 100,
+    cantidad_seguidores: 59,
+    cantidad_seguidos: 55,
     imagen_perfil_url: '',
     posts: []
   })
 
-  const profileUrl = profileData.username 
+  const profileUrl = profileData.username
     ? `https://www.instagram.com/${profileData.username}/`
     : 'https://www.instagram.com/api4reinas/'
-  
+
   const logoUrl = profileData.imagen_perfil_url
 
   //   CLASES DE ESTILO ENCAPSULADAS  
@@ -59,13 +59,17 @@ export default function InstagramCard() {
 
   //   EFECTOS (API CALLS)  
   useEffect(() => {
-    axios.get(`${baseURL}/api/instagram-perfil/`)
+    axios.get(`${baseURL}/api/instagram-perfil/1/`)
       .then(response => {
-        const data = Array.isArray(response.data) ? response.data : response.data.results || [];
-        console.log("InstagramCard: Datos obtenidos de /api/instagram-perfil/:", data);
+        console.log("InstagramCard: Datos obtenidos de perfil:", response.data);
 
-        if (data.length > 0) {
-          const perfil = data[0];
+        let perfil = null;
+        if (response.data && typeof response.data === 'object') {
+          // Si es un objeto directo (ej. al consultar /api/instagram-perfil/1/)
+          perfil = response.data;
+        }
+
+        if (perfil) {
           setProfileData({
             username: perfil.username,
             nombre: perfil.nombre,
@@ -74,7 +78,7 @@ export default function InstagramCard() {
             cantidad_seguidores: perfil.cantidad_seguidores,
             cantidad_seguidos: perfil.cantidad_seguidos,
             imagen_perfil_url: perfil.imagen_perfil_url,
-            posts: perfil.posts
+            posts: perfil.posts || []
           });
         }
       })
@@ -83,7 +87,9 @@ export default function InstagramCard() {
       });
   }, []);
 
-  const displayPosts = profileData.posts || [];
+  const displayPosts = profileData.posts
+    ? [...profileData.posts].slice(-9).reverse()
+    : [];
 
   //   RENDERIZADO DEL COMPONENTE  
   return (
