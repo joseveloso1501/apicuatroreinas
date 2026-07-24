@@ -10,19 +10,13 @@ export default function ImageCarousel() {
 
   const images = [
     `${mediaBaseURL}/galeria/abejaEnCerezo.jpg`,
-    `${mediaBaseURL}/galeria/envasesMiel.JPG`,
-    `${mediaBaseURL}/galeria/lavanda.jpg`,
+    `${mediaBaseURL}/galeria/envasesMiel.jpg`,
     `${mediaBaseURL}/galeria/apiario.jpg`,
-    `${mediaBaseURL}/galeria/magnolio.HEIC`,
     `${mediaBaseURL}/galeria/quillay3.jpg`,
+    `${mediaBaseURL}/galeria/magnolio.jpg`,
     `${mediaBaseURL}/galeria/perritos.jpg`,
     `${mediaBaseURL}/galeria/avellano.jpg`,
-    //`${mediaBaseURL}/galeria/comportamientos_De_las_Abejas_1ok.jpg`,
-    //`${mediaBaseURL}/galeria/miel_gemini.png`,
-    //`${mediaBaseURL}/galeria/panales_miel_gemini.png`,
-    //`${mediaBaseURL}/galeria/quillay3.jpg`,
-    //`${mediaBaseURL}/galeria/propoleo_gemini.png`,
-    //`${mediaBaseURL}/galeria/flores-abejas.jpg`,
+    `${mediaBaseURL}/galeria/lavanda.jpg`,
   ]
 
   // Cambiar imagen cada n segundos
