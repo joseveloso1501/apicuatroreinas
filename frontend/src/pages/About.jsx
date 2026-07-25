@@ -147,7 +147,9 @@ export default function About() {
               rel="noopener noreferrer"
               className="text-xs font-extrabold text-amber hover:text-amber-600 flex items-center gap-1 hover:underline"
             >
-              Síguenos 👉 @api4reinas
+              Síguenos
+              <FaInstagram size={17} />
+              api4reinas
             </a>
           </div>
           <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
