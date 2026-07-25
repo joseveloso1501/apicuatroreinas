@@ -164,7 +164,7 @@ comando para crear un esquema de la base de datos (requiere Conexión mediante s
 PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -s -F p -E UTF-8 -f apicuatroreinas_schema.sql
 
 comando para crear un respaldo completo de la base de datos
-PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -F p -E UTF-8 -f apicuatroreinas_completa.sql
+PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -F p -E UTF-8 -f apicuatroreinas_dump.sql
 =================================================================================
 
 futura refactorizacion de informacion hardcodeada

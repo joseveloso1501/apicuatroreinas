@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict NCWiG8lEV8aGI37rF017pH1rHZZ2oZhQ5JxKrGLZ0yaxLqZp1NG7twyS456t1E9
+\restrict d853PgWcNbieORhACKmq3siWO37vpuHpYAzQNaZwm5dIy0haYpZeLYY1KWmc6BO
 
 -- Dumped from database version 18.4
 -- Dumped by pg_dump version 18.4
@@ -1038,35 +1038,35 @@ COPY public.productos_cupon (id, codigo, descuento_porcentaje, descuento_valor, 
 --
 
 COPY public.productos_galeria (id, imagen, caption, likes, comments, link, created_at) FROM stdin;
-1	galeria/imagenPerfilInstagramCard.jpeg	Perfil Instagram	0	0	https://www.instagram.com/api4reinas/	2026-06-24 03:48:39.409878+00
 2	galeria/avellano.jpg	avellano	0	0		2026-06-26 17:44:54.551483+00
-4	galeria/propoleo_gemini.png	Propoleo gemini	0	0		2026-06-26 19:57:25.786488+00
-5	galeria/cajones_gemini.png	Cajones gemini	0	0		2026-06-26 19:57:25.788191+00
 8	galeria/panal.jpg	Panal	0	0		2026-06-26 19:57:25.793958+00
 9	galeria/comportamientos_De_las_Abejas_1ok.jpg	Comportamientos de las abejas 1ok	0	0		2026-06-26 19:57:25.795603+00
-10	galeria/panales_miel_gemini.png	Panales miel gemini	0	0		2026-06-26 19:57:25.796874+00
-11	galeria/miel_gemini.png	Miel gemini	0	0		2026-06-26 19:57:25.797712+00
 13	galeria/caballete.jpg	Caballete	0	0		2026-06-26 19:57:25.799197+00
 14	galeria/lavanda.jpg	Lavanda	0	0		2026-06-26 19:57:25.799921+00
 16	galeria/abejaEnCerezo.jpg	Abejaencerezo	0	0		2026-06-26 19:57:25.801398+00
 18	galeria/perritos.jpg	Perritos	0	0		2026-06-26 19:57:25.802737+00
-21	galeria/caballetes_gemini.png	Caballetes gemini	0	0		2026-06-26 19:57:25.80516+00
-22	galeria/magnolio.HEIC	Magnolio	0	0		2026-06-26 19:57:25.80588+00
 15	galeria/apiario.jpg	Nuestros cajones en plena producción de primavera 🌸 #abejas #colmenas	0	0		2026-06-26 19:57:25.800608+00
-28	galeria/miel265Final.png	miel265Final	0	0		2026-07-17 23:25:11.651542+00
 17	galeria/envasesMiel.jpg	Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨	0	0	https://www.instagram.com/p/DZyGN7XCJ31/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-06-26 19:57:25.802146+00
 20	galeria/quillay3.jpg	El Quillay y las abejas, un pilar de vida y dulzura nativa 🌳🐝\r\n\r\n🧡 El néctar de la flor de este árbol da origen a la famosa miel de Quillay, altamente valorada por su profundo color ámbar 🍯, su dulzura intensa, su alta capacidad antioxidante 🛡️ y propiedades antibacterianas 🧬.\r\n\r\n⏳☀️ Este árbol florece en un momento estratégico, es sumamente melífero y al ser una gran especie nativa no solo alimenta a las abejas, sino que a muchas especies polinizadoras nativas 🦋, ayudando a mantener un equilibrio ambiental y ecosistémico 🌍🌱.\r\n\r\n¿Conocías la importancia del Quillay?👇	0	0	https://www.instagram.com/p/DZgSDh4GoaX/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-06-26 19:57:25.804143+00
-29	galeria/mielSet.png	🍯 Nuestra deliciosa miel en 3 formatos: 500 g, 265 g y 1 Kg\r\nPronto les mostraremos el proceso de cosecha 🌸🍂\r\n\r\n#miel #apiculturachile	0	0	https://www.instagram.com/p/DZgSJkAGhJL/?utm_source=ig_web_copy_link	2026-07-17 23:30:00.212111+00
+23	galeria/mielMano1Kg.jpg	🍯 Nuestra miel también está disponible en formatos tradicionales! 😋 🐝\r\n\r\n#miel	0	0	https://www.instagram.com/p/DZv7ZGyjF1d/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:03:21.398113+00
 7	galeria/flores-abejas.jpg	La lavanda y las abejas: una relación perfecta 🐝💜\r\n🍴 La lavanda es una flor extraordinaria para las abejas, produce un néctar de alta calidad en un momento del año en que las abejas más lo necesitan ☀️.\r\n🪻 El color de esta flor es muy atractiva para las abejas y así también lo es su aroma, y por si fuera poco, sirve de repelente natural para otras plagas de jardín 🚫🦟.	0	0	https://www.instagram.com/p/DZgSWzMGkc1/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-06-26 19:57:25.791737+00
-27	galeria/miel265Final.png	Un formato ideal para regalar 🎁🤩\r\n🍯 Miel en frasco de vidrio de 265 g\r\n¿La regalas o la conservas para siempre? 👀	0	0	https://www.instagram.com/p/DZlBdcXCNis/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:25:09.735096+00
 26	galeria/rastrillo.jpg	🍯 El arte del desoperculado: pureza en cada detalle ✨\r\n🔪 Aquí les mostramos un paso fundamental en nuestra cosecha artesanal: retirar el opérculo, esa fina capa de cera que las abejas crean para sellar y proteger la miel cuando está en su punto perfecto de maduración.\r\n🐝 ¿Conocías este paso de la cosecha apícola?\r\n#apicultura #hechoamano #mielpura	0	0	https://www.instagram.com/reel/DZvaIkDoo14/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:20:54.733082+00
 6	galeria/yoSostengoMarco.jpg	Trabajando en el apiario y sosteniendo un verdadero tesoro 🐝🍯 #apicultura #organico	0	0		2026-06-26 19:57:25.790368+00
 25	galeria/centrifuga.jpg	El fruto de la colmena en pleno movimiento 😵‍💫🌪️\r\n🌀 Así se ve el proceso de centrifugación, el corazón de nuestra cosecha es el momento exacto en que la fuerza centrífuga extrae lentamente el oro líquido de los marcos.\r\n👉 Si bien se ve que gira rápido, esa velocidad se alcanza progresivamente y con paciencia ¿cuánto podrías esperar por algo tan fresco como delicioso? 🍯\r\n\r\n#apicultura #mielpura #hechoamano #centrifuga	0	0	https://www.instagram.com/reel/DZvdNGaoDdP/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:19:59.363581+00
 24	galeria/descargaCentrifuga.jpg	✨ Hay momentos en la cosecha que parecen magia, y ver salir la miel de la centrífuga es, sin duda, uno de ellos 🍯\r\n\r\n🌸🪻Este elixir de color cobrizo vivo y brillante refleja la riqueza de las floraciones nativas que nuestras abejas visitaron.\r\n\r\n🍂 Al extraer la miel de esta forma, garantizamos que se mantenga como una miel 100% cruda, natural y en su estado más puro, conservando intactas todas sus propiedades medicinales, vitaminas, enzimas y nutrientes originales.\r\n\r\n#apicultura #hechoamano #mielpura #mieldeabeja	0	0	https://www.instagram.com/reel/DZvxTzkMeiK/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:19:23.133513+00
-23	galeria/mielMano1Kg.png	🍯 Nuestra miel también está disponible en formatos tradicionales! 😋 🐝\r\n\r\n#miel	0	0	https://www.instagram.com/p/DZv7ZGyjF1d/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:03:21.398113+00
 12	galeria/sombrero.jpg	En ocasiones las abejas nos regalan un momento para observarlas y compartir de su magía 🎩	0	0		2026-06-26 19:57:25.798559+00
 19	galeria/mielMano.jpg	Miel a horas de ser envasada, pureza en su maximo esplendor ✨	0	0	https://www.instagram.com/p/DZvzbgSDPQY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-06-26 19:57:25.803351+00
 3	galeria/barbaAbejas.jpg	Es importante saber identificar el lenguaje de las abejas, ellas comunican y nosotros aprendemos día a día 📚🐝	0	0		2026-06-26 19:57:25.782891+00
+1	galeria/imagenPerfilInstagramCard.jpg	Perfil Instagram	0	0	https://www.instagram.com/api4reinas/	2026-06-24 03:48:39.409878+00
+4	galeria/propoleo_gemini.jpg	Propoleo gemini	0	0		2026-06-26 19:57:25.786488+00
+5	galeria/cajones_gemini.jpg	Cajones gemini	0	0		2026-06-26 19:57:25.788191+00
+10	galeria/panales_miel_gemini.jpg	Panales miel gemini	0	0		2026-06-26 19:57:25.796874+00
+11	galeria/miel_gemini.jpg	Miel gemini	0	0		2026-06-26 19:57:25.797712+00
+21	galeria/caballetes_gemini.jpg	Caballetes gemini	0	0		2026-06-26 19:57:25.80516+00
+22	galeria/magnolio.jpg	Magnolio	0	0		2026-06-26 19:57:25.80588+00
+28	galeria/miel265Final.jpg	miel265Final	0	0		2026-07-17 23:25:11.651542+00
+29	galeria/mielSet.jpg	🍯 Nuestra deliciosa miel en 3 formatos: 500 g, 265 g y 1 Kg\r\nPronto les mostraremos el proceso de cosecha 🌸🍂\r\n\r\n#miel #apiculturachile	0	0	https://www.instagram.com/p/DZgSJkAGhJL/?utm_source=ig_web_copy_link	2026-07-17 23:30:00.212111+00
+27	galeria/miel265Final.jpg	Un formato ideal para regalar 🎁🤩\r\n🍯 Miel en frasco de vidrio de 265 g\r\n¿La regalas o la conservas para siempre? 👀	0	0	https://www.instagram.com/p/DZlBdcXCNis/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==	2026-07-17 23:25:09.735096+00
 \.
 
 
@@ -1163,13 +1163,13 @@ COPY public.productos_perfilusuario_cupones (id, perfilusuario_id, cupon_id) FRO
 --
 
 COPY public.productos_producto (id, nombre, descripcion, precio, stock, categoria_id, created_at, imagen, updated_at) FROM stdin;
-5	Propoleo en gotas 15 mL	Tinta de propoleo en gotas al 10% de concentración formato 15 mL con gotario incluido.	6000.00	0	2	2026-06-14 05:38:30.222964+00	productos/propoleo_gemini.png	2026-06-15 22:08:25.235917+00
-8	Cámara de cria	Cámara de cria tipo Langstroth completa con techo de zinc, entretapa, alza, 10 marcos y piso.	50000.00	0	4	2026-06-15 22:02:07.23417+00	productos/camaraCria.png	2026-06-25 21:44:04.638254+00
-2	Miel 1 Kg	Miel cruda multifloral con alto contenido de Quillay y flores nativas en formato de 1 Kg.	4000.00	0	1	2026-06-13 00:10:23.811489+00	productos/miel1kg.png	2026-06-25 23:49:13.250492+00
-6	Miel en panal 200 g	Miel 100% cruda y natural presentada en su panal original de cera. Sin procesos ni filtrados, perfecto para desayunos, postres y tablas de picoteo. Formato 200 g.	6500.00	0	1	2026-06-15 02:28:51.782148+00	productos/panales_miel_gemini.png	2026-07-16 23:18:59.012403+00
+8	Cámara de cria	Cámara de cria tipo Langstroth completa con techo de zinc, entretapa, alza, 10 marcos y piso.	50000.00	0	4	2026-06-15 22:02:07.23417+00	productos/camaraCria.jpg	2026-06-25 21:44:04.638254+00
+2	Miel 1 Kg	Miel cruda multifloral con alto contenido de Quillay y flores nativas en formato de 1 Kg.	4000.00	0	1	2026-06-13 00:10:23.811489+00	productos/miel1kg.jpg	2026-06-25 23:49:13.250492+00
+6	Miel en panal 200 g	Miel 100% cruda y natural presentada en su panal original de cera. Sin procesos ni filtrados, perfecto para desayunos, postres y tablas de picoteo. Formato 200 g.	6500.00	0	1	2026-06-15 02:28:51.782148+00	productos/panales_miel_gemini.jpg	2026-07-16 23:18:59.012403+00
+3	Miel 500 g	Miel cruda multifloral con alto contenido de Quillay y flores nativas en formato de 500 g.	2500.00	2	1	2026-06-14 05:28:36.554183+00	productos/miel500g.jpg	2026-07-20 02:40:11.232774+00
+4	Miel 265 g	Miel cruda multifloral con alto contenido de Quillay y flores nativas en formato de 265 g.	2000.00	0	1	2026-06-14 05:30:40.367971+00	productos/miel265g.jpg	2026-07-20 03:58:55.690837+00
 7	Base 4 m	Caballete de 4 metros de largo, 49 cm de alto y 2 % de inclinación. Permite una altura perfecta para trabajar y una inclinación adecuada para evacuar el agua de las piqueras.	20000.00	0	4	2026-06-15 21:57:46.267156+00	productos/caballete.jpg	2026-07-16 23:31:41.01645+00
-3	Miel 500 g	Miel cruda multifloral con alto contenido de Quillay y flores nativas en formato de 500 g.	2500.00	2	1	2026-06-14 05:28:36.554183+00	productos/miel500g.png	2026-07-20 02:40:11.232774+00
-4	Miel 265 g	Miel cruda multifloral con alto contenido de Quillay y flores nativas en formato de 265 g.	2000.00	0	1	2026-06-14 05:30:40.367971+00	productos/miel265g.png	2026-07-20 03:58:55.690837+00
+5	Propoleo en gotas 15 mL	Tinta de propoleo en gotas al 10% de concentración formato 15 mL con gotario incluido.	6000.00	0	2	2026-06-14 05:38:30.222964+00	productos/propoleo_gemini.jpg	2026-06-15 22:08:25.235917+00
 \.
 
 
@@ -1999,5 +1999,5 @@ GRANT ALL ON SCHEMA public TO cloudsqlsuperuser;
 -- PostgreSQL database dump complete
 --
 
-\unrestrict NCWiG8lEV8aGI37rF017pH1rHZZ2oZhQ5JxKrGLZ0yaxLqZp1NG7twyS456t1E9
+\unrestrict d853PgWcNbieORhACKmq3siWO37vpuHpYAzQNaZwm5dIy0haYpZeLYY1KWmc6BO
 
