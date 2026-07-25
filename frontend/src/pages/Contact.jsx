@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import InstagramCard from '../components/InstagramCard'
+import { baseURL } from '../utils/baseURL'
 
 export default function Contact() {
   //   ESTADOS Y HOOKS  
@@ -39,7 +40,7 @@ export default function Contact() {
     setError('')
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/contacto/`, {
+      const response = await fetch(`${baseURL}/api/contacto/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

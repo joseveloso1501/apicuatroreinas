@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
+import { getMediaUrl } from '../utils/baseURL'
 
 // Helper para validar formato de correo electrónico
 const validateEmail = (email) => {
@@ -639,7 +640,7 @@ export default function Checkout() {
                     <div key={item.id} className="py-3 flex gap-3 items-center">
                       <div
                         className="w-12 h-12 rounded-lg bg-yellow-50 bg-cover bg-center flex-shrink-0"
-                        style={item.imagen ? { backgroundImage: `url('${item.imagen}')` } : {}}
+                        style={item.imagen ? { backgroundImage: `url('${getMediaUrl(item.imagen)}')` } : {}}
                       >
                         {!item.imagen && <span className="text-[8px] text-gray-400 flex items-center justify-center h-full">N/A</span>}
                       </div>

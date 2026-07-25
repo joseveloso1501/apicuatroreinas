@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { getMediaUrl } from '../utils/baseURL'
+import { FaInstagram } from 'react-icons/fa'
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
-  ? `${baseURL}/media`
-  : 'https://storage.googleapis.com/bucket4reinas/media';
-
-const imgCajones = `${mediaBaseURL}/galeria/apiario.jpg`
-const imgPilares = `${mediaBaseURL}/galeria/panal.jpg`
-const imgYo = `${mediaBaseURL}/galeria/yoSostengoMarco.jpg`
-const imgMiel = `${mediaBaseURL}/galeria/envasesMiel.jpg`
-const mielMano = `${mediaBaseURL}/galeria/mielMano.jpg`
-const sombrero = `${mediaBaseURL}/galeria/sombrero.jpg`
-const barbaAbejas = `${mediaBaseURL}/galeria/barbaAbejas.jpg`
+const imgCajones = getMediaUrl('/media/galeria/apiario.jpg')
+const imgPilares = getMediaUrl('/media/galeria/panal.jpg')
+const imgYo = getMediaUrl('/media/galeria/yoSostengoMarco.jpg')
+const imgMiel = getMediaUrl('/media/galeria/envasesMiel.jpg')
+const mielMano = getMediaUrl('/media/galeria/mielMano.jpg')
+const sombrero = getMediaUrl('/media/galeria/sombrero.jpg')
+const barbaAbejas = getMediaUrl('/media/galeria/barbaAbejas.jpg')
 
 const GALERIA = [
   { id: 1, image: imgMiel, caption: 'Miel 100% pura extraída con mínima intervención. ¡Pide la tuya! 🍯✨' },

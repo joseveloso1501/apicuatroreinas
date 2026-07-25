@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import { useCart } from '../context/CartContext'
 import { useSearchParams } from 'react-router-dom'
+import { baseURL, getMediaUrl } from '../utils/baseURL'
 
 export default function Products() {
   //   ESTADOS Y HOOKS  
@@ -36,9 +37,6 @@ export default function Products() {
 
   //   EFECTOS (CARGA DE PRODUCTOS DE LA API)  
   useEffect(() => {
-    // Obtiene la URL del backend dinámicamente desde la variable de entorno
-    const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-
     console.log("Conectando a API en:", baseURL);
 
     const startTime = Date.now();
@@ -247,7 +245,7 @@ export default function Products() {
                   <div
                     className="group w-full h-60 bg-yellow-100/30 rounded-xl flex items-center justify-center text-gray-400 mb-3 bg-cover bg-center relative overflow-hidden"
                     style={p.imagen ? {
-                      backgroundImage: `url('${p.imagen}')`
+                      backgroundImage: `url('${getMediaUrl(p.imagen)}')`
                     } : {}}
                   >
                     {!p.imagen ? (
@@ -255,7 +253,7 @@ export default function Products() {
                     ) : (
                       <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                         <button
-                          onClick={() => setSelectedImage(p.imagen)}
+                          onClick={() => setSelectedImage(getMediaUrl(p.imagen))}
                           className={viewProductBtnClass}
                         >
                           Ver producto

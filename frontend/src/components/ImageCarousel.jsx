@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react'
-
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
-  ? `${baseURL}/media`
-  : 'https://storage.googleapis.com/bucket4reinas/media';
+import { getMediaUrl } from '../utils/baseURL'
 
 export default function ImageCarousel() {
   const [currentImage, setCurrentImage] = useState(0)
 
   const images = [
-    `${mediaBaseURL}/galeria/abejaEnCerezo.jpg`,
-    `${mediaBaseURL}/galeria/envasesMiel.jpg`,
-    `${mediaBaseURL}/galeria/apiario.jpg`,
-    `${mediaBaseURL}/galeria/quillay3.jpg`,
-    `${mediaBaseURL}/galeria/magnolio.jpg`,
-    `${mediaBaseURL}/galeria/perritos.jpg`,
-    `${mediaBaseURL}/galeria/avellano.jpg`,
-    `${mediaBaseURL}/galeria/lavanda.jpg`,
+    getMediaUrl('/media/galeria/abejaEnCerezo.jpg'),
+    getMediaUrl('/media/galeria/envasesMiel.jpg'),
+    getMediaUrl('/media/galeria/apiario.jpg'),
+    getMediaUrl('/media/galeria/quillay3.jpg'),
+    getMediaUrl('/media/galeria/magnolio.jpg'),
+    getMediaUrl('/media/galeria/avellano.jpg'),
+    getMediaUrl('/media/galeria/perritos.jpg'),
+    getMediaUrl('/media/galeria/lavanda.jpg'),
   ]
 
   // Cambiar imagen cada n segundos

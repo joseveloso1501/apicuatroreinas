@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { baseURL, getMediaUrl } from '../utils/baseURL'
 
-const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-const mediaBaseURL = (baseURL.includes('localhost') || baseURL.includes('127.0.0.1') || baseURL.includes('0.0.0.0'))
-  ? `${baseURL}/media`
-  : 'https://storage.googleapis.com/bucket4reinas/media';
 
 export default function InstagramCard() {
   //   ESTADOS Y PROPIEDADES  
@@ -24,7 +21,7 @@ export default function InstagramCard() {
     ? `https://www.instagram.com/${profileData.username}/`
     : 'https://www.instagram.com/api4reinas/'
 
-  const logoUrl = profileData.imagen_perfil_url
+  const logoUrl = getMediaUrl(profileData.imagen_perfil_url)
 
   //   CLASES DE ESTILO ENCAPSULADAS  
   const cardContainerClass = "bg-white rounded-2xl border border-gray-100 shadow-md p-6 max-w-sm mx-auto hover:shadow-lg transition-shadow duration-300"
@@ -180,7 +177,7 @@ export default function InstagramCard() {
           >
             {/* Imagen del Post */}
             <img
-              src={post.imagen}
+              src={getMediaUrl(post.imagen)}
               alt={post.caption || "Publicación de Instagram"}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { getMediaUrl } from '../utils/baseURL'
 
 export default function CartDrawer() {
   // ESTADOS Y HOOKS
@@ -60,7 +61,7 @@ export default function CartDrawer() {
               <Link
                 to="/productos"
                 onClick={() => setIsCartOpen(false)}
-                className="text-xs font-bold text-amber hover:underline hover:text-amber-600 cursor-pointer"
+                className={checkoutBtnClass}
               >
                 Explorar productos
               </Link>
@@ -74,7 +75,7 @@ export default function CartDrawer() {
                 {/* Imagen del producto */}
                 <div
                   className={itemImgClass}
-                  style={item.imagen ? { backgroundImage: `url('${item.imagen}')` } : {}}
+                  style={item.imagen ? { backgroundImage: `url('${getMediaUrl(item.imagen)}')` } : {}}
                 >
                   {!item.imagen && <span className="text-[10px] text-gray-400 flex items-center justify-center h-full">Sin imagen</span>}
                 </div>

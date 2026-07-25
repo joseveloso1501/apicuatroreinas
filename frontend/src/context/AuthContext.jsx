@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { baseURL } from '../utils/baseURL'
 
 const AuthContext = createContext()
 
@@ -12,8 +13,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
-  const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
   // Configurar axios para incluir el Token si existe
   const getAuthHeaders = () => {
