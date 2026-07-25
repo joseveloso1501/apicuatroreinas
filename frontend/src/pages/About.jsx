@@ -114,9 +114,9 @@ export default function About() {
   return (
     <section className="bg-white">
 
-      {/* Cabecera Principal con Paralaje (Optimizada para móviles) */}
+      {/* Cabecera Principal con Paralaje */}
       <div
-        className="relative bg-scroll md:bg-fixed bg-cover bg-center py-24 md:py-32 text-center"
+        className="relative bg-fixed bg-cover bg-center py-24 md:py-32 text-center"
         style={{ backgroundImage: `url(${imgCajones})` }}
       >
         {/* Capa de oscurecimiento para legibilidad del texto */}
@@ -140,14 +140,14 @@ export default function About() {
       <div className="max-w-6xl mx-auto px-6 pt-16">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-            <h3 className="text-xl font-bold text-gray-900"> </h3>
+            <h3 className="text-xl font-bold text-gray-900">Quienes somos</h3>
             <a
               href="https://www.instagram.com/api4reinas/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs font-extrabold text-amber hover:text-amber-600 flex items-center gap-1 hover:underline"
             >
-              Siguenos en Instagram 👉 @api4reinas
+              Síguenos 👉 @api4reinas
             </a>
           </div>
           <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
@@ -197,7 +197,7 @@ export default function About() {
 
             {/* Introducción */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes somos</h3>
+              {/* <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes somos</h3> */}
               <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                 En <strong>Apícola Cuatro Reinas</strong> somos un apiario emergente que nace con mucho entusiasmo y un compromiso desde el momento cero. Nos mueve el respeto por la naturaleza, la preocupación por los detalles y la convicción de que las cosas se pueden hacer de una manera diferente. Combinamos la sabiduría de la apicultura tradicional con el respaldo de la ciencia y la tecnología para ofrecer lo mejor de nuestra colmena al mundo.
               </p>
@@ -263,9 +263,9 @@ export default function About() {
         </div>
       </div>
 
-      {/* Sección Pilares con Paralaje (Optimizada para móviles) */}
+      {/* Sección Pilares con Paralaje */}
       <div
-        className="relative bg-scroll md:bg-fixed bg-cover bg-center py-20 md:py-24 text-white overflow-hidden"
+        className="relative bg-fixed bg-cover bg-center py-20 md:py-24 text-white overflow-hidden"
         style={{ backgroundImage: `url(${imgPilares})` }}
       >
         {/* Capa de oscurecimiento */}
