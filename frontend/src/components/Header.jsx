@@ -45,7 +45,10 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 active:scale-95 transition-transform">
           <div className="w-10 h-10 rounded-full bg-honey flex items-center justify-center text-darkbee font-bold">🐝</div>
-          <span className="brand text-xl">Apícola Cuatro Reinas</span>
+          <span className="brand text-xl flex flex-col md:flex-row md:gap-x-1.5 leading-tight md:leading-normal">
+            <span>Apícola</span>
+            <span>Cuatro Reinas</span>
+          </span>
         </Link>
 
         {/* Menú de Escritorio */}
