@@ -185,10 +185,12 @@ export default function InstagramCard() {
             {/* Overlay interactivo en Hover */}
             <div className={overlayHoverClass}>
               <span className="flex items-center gap-1 select-none">
-                ❤️ <span className="text-white">{post.likes !== undefined ? post.likes : 0}</span>
+                ❤️
+                {/* ❤️ <span className="text-white">{post.likes !== undefined ? post.likes : 0}</span> */}
               </span>
               <span className="flex items-center gap-1 select-none">
-                💬 <span className="text-white">{post.comments !== undefined ? post.comments : 0}</span>
+                💬
+                {/* 💬 <span className="text-white">{post.comments !== undefined ? post.comments : 0}</span> */}
               </span>
             </div>
           </a>
