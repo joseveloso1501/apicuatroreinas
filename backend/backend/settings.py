@@ -1,12 +1,19 @@
 import os
 from pathlib import Path
-# import google.oauth2
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-me'
+# Cargar variables desde .env (local o raíz)
+env_path = BASE_DIR.parent / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
+else:
+    load_dotenv(BASE_DIR / '.env')
+
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-me')
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1')
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '*').split(',') if h.strip()]
 CSRF_TRUSTED_ORIGINS = ['https://backend-337307900667.southamerica-west1.run.app']
 
 INSTALLED_APPS = [
@@ -123,12 +130,6 @@ GS_BUCKET_NAME = 'bucket4reinas'
 GS_PROJECT_ID = 'apicuatroreinas'
 GS_QUERYSTRING_AUTH = False
 GS_LOCATION = 'media'
-
-# Opcional: credenciales por archivo JSON en local/producción
-# (En Cloud Run se recomienda usar Service Accounts nativas de GCP sin archivo de claves)
-# GS_CREDENTIALS = google.oauth2.service_account.Credentials.from_service_account_file(
-#     os.path.join(BASE_DIR, 'ruta-a-tus-credenciales.json')
-# )
 
 # Configuración de Correo
 EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')

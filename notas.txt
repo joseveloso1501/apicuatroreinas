@@ -5,29 +5,29 @@ https://backend-337307900667.southamerica-west1.run.app
 =================================================================================
 Comandos cloud run:
 # Inicia el proxy apuntando a un puerto local, ej: 5433
-./cloud-sql-proxy --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+./cloud-sql-proxy --port 5433 apicuatroreinas:southamerica-west1:bd4reinas2
 # (Agrega --address 0.0.0.0 para permitir conexiones desde contenedores Docker)
-./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas2
 
 # Asegúrate de usar las credenciales de tu DB en GCP
 export DB_HOST=127.0.0.1
 export DB_PORT=5433
 export DB_NAME=postgres
 export DB_USER=postgres
-export DB_PASSWORD=8mEYrnGT3eu
+export DB_PASSWORD=8mEYrnGT3eu?
 
 ENVs para Cloud Run:
-INSTANCE_CONNECTION_NAME = apicuatroreinas:southamerica-west1:bd4reinas
+INSTANCE_CONNECTION_NAME = apicuatroreinas:southamerica-west1:bd4reinas2
 DB_NAME = postgres
 DB_USER = postgres
-DB_PASSWORD = 8mEYrnGT3eu
+DB_PASSWORD = 8mEYrnGT3eu?
 
-docker exec -e DB_HOST=127.0.0.1 -e DB_PORT=5433 -e DB_NAME=postgres -e DB_USER=postgres -e DB_PASSWORD=8mEYrnGT3eu django_backend python manage.py migrate
+docker exec -e DB_HOST=127.0.0.1 -e DB_PORT=5433 -e DB_NAME=postgres -e DB_USER=postgres -e DB_PASSWORD=8mEYrnGT3eu? django_backend python manage.py migrate
 
 =================================================================================
 paso a paso para ejecutar migraciones en base de datos 
 
-./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas2
 docker compose down
 docker compose up backend
 
@@ -49,13 +49,13 @@ services:
   #   environment:
   #     POSTGRES_DB: postgres
   #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: 8mEYrnGT3eu
+  #     POSTGRES_PASSWORD: 8mEYrnGT3eu?
   #   volumes:
   #     - pgdata:/var/lib/postgresql/data
   #   ports:
   #     - "5432:5432"
   #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d bd4reinas"]
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d bd4reinas2"]
   #     interval: 5s
   #     timeout: 5s
   #     retries: 5
@@ -78,7 +78,7 @@ services:
       # Conexión a GCP Cloud SQL (vía Proxy local en puerto 5433)
       - DB_NAME=postgres
       - DB_USER=postgres
-      - DB_PASSWORD=8mEYrnGT3eu
+      - DB_PASSWORD=8mEYrnGT3eu?
       - DB_HOST=host.docker.internal
       - DB_PORT=5433
       - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
@@ -157,18 +157,40 @@ non-SSL
 crear un esquema de la base de datos
 
 comando para levantar el proxy local para conectar a la base de datos en la nube
-./cloud-sql-proxy --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
-./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas
+./cloud-sql-proxy --port 5433 apicuatroreinas:southamerica-west1:bd4reinas2
+./cloud-sql-proxy --address 0.0.0.0 --port 5433 apicuatroreinas:southamerica-west1:bd4reinas2
 
 comando para crear un esquema de la base de datos (requiere Conexión mediante socket a la instancia en GCP)
-PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -s -F p -E UTF-8 -f apicuatroreinas_schema.sql
+PGPASSWORD=8mEYrnGT3eu? pg_dump -h localhost -p 5433 -d postgres -U postgres -s -F p -E UTF-8 -f apicuatroreinas_schema.sql
 
 comando para crear un respaldo completo de la base de datos
-PGPASSWORD=8mEYrnGT3eu pg_dump -h localhost -p 5433 -d postgres -U postgres -F p -E UTF-8 -f apicuatroreinas_dump.sql
+PGPASSWORD=8mEYrnGT3eu? pg_dump -h localhost -p 5433 -d postgres -U postgres -F p -E UTF-8 -f apicuatroreinas_dump.sql
+
 =================================================================================
+Pasos para crear los secretos en GCP
 
-futura refactorizacion de informacion hardcodeada
-ImageCarousel tiene 'https://storage.googleapis.com/bucket4reinas/media' 
-About tambien tiene ese enlace
+# 1. Crear el secreto para la clave secreta de Django
+gcloud secrets create django-secret-key --replication-policy="automatic"
+echo -n "django-insecure-local-dev-secret-key-3n4b89v10n" | gcloud secrets versions add django-secret-key --data-file=-
 
-archivos a ignorar 
+# 2. Crear el secreto para la contraseña de base de datos
+gcloud secrets create db-password --replication-policy="automatic"
+echo -n "8mEYrnGT3eu?" | gcloud secrets versions add db-password --data-file=-
+
+# 3. Crear el secreto para el usuario SMTP
+gcloud secrets create smtp-username --replication-policy="automatic"
+echo -n "9e8c40a12a4972d3cba4" | gcloud secrets versions add smtp-username --data-file=-
+
+# 4. Crear el secreto para la contraseña SMTP
+gcloud secrets create smtp-password --replication-policy="automatic"
+echo -n "G73icmIZ1xHUSNeoKQDh" | gcloud secrets versions add smtp-password --data-file=-
+
+- Otorgar permisos a la cuenta de servicio de Cloud Run 
+
+PROJECT_NUMBER=$(gcloud projects describe $(gcloud config get-value project) --format="value(projectNumber)")
+
+for secret in django-secret-key db-password smtp-username smtp-password; do
+  gcloud secrets add-iam-policy-binding $secret \
+    --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+    --role="roles/secretmanager.secretAccessor"
+done

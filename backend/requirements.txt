@@ -7,3 +7,4 @@ django-storages
 google-cloud-storage
 gunicorn
 whitenoise>=6.0.0
+python-dotenv

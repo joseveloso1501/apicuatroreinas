@@ -8,7 +8,7 @@ services:
     command:
       - "--address=0.0.0.0"
       - "--port=5432"
-      - "apicuatroreinas:southamerica-west1:bd4reinas"
+      - "${INSTANCE_CONNECTION_NAME}"
     volumes:
       - ~/.config/gcloud:/config/gcloud:ro
     environment:
@@ -23,13 +23,13 @@ services:
   #   environment:
   #     POSTGRES_DB: postgres
   #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: 8mEYrnGT3eu
+  #     POSTGRES_PASSWORD: 8mEYrnGT3eu?
   #   volumes:
   #     - pgdata:/var/lib/postgresql/data
   #   ports:
   #     - "5432:5432"
   #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d bd4reinas"]
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d bd4reinas2"]
   #     interval: 5s
   #     timeout: 5s
   #     retries: 5
@@ -49,24 +49,16 @@ services:
     depends_on:
       - cloud-sql-proxy
     environment:
-      - DEBUG=1
-      # Conexión a GCP Cloud SQL (vía el contenedor cloud-sql-proxy)
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=8mEYrnGT3eu
-      - DB_HOST=cloud-sql-proxy
-      - DB_PORT=5432
+      - DEBUG=${DEBUG:-1}
+      - SECRET_KEY=${SECRET_KEY}
+      - DB_NAME=${DB_NAME:-postgres}
+      - DB_USER=${DB_USER:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST:-cloud-sql-proxy}
+      - DB_PORT=${DB_PORT:-5432}
       - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
-      
-      # Conexión local (Descomentar para usar base de datos Docker local)
-      # - DB_NAME=ecommerce
-      # - DB_USER=admin
-      # - DB_PASSWORD=admin123
-      # - DB_HOST=db
-      # - DB_PORT=5432
-      # - DATABASE_URL=postgres://admin:admin123@db:5432/ecommerce
-      - ALLOWED_HOSTS=*
-      - CORS_ALLOWED_ORIGINS=http://localhost:5173
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-*}
+      - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:-http://localhost:5173}
 
   frontend:
     build: 
