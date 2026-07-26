@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { getMediaUrl } from '../utils/baseURL'
-import { FaInstagram } from 'react-icons/fa'
+import { getMediaUrl, baseURL } from '../utils/baseURL'
+import axios from 'axios'
+import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
 
 const imgCajones = getMediaUrl('/media/galeria/apiario.jpg')
 const imgPilares = getMediaUrl('/media/galeria/panal.jpg')
@@ -28,6 +29,13 @@ export default function About() {
 
   const [selectedImageIndex, setSelectedImageIndex] = useState(null)
 
+  const [profileData, setProfileData] = useState({
+    username: 'api4reinas',
+    nombre: 'Apícola Cuatro Reinas',
+    imagen_perfil_url: '',
+  })
+  const [isFollowing, setIsFollowing] = useState(false)
+
   // Clases comunes para animación y layouts
   const slideInLeftStateClass = (visible) => visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-16'
 
@@ -45,6 +53,21 @@ export default function About() {
 
   // Navegación Lightbox
   const navBtnBaseClass = "absolute top-1/2 -translate-y-1/2 z-50 bg-black/40 hover:bg-amber text-white w-12 h-12 rounded-full flex items-center justify-center transition-all active:scale-95 cursor-pointer shadow-md select-none border border-white/10"
+
+  // Tarjetas de Redes Sociales
+  const socialCardClass = "flex items-center justify-between p-3 bg-gray-50 border border-gray-100 rounded-xl hover:shadow-sm transition-all duration-200 gap-3"
+  const socialInfoWrapperClass = "flex items-center gap-3 flex-1 min-w-0"
+  const socialAvatarWrapperClass = "relative flex-shrink-0"
+  const socialAvatarRingClass = (bgColor) => `w-10 h-10 rounded-full p-[2px] ${bgColor}`
+  const socialAvatarFrameClass = "w-full h-full rounded-full bg-white p-[1px]"
+  const socialAvatarImageContainerClass = "w-full h-full rounded-full bg-amber-50 flex items-center justify-center overflow-hidden"
+  const socialAvatarImageClass = "w-full h-full object-cover"
+  const socialBadgeClass = (bgColor) => `absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-white border border-white ${bgColor}`
+  const socialBadgeIconClass = "w-3 h-3"
+  const socialTextContainerClass = "text-left min-w-0"
+  const socialNameClass = "font-bold text-gray-900 text-xs truncate"
+  const socialSubtextClass = "text-[10px] text-gray-500 truncate"
+  const socialButtonClass = (bgColor) => `flex-shrink-0 w-24 py-1.5 px-4 text-white rounded-lg text-xs font-semibold transition-all active:scale-95 shadow-xs text-center ${bgColor}`
 
   // Observer para Misión y Visión
   useEffect(() => {
@@ -108,6 +131,22 @@ export default function About() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [selectedImageIndex])
 
+  useEffect(() => {
+    axios.get(`${baseURL}/api/instagram-perfil/1/`)
+      .then(response => {
+        if (response.data) {
+          setProfileData({
+            username: response.data.username || 'api4reinas',
+            nombre: response.data.nombre || 'Apícola Cuatro Reinas',
+            imagen_perfil_url: response.data.imagen_perfil_url || '',
+          });
+        }
+      })
+      .catch(error => {
+        console.error("About: Error al obtener datos de perfil de Instagram:", error);
+      });
+  }, []);
+
   return (
     <section className="bg-white">
 
@@ -136,7 +175,7 @@ export default function About() {
       {/* Galería de Instagram (Ancho Completo) */}
       <div className="max-w-6xl mx-auto px-6 pt-16">
         <div className="space-y-4">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+          {/* <div className="flex items-center justify-between border-b border-gray-100 pb-2">
             <h3 className="text-xl font-bold text-gray-900">Quienes somos</h3>
             <a
               href="https://www.instagram.com/api4reinas/"
@@ -148,7 +187,7 @@ export default function About() {
               <FaInstagram size={17} />
               api4reinas
             </a>
-          </div>
+          </div> */}
           <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-amber/30 scrollbar-track-transparent">
             {GALERIA.map((post, index) => (
               <button
@@ -191,12 +230,12 @@ export default function About() {
       <div className="max-w-6xl mx-auto px-4 pb-16 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
-          {/* Columna Izquierda: Quiénes Somos, Misión, Visión */}
+          {/* Columna Izquierda: Quienes Somos, Misión, Visión */}
           <div className="lg:col-span-8 space-y-12">
 
             {/* Introducción */}
             <div className="space-y-4">
-              {/* <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quiénes somos</h3> */}
+              <h3 className="text-xl font-bold text-gray-900 border-b border-gray-100 pb-2">Quienes somos</h3>
               <p className="text-gray-600 leading-relaxed text-sm md:text-base">
                 En <strong>Apícola Cuatro Reinas</strong> somos un apiario emergente que nace con mucho entusiasmo y un compromiso desde el momento cero. Nos mueve el respeto por la naturaleza, la preocupación por los detalles y la convicción de que las cosas se pueden hacer de una manera diferente. Combinamos la sabiduría de la apicultura tradicional con el respaldo de la ciencia y la tecnología para ofrecer lo mejor de nuestra colmena al mundo.
               </p>
@@ -235,27 +274,141 @@ export default function About() {
             </div>
           </div>
 
-          {/* Columna Derecha: El Contexto de la Apicultura */}
+          {/* Columna Derecha: Redes sociales */}
           <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
             <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-md space-y-4">
               <h4 className="font-extrabold text-gray-900 text-base border-b border-gray-100 pb-3 flex items-center gap-2 select-none">
-                El valor de la apicultura
+                Redes sociales
               </h4>
               <p className="text-xs text-gray-600 leading-relaxed">
-                La apicultura es ciencia y arte, su objetivo es mantener colmenas de abejas con fines ecológicos y productivos. Los apicultores cuidan a las abejas, les proporcionan colmenas seguras y manejan su alimentación y salud, logrando obtener productos como miel, cera, propóleos, jalea real y polen.
+                Aquí puedes enterarte de nuestras últimas novedades o escribirnos un mensaje.
               </p>
-              <p className="text-xs text-gray-600 leading-relaxed">
-                Además, la apicultura es clave para la polinización de plantas y cultivos, lo que ayuda a la producción de alimentos y mantiene el equilibrio de los ecosistemas.
-              </p>
-              <div className="border-t border-gray-50 pt-4 text-center">
-                <a
-                  href="https://www.youtube.com/watch?v=9ipH_22W9uc"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] text-amber-600 hover:text-amber-700 font-extrabold uppercase tracking-wider inline-flex items-center gap-1 hover:underline transition-colors"
+
+              {/* Tarjeta de Instagram */}
+              <div className={socialCardClass}>
+                <div className={socialInfoWrapperClass}>
+                  <div className={socialAvatarWrapperClass}>
+                    <div className={socialAvatarRingClass("bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600")}>
+                      <div className={socialAvatarFrameClass}>
+                        <div className={socialAvatarImageContainerClass}>
+                          {profileData.imagen_perfil_url ? (
+                            <img
+                              src={getMediaUrl(profileData.imagen_perfil_url)}
+                              alt="Instagram profile"
+                              className={socialAvatarImageClass}
+                            />
+                          ) : (
+                            <span className="text-base select-none">🐝</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={socialBadgeClass("bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600")}>
+                      <FaInstagram className={socialBadgeIconClass} />
+                    </div>
+                  </div>
+                  <div className={socialTextContainerClass}>
+                    <h5 className={socialNameClass}>
+                      @{profileData.username}
+                    </h5>
+                    <p className={socialSubtextClass}>
+                      Instagram
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    window.open(`https://www.instagram.com/${profileData.username}/`, '_blank')
+                  }}
+                  className={socialButtonClass("bg-orange-300 hover:bg-orange-600")}
                 >
-                  🎥 Conoce más aquí
-                </a>
+                  Seguir
+                </button>
+              </div>
+
+              {/* Tarjeta de WhatsApp */}
+              <div className={socialCardClass}>
+                <div className={socialInfoWrapperClass}>
+                  <div className={socialAvatarWrapperClass}>
+                    <div className={socialAvatarRingClass("bg-green-500")}>
+                      <div className={socialAvatarFrameClass}>
+                        <div className={socialAvatarImageContainerClass}>
+                          {profileData.imagen_perfil_url ? (
+                            <img
+                              src={getMediaUrl(profileData.imagen_perfil_url)}
+                              alt="WhatsApp profile"
+                              className={socialAvatarImageClass}
+                            />
+                          ) : (
+                            <span className="text-base select-none">🐝</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={socialBadgeClass("bg-green-500")}>
+                      <FaWhatsapp className={socialBadgeIconClass} />
+                    </div>
+                  </div>
+                  <div className={socialTextContainerClass}>
+                    <h5 className={socialNameClass}>
+                      +56 9 5611 0251
+                    </h5>
+                    <p className={socialSubtextClass}>
+                      WhatsApp
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    const message = "Hola Apícola Cuatro Reinas"
+                    window.open(`https://wa.me/56956110251?text=${encodeURIComponent(message)}`, '_blank')
+                  }}
+                  className={socialButtonClass("bg-green-400 hover:bg-green-700")}
+                >
+                  Mensaje
+                </button>
+              </div>
+
+              {/* Tarjeta de Gmail */}
+              <div className={socialCardClass}>
+                <div className={socialInfoWrapperClass}>
+                  <div className={socialAvatarWrapperClass}>
+                    <div className={socialAvatarRingClass("bg-red-500")}>
+                      <div className={socialAvatarFrameClass}>
+                        <div className={socialAvatarImageContainerClass}>
+                          {profileData.imagen_perfil_url ? (
+                            <img
+                              src={getMediaUrl(profileData.imagen_perfil_url)}
+                              alt="Gmail profile"
+                              className={socialAvatarImageClass}
+                            />
+                          ) : (
+                            <span className="text-base select-none">🐝</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={socialBadgeClass("bg-red-500")}>
+                      <FaEnvelope className={socialBadgeIconClass} />
+                    </div>
+                  </div>
+                  <div className={socialTextContainerClass}>
+                    <h5 className={socialNameClass}>
+                      apicuatroreinas@gmail.com
+                    </h5>
+                    <p className={socialSubtextClass}>
+                      Correo electrónico
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    window.location.href = "mailto:apicuatroreinas@gmail.com?subject=Consulta%20desde%20Sitio%20Web"
+                  }}
+                  className={socialButtonClass("bg-red-400 hover:bg-red-700")}
+                >
+                  Correo
+                </button>
               </div>
             </div>
           </div>
