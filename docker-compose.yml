@@ -16,24 +16,6 @@ services:
     ports:
       - "5433:5432" # Expuesto a la máquina host (ej. para DBeaver, pg_dump, etc.)
 
-  # db:
-  #   image: postgres:16
-  #   container_name: postgres_db
-  #   restart: always
-  #   environment:
-  #     POSTGRES_DB: postgres
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: 8mEYrnGT3eu?
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d bd4reinas2"]
-  #     interval: 5s
-  #     timeout: 5s
-  #     retries: 5
-
   backend:
     build: ./backend
     container_name: django_backend
