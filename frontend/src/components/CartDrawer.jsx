@@ -15,7 +15,7 @@ export default function CartDrawer() {
   } = useCart()
 
   // CLASES DE ESTILO ENCAPSULADAS
-  const closeBtnClass = "w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
+  const closeBtnClass = "w-8 h-8 rounded-full hover:bg-orange-100 bg-gray-100 flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors cursor-pointer"
   const cartItemClass = "flex gap-4 p-3 bg-yellow-50/20 border border-yellow-100/50 rounded-2xl items-center shadow-sm"
   const itemImgClass = "w-16 h-16 rounded-xl bg-yellow-50 bg-cover bg-center flex-shrink-0"
   const qtyStepBtnClass = "w-7 h-7 flex items-center justify-center text-gray-500 hover:text-gray-800 text-sm font-semibold rounded-full cursor-pointer select-none"
@@ -41,7 +41,7 @@ export default function CartDrawer() {
         <div className="p-5 border-b border-gray-100 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-xl select-none">🛒</span>
-            <h3 className="font-extrabold text-gray-900 text-lg tracking-tight">Tu Carrito</h3>
+            <h3 className="font-extrabold text-gray-900 text-lg tracking-tight">Tu carrito</h3>
           </div>
           <button
             onClick={() => setIsCartOpen(false)}
