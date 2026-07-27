@@ -131,7 +131,7 @@ export default function Products() {
         <h2 className="text-3xl font-extrabold text-darkbee tracking-tight mb-2">Productos</h2>
         <p className="text-gray-500 text-sm mb-8">Explora los mejores productos de nuestra colmena</p>
 
-        {/* Panel de Filtros Premium */}
+        {/* Panel de Filtros */}
         {!loading && (
           <div className="bg-white/80 backdrop-blur-md border border-yellow-100 rounded-2xl p-4 shadow-sm mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 transition-all duration-300">
             {/* Filtro de Categoría (Pills) */}
@@ -139,10 +139,10 @@ export default function Products() {
               {['Todos', 'Alimentos', 'Medicinas', 'Insumos'].map(cat => {
                 const isSelected = categoriaSeleccionada.toLowerCase() === cat.toLowerCase() || (cat === 'Todos' && categoriaSeleccionada === 'Todos');
                 const icons = {
-                  Todos: '', //se ve mejor sin emoji
-                  Alimentos: '🍯',
-                  Medicinas: '💊',
-                  Insumos: '🛠️'
+                  Todos: '', //🐝 se ve mejor sin emoji
+                  Alimentos: '', //🍯
+                  Medicinas: '', //💊
+                  Insumos: ''  //🛠️
                 };
                 return (
                   <button
