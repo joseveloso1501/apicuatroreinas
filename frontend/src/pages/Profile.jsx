@@ -361,7 +361,7 @@ export default function Profile() {
           <div className="bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden">
             {/* Cabecera Estética */}
             <div className="bg-gradient-to-r from-amber to-amber-600 p-8 text-center text-white space-y-2">
-              <span className="text-5xl select-none">🐝✨</span>
+              <span className="text-5xl select-none">🐝</span>
               <h2 className="text-2xl font-black tracking-tight">Apícola Cuatro Reinas</h2>
               <p className="text-yellow-100 text-xs font-semibold">
                 {isRegisterMode ? 'Regístrate para gestionar tus compras' : 'Inicia sesión en tu cuenta'}
