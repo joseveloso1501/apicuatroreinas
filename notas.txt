@@ -194,3 +194,6 @@ for secret in django-secret-key db-password smtp-username smtp-password; do
     --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
     --role="roles/secretmanager.secretAccessor"
 done
+
+=================================================================================
+configurar la politica de privacidad de los datos 
