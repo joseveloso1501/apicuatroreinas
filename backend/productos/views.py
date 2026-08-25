@@ -47,7 +47,7 @@ class ContactoView(APIView):
                 subject,
                 body,
                 settings.DEFAULT_FROM_EMAIL or 'no-reply@apicuatroreinas.cl',
-                [getattr(settings, 'CONTACT_RECIPIENT_EMAIL', 'joseveloso2101@gmail.com')],
+                [getattr(settings, 'CONTACT_RECIPIENT_EMAIL', 'apicuatroreinas@gmail.com')],
                 fail_silently=False,
             )
             return Response({"success": "¡Mensaje enviado con éxito!"}, status=status.HTTP_200_OK)

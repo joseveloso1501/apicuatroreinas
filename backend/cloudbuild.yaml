@@ -20,7 +20,7 @@ steps:
       - '--platform=managed'
       - '--allow-unauthenticated'
       - '--add-cloudsql-instances=apicuatroreinas:southamerica-west1:bd4reinas2'
-      - '--set-env-vars=INSTANCE_CONNECTION_NAME=apicuatroreinas:southamerica-west1:bd4reinas2,DB_NAME=postgres,DB_USER=postgres,EMAIL_HOST=pro.eu.turbo-smtp.com,EMAIL_PORT=587,EMAIL_USE_TLS=True,EMAIL_USE_SSL=False,DEFAULT_FROM_EMAIL=apicuatroreinas@gmail.com,CONTACT_RECIPIENT_EMAIL=joseveloso2101@gmail.com'
+      - '--set-env-vars=INSTANCE_CONNECTION_NAME=apicuatroreinas:southamerica-west1:bd4reinas2,DB_NAME=postgres,DB_USER=postgres,EMAIL_HOST=pro.eu.turbo-smtp.com,EMAIL_PORT=587,EMAIL_USE_TLS=True,EMAIL_USE_SSL=False,DEFAULT_FROM_EMAIL=apicuatroreinas@gmail.com,CONTACT_RECIPIENT_EMAIL=apicuatroreinas@gmail.com'
       - '--set-secrets=SECRET_KEY=django-secret-key:latest,DB_PASSWORD=db-password:latest,EMAIL_HOST_USER=smtp-username:latest,EMAIL_HOST_PASSWORD=smtp-password:latest'
 
 images:
