@@ -197,3 +197,18 @@ done
 
 =================================================================================
 configurar la politica de privacidad de los datos 
+
+=================================================================================
+publicar cambios a produccion
+
+1. hacer cambios en la rama test (no en main)
+2. hacer commit y push de cambios a test -> git push origin test
+3. cambiar a rama prod -> git checkout prod
+4. incorporar cambios de test en prod mediante rebase -> git rebase test
+5. resolver conflictos si existen, el historial de prod no importa
+6. hacer push de cambios a prod -> git push origin prod --force
+7. verificar que todo funcione en produccion
+8. cambiar a rama test -> git checkout test
+
+=================================================================================
+
