@@ -23,6 +23,7 @@ export default function Checkout() {
   const [direccion, setDireccion] = useState('')
   const [ciudad, setCiudad] = useState('')
   const [metodoPago, setMetodoPago] = useState('') // webpay, mercadopago, transferencia
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   // Estados para cupones
   const [userCoupons, setUserCoupons] = useState([])
@@ -144,6 +145,11 @@ export default function Checkout() {
 
     if (!['webpay', 'mercadopago', 'transferencia'].includes(metodoPago)) {
       setErrorPay('Por favor selecciona un método de pago antes de continuar.')
+      return
+    }
+
+    if (!acceptedTerms) {
+      setErrorPay('Debes aceptar los Términos y Condiciones y la Política de Privacidad antes de realizar el pedido.')
       return
     }
     setSubmitting(true)
@@ -547,9 +553,30 @@ export default function Checkout() {
                   )}
                 </div>
 
-                <div className="pt-4 border-t border-gray-100">
+                <div className="pt-4 border-t border-gray-100 space-y-3">
+                  <div className="flex items-start gap-2.5 p-3 bg-amber-50/40 rounded-xl border border-amber-100">
+                    <input
+                      id="accept-terms"
+                      type="checkbox"
+                      required
+                      checked={acceptedTerms}
+                      onChange={(e) => setAcceptedTerms(e.target.checked)}
+                      className="mt-0.5 w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500 cursor-pointer accent-amber-600 shrink-0"
+                    />
+                    <label htmlFor="accept-terms" className="text-xs text-gray-700 leading-relaxed cursor-pointer select-none">
+                      He leído y acepto los{' '}
+                      <Link to="/terminos" target="_blank" className="text-amber-700 font-bold underline hover:text-amber-800">
+                        Términos y Condiciones
+                      </Link>{' '}
+                      y la{' '}
+                      <Link to="/privacidad" target="_blank" className="text-amber-700 font-bold underline hover:text-amber-800">
+                        Política de Privacidad
+                      </Link>{' '}
+                      de Apícola Cuatro Reinas (conforme a la Ley N° 21.683).
+                    </label>
+                  </div>
                   <p className="text-[10px] text-gray-400 text-center sm:text-left leading-relaxed">
-                    Al confirmar el pago, la orden se registrará en el sistema para proceder a la preparación y despacho.
+                    Al realizar el pedido, tus datos se procesarán de forma segura para la emisión del documento tributario y despacho del paquete.
                   </p>
                 </div>
               </form>

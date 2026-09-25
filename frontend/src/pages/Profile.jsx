@@ -77,6 +77,8 @@ export default function Profile() {
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
   const [city, setCity] = useState('')
+  const [acceptedTermsRegister, setAcceptedTermsRegister] = useState(false)
+  const [downloadingData, setDownloadingData] = useState(false)
   const [formError, setFormError] = useState(null)
   const [formSuccess, setFormSuccess] = useState(null)
   const [submitting, setSubmitting] = useState(false)
@@ -214,6 +216,12 @@ export default function Profile() {
         return
       }
 
+      if (!acceptedTermsRegister) {
+        setFormError('Debes aceptar los Términos y Condiciones y la Política de Privacidad para registrarte.')
+        setSubmitting(false)
+        return
+      }
+
       const registerData = {
         email,
         password,
@@ -340,6 +348,27 @@ export default function Profile() {
       setShowDeleteModal(false)
     } catch (err) {
       alert(err.message)
+    }
+  }
+
+  // Manejar exportación de datos personales (Portabilidad ARCOP)
+  const handleExportData = async () => {
+    setDownloadingData(true)
+    try {
+      const res = await axios.get(`${baseURL}/api/auth/export-data/`, {
+        headers: { Authorization: `Token ${token}` }
+      })
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(res.data, null, 2))
+      const downloadAnchor = document.createElement('a')
+      downloadAnchor.setAttribute("href", dataStr)
+      downloadAnchor.setAttribute("download", `mis_datos_apicuatroreinas_${user.email}.json`)
+      document.body.appendChild(downloadAnchor)
+      downloadAnchor.click()
+      downloadAnchor.remove()
+    } catch (err) {
+      alert("Error al exportar tus datos: " + (err.response?.data?.error || err.message))
+    } finally {
+      setDownloadingData(false)
     }
   }
 
@@ -478,17 +507,40 @@ export default function Profile() {
                 </div>
 
                 {isRegisterMode && (
-                  <div className="space-y-1">
-                    <label className={labelClass}>Confirmar Contraseña</label>
-                    <input
-                      type="password"
-                      required
-                      className={inputClass}
-                      placeholder="••••••••"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                  </div>
+                  <>
+                    <div className="space-y-1">
+                      <label className={labelClass}>Confirmar Contraseña</label>
+                      <input
+                        type="password"
+                        required
+                        className={inputClass}
+                        placeholder="••••••••"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex items-start gap-2 pt-2 pb-1">
+                      <input
+                        id="reg-accept-terms"
+                        type="checkbox"
+                        required
+                        checked={acceptedTermsRegister}
+                        onChange={(e) => setAcceptedTermsRegister(e.target.checked)}
+                        className="mt-0.5 w-4 h-4 text-amber border-gray-300 rounded focus:ring-amber cursor-pointer accent-amber shrink-0"
+                      />
+                      <label htmlFor="reg-accept-terms" className="text-xs text-gray-600 leading-relaxed cursor-pointer select-none">
+                        Acepto los{' '}
+                        <a href="/terminos" target="_blank" rel="noreferrer" className="text-amber-700 font-bold underline">
+                          Términos y Condiciones
+                        </a>{' '}
+                        y la{' '}
+                        <a href="/privacidad" target="_blank" rel="noreferrer" className="text-amber-700 font-bold underline">
+                          Política de Privacidad
+                        </a>{' '}
+                        (Ley N° 21.683).
+                      </label>
+                    </div>
+                  </>
                 )}
 
                 <button
@@ -984,14 +1036,36 @@ export default function Profile() {
                   </form>
                 </div>
 
+                {/* Exportar Datos (Portabilidad ARCOP) */}
+                <div className="border-t border-gray-100 pt-8 space-y-4">
+                  <div>
+                    <h3 className="text-lg font-black text-gray-900">Privacidad y portabilidad de datos (Ley N° 21.683)</h3>
+                    <p className="text-xs text-gray-500">En cumplimiento con los derechos ARCOP, puedes descargar una copia íntegra de tus datos personales e historial registrado.</p>
+                  </div>
+
+                  <div className="p-4 bg-amber-50/40 rounded-2xl border border-amber-100/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <h4 className="text-xs font-bold text-gray-800">Descargar mi expediente personal (JSON)</h4>
+                      <p className="text-[11px] text-gray-600">Incluye perfil, correo, RUT, teléfonos, direcciones e historial completo de pedidos.</p>
+                    </div>
+                    <button
+                      onClick={handleExportData}
+                      disabled={downloadingData}
+                      className="px-4 py-2 bg-amber hover:bg-amber-600 text-white font-bold rounded-xl text-xs cursor-pointer transition-all active:scale-95 shrink-0 shadow-sm disabled:opacity-50"
+                    >
+                      {downloadingData ? 'Generando...' : '📥 Descargar mis datos'}
+                    </button>
+                  </div>
+                </div>
+
                 {/* Zona de Peligro */}
                 <div className="border-t border-red-100 pt-8 space-y-4">
                   <div className="bg-red-50/50 rounded-2xl border border-red-200 p-5 space-y-3">
                     <h4 className="text-xs font-extrabold text-red-700 uppercase tracking-wider">
-                      ⚠️ Eliminar cuenta (Acción irreversible)
+                      ⚠️ Eliminar cuenta (Derecho de Supresión ARCOP)
                     </h4>
                     <p className="text-xs text-red-600 leading-relaxed">
-                      Si eliminas tu cuenta, se perderá permanentemente toda tu información de perfil, historial de pedidos y cupones acumulados.
+                      Si eliminas tu cuenta, tu acceso al sistema se cancelará permanentemente. Conforme a la legislación chilena, los registros tributarios de compras anteriores se resguardarán por el periodo legal exigido por el Servicio de Impuestos Internos (SII).
                     </p>
                     <button
                       onClick={() => setShowDeleteModal(true)}
@@ -1015,7 +1089,7 @@ export default function Profile() {
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full space-y-4 shadow-2xl border border-gray-100">
             <h4 className="text-sm font-black text-gray-900">¿Estás seguro de que quieres eliminar tu cuenta?</h4>
             <p className="text-xs text-gray-500 leading-relaxed">
-              Esta acción borrará de forma irreversible tus datos personales, tus cupones y tu historial de pedidos.
+              Se eliminarán tus datos de acceso y perfil. Los comprobantes tributarios emitidos se conservarán por el plazo legal mínimo del SII.
             </p>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-red-600 uppercase tracking-wider block">

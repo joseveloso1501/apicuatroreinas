@@ -39,7 +39,7 @@ class ContactoView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        subject = f"Nuevo mensaje desde ApiStore de {name}"
+        subject = f"Nuevo mensaje desde Apícola Cuatro Reinas de {name}"
         body = f"Nombre: {name}\nCorreo de contacto: {email}\n\nMensaje:\n{message}"
         
         try:
@@ -206,6 +206,55 @@ class DeleteAccountView(APIView):
         user = request.user
         user.delete()
         return Response({"success": "Cuenta eliminada correctamente."}, status=status.HTTP_200_OK)
+
+class ExportUserDataView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        perfil = getattr(user, 'perfil', None)
+        
+        pedidos_data = []
+        for pedido in user.pedidos.all().order_by('-created_at'):
+            items = []
+            for item in pedido.items.all():
+                items.append({
+                    "producto": item.nombre_producto,
+                    "cantidad": item.cantidad,
+                    "precio_unitario": str(item.precio)
+                })
+            pedidos_data.append({
+                "pedido_id": pedido.id,
+                "fecha": pedido.created_at.strftime('%Y-%m-%d %H:%M:%S'),
+                "total": str(pedido.total),
+                "estado": pedido.estado,
+                "metodo_pago": pedido.metodo_pago,
+                "direccion_envio": pedido.direccion,
+                "ciudad_envio": pedido.ciudad,
+                "items": items
+            })
+
+        from django.utils import timezone
+        export_payload = {
+            "metadata": {
+                "normativa": "Ley N° 21.683 de Protección de Datos Personales (Chile)",
+                "fecha_exportacion": timezone.now().strftime('%Y-%m-%d %H:%M:%S'),
+                "titular": f"{user.first_name} {user.last_name}".strip() or user.email
+            },
+            "perfil_usuario": {
+                "email": user.email,
+                "nombre": user.first_name,
+                "apellido": user.last_name,
+                "rut": perfil.rut if perfil else None,
+                "telefono": perfil.telefono if perfil else None,
+                "direccion": perfil.direccion if perfil else None,
+                "ciudad": perfil.ciudad if perfil else None,
+                "fecha_registro": user.date_joined.strftime('%Y-%m-%d %H:%M:%S')
+            },
+            "historial_pedidos": pedidos_data
+        }
+        return Response(export_payload, status=status.HTTP_200_OK)
+
 
 class CuponViewSet(viewsets.ModelViewSet):
     queryset = Cupon.objects.all()

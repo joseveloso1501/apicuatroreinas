@@ -18,12 +18,14 @@ export default function Footer() {
         </div>
         <div>
           <h4 className="font-semibold">Enlaces</h4>
-          <ul className="mt-2 text-sm">
+          <ul className="mt-2 text-sm space-y-1">
             <li><Link to="/" className={linkClass}>Inicio</Link></li>
             <li><Link to="/productos" className={linkClass}>Productos</Link></li>
             <li><Link to="/sobre" className={linkClass}>Nosotros</Link></li>
             <li><Link to="/contacto" className={linkClass}>Contacto</Link></li>
             <li><Link to="/profile" className={linkClass}>Mi cuenta</Link></li>
+            <li><Link to="/terminos" className={linkClass}>Términos y Condiciones</Link></li>
+            <li><Link to="/privacidad" className={linkClass}>Política de Privacidad</Link></li>
           </ul>
         </div>
         <div>

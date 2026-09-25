@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from .views import (
     ProductoViewSet, CategoriaViewSet, GaleriaViewSet, ContactoView,
-    RegisterView, LoginView, ProfileView, ChangePasswordView, DeleteAccountView,
+    RegisterView, LoginView, ProfileView, ChangePasswordView, DeleteAccountView, ExportUserDataView,
     CuponViewSet, PedidoViewSet, CarritoView, CarritoMergeView, InstagramPerfilViewSet
 )
 
@@ -21,6 +21,7 @@ urlpatterns = [
     path('auth/profile/', ProfileView.as_view(), name='auth_profile'),
     path('auth/change-password/', ChangePasswordView.as_view(), name='auth_change_password'),
     path('auth/delete-account/', DeleteAccountView.as_view(), name='auth_delete_account'),
+    path('auth/export-data/', ExportUserDataView.as_view(), name='auth_export_data'),
     path('carrito/', CarritoView.as_view(), name='carrito'),
     path('carrito/merge/', CarritoMergeView.as_view(), name='carrito_merge'),
 ] + router.urls
