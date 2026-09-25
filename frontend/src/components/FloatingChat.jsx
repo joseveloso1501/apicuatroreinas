@@ -44,7 +44,7 @@ export default function FloatingChat() {
     if (!message.trim()) return
 
     // URL de WhatsApp de Apícola Cuatro Reinas con el mensaje personalizado url-encoded
-    const whatsappUrl = `https://wa.me/56956110251?text=${encodeURIComponent(message)}`
+    const whatsappUrl = `https://wa.me/56993788049?text=${encodeURIComponent(message)}`
 
     // Abrir en una pestaña nueva
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer')

@@ -198,8 +198,8 @@ export default function Contact() {
                   </div>
                   <div className="min-w-0">
                     <span className={cardContactLabelClass}>Teléfono</span>
-                    <a href="tel:+56956110251" className={cardContactValueClass}>
-                      +56 9 5611 0251
+                    <a href="tel:+56993788049" className={cardContactValueClass}>
+                      +56 9 93788049
                     </a>
                     <span className={cardContactDescClass}>Lunes a Viernes de 9:00 a 18:00</span>
                   </div>

@@ -30,7 +30,7 @@ export default function Footer() {
           <h4 className="font-semibold mb-2">Redes</h4>
           <div className="flex gap-3">
             <a
-              href="https://wa.me/56956110251"
+              href="https://wa.me/56993788049"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"

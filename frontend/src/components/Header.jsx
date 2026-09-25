@@ -119,7 +119,7 @@ export default function Header() {
                 Contáctanos aquí
               </NavLink>
               <a
-                href="https://wa.me/56956110251"
+                href="https://wa.me/56993788049"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={navSubLinkClass({ isActive: false })}
@@ -307,7 +307,7 @@ export default function Header() {
                 Contáctanos aquí
               </Link>
               <a
-                href="https://wa.me/56956110251"
+                href="https://wa.me/56993788049"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}

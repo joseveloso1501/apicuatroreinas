@@ -351,7 +351,7 @@ export default function About() {
                   </div>
                   <div className={socialTextContainerClass}>
                     <h5 className={socialNameClass}>
-                      +56 9 5611 0251
+                      +56 9 93788049
                     </h5>
                     <p className={socialSubtextClass}>
                       WhatsApp
@@ -361,7 +361,7 @@ export default function About() {
                 <button
                   onClick={() => {
                     const message = "Hola Apícola Cuatro Reinas"
-                    window.open(`https://wa.me/56956110251?text=${encodeURIComponent(message)}`, '_blank')
+                    window.open(`https://wa.me/56993788049?text=${encodeURIComponent(message)}`, '_blank')
                   }}
                   className={socialButtonClass("bg-green-400 hover:bg-green-700")}
                 >
