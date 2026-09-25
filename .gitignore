@@ -78,6 +78,7 @@ coverage.xml
 *.key
 *.crt
 *.pfx
+*.pdf
 *.cert
 *.csr
 *.sublime-workspace
@@ -85,6 +86,7 @@ coverage.xml
 *.iml
 *.orig
 *.rej
+*.sql
 *.swp
 *.swo
 *.swn
@@ -105,4 +107,5 @@ coverage.xml
 *.seed.lockfile.lock
 *.seed.lockfile.lockfile
 *.seed.lockfile.lockfile.lock
+*.txt
 cloud-sql-proxy
