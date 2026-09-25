@@ -1,0 +1,45 @@
+name: Deploy React to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      - name: 1. Descargar el código
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
+      - name: 3. Instalar dependencias
+        run: npm install
+        working-directory: ./frontend # Le indica a GitHub que entre a la carpeta frontend
+
+      - name: 4. Construir la aplicación
+        run: npm run build
+        working-directory: ./frontend # Le indica a GitHub que construya desde la carpeta frontend
+
+      - name: 5. Preparar la carpeta dist/
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './frontend/dist' # Apunta a la carpeta dist generada dentro de frontend
+
+      - name: 6. Desplegar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
